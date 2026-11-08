@@ -64,7 +64,7 @@ updated: 2026-11-08
 - [ ] 24. [[Running LLMs locally]], [[llama-swap]], [[OpenAI-compatible API]].
 - [ ] 25. [[Model Context Protocol]], [[AI agents and sandboxing]], [[Homelab LLM and agent]].
 - [ ] 26. [[Homelab failure modes]].
-- [ ] 27. [[Decisions]] — for each, would you decide the same? Write your answer in a [[Log]] entry.
+- [ ] 27. [[Homelab decisions]] — for each, would you decide the same? Write your answer in a [[Log]] entry.
 - [ ] 28. Read [[Site Reliability Engineering]] (monitoring, SLOs, postmortems).
 
 **Practice:** 👀 `make llm-running`; `make llm-ask Q="hello"` and watch the model load in `make logs R=llm`; in the MCP Inspector, call a `postgres_*` tool; from `make sh R=agent-toolbox`, try to reach `postgres-rw:5432` and explain the timeout; break something on purpose (e.g. `make secret-set` a wrong `pg-role-postgrest` password), find it with only `status`, `describe`, `logs`, then fix it.
@@ -74,4 +74,4 @@ updated: 2026-11-08
 - For any pod state, you know the next command to run.
 - You can add a new API with a database account, a route and telemetry, alone.
 - You can name each security layer and what it stops — and the homelab's known limits.
-- You can defend or challenge every entry in [[Decisions]].
+- You can defend or challenge every entry in [[Homelab decisions]].

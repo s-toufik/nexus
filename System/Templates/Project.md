@@ -30,6 +30,6 @@ updated: {{date}}
 
 ## Read next
 - `Architecture/` — how it works, part by part.
-- [[Decisions]] — why it's built this way.
+- [[Homelab decisions]] — why it's built this way.
 - [[<Project> guides]] — how to run it, one guide per job.
 - `Repos/` — one note per repository.

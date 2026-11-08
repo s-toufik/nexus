@@ -26,7 +26,7 @@ A note never sits loose at the top of a folder, except the folder's index (`Proj
 Projects/<Project>/
 ├── <Project>.md        what, why, state, where to read next
 ├── <Project>.canvas    the picture: parts and how they talk
-├── Decisions.md        one entry per decision, newest first
+├── <Project> decisions.md   one entry per decision, newest first
 ├── Architecture/       how it works, one note per part, read in order
 ├── Guides/             how to run it: one guide per job, and an index `<Project> guides`
 └── Repos/              one note per repository
@@ -34,6 +34,7 @@ Projects/<Project>/
 
 ## Names
 - Notes are named for what they hold, in plain words: `NetworkPolicy`, not `k8s-netpol-notes`.
+- Every note name is unique in the vault, so links never need a path: a project's notes start with the project's name (`Homelab decisions`, `Agent runtime turn`).
 - Log notes start with the date: `YYYY-MM-DD <topic>`.
 - Guides are named `<Project> - <job>`, the job in the imperative: `Homelab - Release an app`. One guide per job; the project's index is `<Project> guides`.
 - A guide is steps only, from the *Guide* template: numbered steps, each `make` command followed by its raw command, what each step should print. Explanations go in the notes listed under *Why it works*.

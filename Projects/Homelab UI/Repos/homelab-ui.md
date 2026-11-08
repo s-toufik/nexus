@@ -1,6 +1,6 @@
 ---
 type: repository
-project: "[[Homelab]]"
+project: "[[Homelab UI]]"
 repo: https://github.com/s-toufik/homelab-ui
 language: TypeScript (Angular 21)
 status: active
@@ -14,7 +14,7 @@ updated: 2026-11-08
 
 Built with Angular 21 (standalone components, signals, zoneless) using a feature-first, layered structure: each page under `features/` owns its `domain` (types), `application` (state/orchestration), `infrastructure` (API clients), and `components`/`pages` (UI), and never reaches into another feature. Cross-cutting app chrome — the two sidebars, routing between pages — lives in `shell/`; what several features use lives in `shared/`.
 
-How to work on it: [[Homelab - Develop homelab-ui]].
+How to work on it: [[Homelab UI guides]]. How it fits together: [[Homelab UI structure]].
 
 ## Layout
 

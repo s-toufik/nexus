@@ -22,7 +22,7 @@ Agents turn text into actions. A single malicious instruction hidden in a web pa
 
 ## In our projects
 - agent-runtime runs the loop; agent-toolbox runs tools and a Python executor in its own pod ([[Homelab LLM and agent]]).
-- The fence: [[NetworkPolicy]] denies databases, Kafka, the LLM, private ranges and the cloud metadata range; data only through MCP servers with **read-only** accounts by default; the switch to write is a deploy ([[Decisions]]).
+- The fence: [[NetworkPolicy]] denies databases, Kafka, the LLM, private ranges and the cloud metadata range; data only through MCP servers with **read-only** accounts by default; the switch to write is a deploy ([[Homelab decisions]]).
 - The pod is hardened ([[Pod security context]]) and has no Kubernetes token.
 
 ## Check yourself
