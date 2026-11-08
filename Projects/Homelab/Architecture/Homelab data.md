@@ -12,6 +12,8 @@ updated: 2026-11-08
 
 Previous: [[Homelab gateway and sign-in]] · Next: [[Homelab observability]]
 
+**Do it:** [[Homelab - Connect to the databases]] · [[Homelab - Migrate the database]] · [[Homelab - Back up and restore]] · [[Homelab - Use Kafka]]
+
 ## PostgreSQL, run by an operator
 PostgreSQL isn't a plain pod: the **CloudNativePG** [[Operator]] runs it. You declare a `Cluster` (a custom resource, from kube-charts' `pg-cluster` chart); the operator creates the pod, its volume, the Services, TLS, and keeps the declared **roles** and **databases** as you wrote them.
 

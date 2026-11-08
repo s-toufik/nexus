@@ -24,7 +24,7 @@ updated: 2026-11-08
 | `scripts/` | What `make` runs: `secrets.sh`, `validate.sh`, `verify.sh`, `users.sh`, `backups.sh`… |
 | `Makefile` | Every command (`make help`) |
 | `templates/myapi-a/` | A starting point for a new Python API |
-| `devops_guide.md`, `Q&A.md` | Copied into the nexus as [[homelab-infra - DevOps guide]] and [[homelab-infra - Q&A]] |
+| `devops_guide.md`, `Q&A.md` | The operations guides; in the nexus, split into one note per job: [[Homelab guides]] |
 
 ## The one rule
 Release `<release>` in group `<group>` → `<group>/<release>/values.yaml.gotmpl`. Config files next to it are pulled in with `readFile` and mounted through `configFiles:`; a checksum restarts the pod when they change.

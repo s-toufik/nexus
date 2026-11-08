@@ -16,7 +16,7 @@ Ask in this order; the first yes wins.
 | Is it about the nexus itself? | `System/` | a template, this note |
 | Is it about a day? | `Log/<year>/` | `2026-11-08 MCP servers in the toolbox` |
 | Is it an order to learn things in? | `Paths/` | `Kubernetes from zero` |
-| Does it belong to one project? | `Projects/<Project>/` | the Homelab DevOps guide, an agent-toolbox decision |
+| Does it belong to one project? | `Projects/<Project>/` | a Homelab guide, an agent-toolbox decision |
 | Otherwise: an idea that outlives any project | `Knowledge/<domain>/` | `Knowledge/Kubernetes/NetworkPolicy` |
 
 A note never sits loose at the top of a folder, except the folder's index (`Projects/Projects.md`…).
@@ -28,18 +28,19 @@ Projects/<Project>/
 ├── <Project>.canvas    the picture: parts and how they talk
 ├── Decisions.md        one entry per decision, newest first
 ├── Architecture/       how it works, one note per part, read in order
-├── Guides/             how to run it: playbooks, Q&A
+├── Guides/             how to run it: one guide per job, and an index `<Project> guides`
 └── Repos/              one note per repository
 ```
 
 ## Names
 - Notes are named for what they hold, in plain words: `NetworkPolicy`, not `k8s-netpol-notes`.
 - Log notes start with the date: `YYYY-MM-DD <topic>`.
-- Guides copied from a repository keep its name: `<repo> - <topic>`.
+- Guides are named `<Project> - <job>`, the job in the imperative: `Homelab - Release an app`. One guide per job; the project's index is `<Project> guides`.
+- A guide is steps only, from the *Guide* template: numbered steps, each `make` command followed by its raw command, what each step should print. Explanations go in the notes listed under *Why it works*.
 - Folders inside `Knowledge/` are domains: `Kubernetes`, `Networking`, `Security`, `Data`, `AI`… Add one when three notes share it.
 
 ## Properties
-Every note starts with properties from its template in `System/Templates`: at least `type` and `tags`. `type` is one of `project`, `repository`, `concept`, `path`, `source`, `log`, `guide`, `index`.
+Every note starts with properties from its template in `System/Templates`: at least `type` and `tags`. `type` is one of `project`, `architecture`, `decisions`, `repository`, `guide`, `concept`, `path`, `source`, `log`, `index`.
 
 ## Links
 - Link the first mention of a concept, project or source: `[[NetworkPolicy]]`.

@@ -66,6 +66,7 @@ Then [[Decisions]] — why it's built this way and what was turned down — and 
 - **Next:** see the latest note in [[Log]].
 
 ## Guides
-- [[homelab-infra - DevOps guide]] — every operation, step by step.
-- [[homelab-infra - Q&A]] — quick answers: passwords, logs, restart, dev images.
-- [[homelab-ui - Development guide]] — working on the UI.
+[[Homelab guides]] — one guide per job, steps only: setting up the server, deploying, releasing, accounts, secrets, databases, backups, the LLM, troubleshooting. Start with:
+- [[Homelab - Deploy a change]] and [[Homelab - Release an app]] — the everyday ones.
+- [[Homelab - Check the homelab]] and [[Homelab - Troubleshooting]] — when something looks wrong.
+- [[Homelab - Develop homelab-ui]] — working on the UI.

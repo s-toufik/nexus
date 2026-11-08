@@ -25,7 +25,7 @@ updated: 2026-11-08
 ## In our projects
 - CloudNativePG creates and maintains the roles declared in `repository/postgres/values.yaml.gotmpl`: `tasker_web` (NOLOGIN), `postgrest` (LOGIN, NOINHERIT, member of `tasker_web`), `keycloak` (owner of its database), `mcp` (`pg_read_all_data`, + `pg_write_all_data` if write is on) ([[Homelab data]]).
 - Migration `005_grant_permissions.sql`: `REVOKE ALL ON SCHEMA tasker FROM PUBLIC`, then only `tasker_web` gets `USAGE` and DML on the two tables; `REVOKE CREATE ON SCHEMA public FROM PUBLIC`.
-- Your own apps use `homelab` (owner of database `homelab`) or a role of their own ([[homelab-infra - Q&A]]).
+- Your own apps use `homelab` (owner of database `homelab`) or, better, a role of their own ([[Homelab - Connect to the databases#Give an app its own PostgreSQL user]]).
 
 ## Pitfalls we met
 - PostgREST must be `NOINHERIT`: it logs in with almost no rights and only gains `tasker_web`'s when it switches for a request.

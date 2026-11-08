@@ -8,9 +8,11 @@ updated: 2026-11-08
 
 # Homelab failure modes
 
-> What goes wrong, why it goes wrong, and how to read the signs. Every case here really happened or was designed against. The step-by-step fixes are in [[homelab-infra - DevOps guide]], *Troubleshooting*; this note is the *why*.
+> What goes wrong, why it goes wrong, and how to read the signs. Every case here really happened or was designed against. The step-by-step fixes are in [[Homelab - Troubleshooting]]; this note is the *why*.
 
 Previous: [[Homelab security model]] · Next: [[Homelab change cookbook]]
+
+**Do it:** [[Homelab - Troubleshooting]] · [[Homelab - Check the homelab]]
 
 ## How to debug anything here
 Go from the outside in, and let Kubernetes tell you:

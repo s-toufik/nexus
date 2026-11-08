@@ -6,7 +6,7 @@ My knowledge hub: every project I build, why it's built that way, and the ideas 
 
 | Folder | Holds | Example |
 |---|---|---|
-| `Projects/` | What we build, and why: one folder per project with its note, map, decisions, guides and repositories | `Projects/Homelab/Guides/homelab-infra - DevOps guide.md` |
+| `Projects/` | What we build, and why: one folder per project with its note, map, decisions, guides and repositories | `Projects/Homelab/Guides/Homelab - Deploy a change.md` |
 | `Knowledge/` | What things are and how they work: one note per idea, a folder per domain | `Knowledge/Kubernetes/NetworkPolicy.md` |
 | `Paths/` | In what order to learn things, with practice in our projects | `Paths/Kubernetes from zero.md` |
 | `Sources/` | What others wrote: one note per article, book, paper, video or course | `Sources/Attention is all you need.md` |

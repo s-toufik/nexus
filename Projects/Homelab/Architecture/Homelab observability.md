@@ -12,6 +12,8 @@ updated: 2026-11-08
 
 Previous: [[Homelab data]] · Next: [[Homelab LLM and agent]]
 
+**Do it:** [[Homelab - Use observability]] · [[Homelab - Check the homelab]]
+
 Start with [[Observability]] if "metric, log, trace" isn't yet clear.
 
 ## The pipeline

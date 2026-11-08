@@ -12,6 +12,8 @@ updated: 2026-11-08
 
 Previous: [[Homelab observability]] · Next: [[Homelab security model]]
 
+**Do it:** [[Homelab - Run the LLM and agent]]
+
 ## Local models: the `llm` release
 - **llama.cpp's `llama-server`** runs one model; **[[llama-swap]]** sits in front, starts the right `llama-server` for the model a request names, and stops it when idle. See [[Running LLMs locally]].
 - `llm/llm/config.yml` lists the models: each is a command line (`-hf <repo>:<quantization>`, context size, threads) and a `ttl`.

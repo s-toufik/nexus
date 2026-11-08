@@ -12,8 +12,10 @@ updated: 2026-11-08
 
 Previous: [[Homelab]] · Next: [[Homelab deployment]]
 
+**Do it:** [[Homelab - Prepare the server]] · [[Homelab - Install Kubernetes]] · [[Homelab - Keep the server running]] · [[Homelab - Test or undo the server setup]]
+
 ## Why a laptop
-A laptop is a server with a built-in UPS (the battery), a screen for emergencies and low power use. The price is that it was designed to *sleep, roam and save power* — exactly what a server must not do. Most of the server setup undoes those habits. Every step is in [[homelab-infra - DevOps guide]], *Prepare the server*.
+A laptop is a server with a built-in UPS (the battery), a screen for emergencies and low power use. The price is that it was designed to *sleep, roam and save power* — exactly what a server must not do. Most of the server setup undoes those habits. The steps are in [[Homelab - Prepare the server]], [[Homelab - Install Kubernetes]] and [[Homelab - Keep the server running]].
 
 ## What was changed, and why
 | Problem a laptop has | What we did | Concept |

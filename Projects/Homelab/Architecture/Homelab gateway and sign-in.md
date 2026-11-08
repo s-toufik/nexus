@@ -12,6 +12,8 @@ updated: 2026-11-08
 
 Previous: [[Homelab deployment]] · Next: [[Homelab data]]
 
+**Do it:** [[Homelab - Manage accounts]] · [[Homelab - Deploy a change]] (a route in the Caddyfile)
+
 ## The actors
 | Who | Is | Its job here |
 |---|---|---|

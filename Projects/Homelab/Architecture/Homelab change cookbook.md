@@ -12,6 +12,8 @@ updated: 2026-11-08
 
 Previous: [[Homelab failure modes]] · Back to [[Homelab]]
 
+**Do it:** [[Homelab guides]]
+
 ## The loop
 1. **Edit** in homelab-infra (or the app's repository).
 2. **Preview**: `make diff R=<release>` shows the exact manifest changes. Read it — it's your code review against the live cluster.
@@ -44,7 +46,7 @@ Previous: [[Homelab failure modes]] · Back to [[Homelab]]
 4. A database? A role in `repository/postgres/values.yaml.gotmpl`, a Secret in `SPECS`.
 5. A web page? A route or port in the Caddyfile.
 6. Telemetry: `OTEL_SERVICE_NAME`, `OTEL_EXPORTER_OTLP_ENDPOINT`.
-Full steps: DevOps guide, *Add an app*.
+Full steps: [[Homelab - Add an app]].
 
 ### Turn on write for an agent tool server
 1. `mcp.postgres.write: true` in `environments/default.yaml`.

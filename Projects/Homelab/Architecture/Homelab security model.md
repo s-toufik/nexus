@@ -12,6 +12,8 @@ updated: 2026-11-08
 
 Previous: [[Homelab LLM and agent]] · Next: [[Homelab failure modes]]
 
+**Do it:** [[Homelab - Manage secrets]] · [[Homelab - Manage accounts]] · [[Homelab - Check the homelab]] (`make verify`)
+
 Read [[Least privilege and defence in depth]] first: this note is that idea applied.
 
 ## Who are we defending against?

@@ -12,6 +12,8 @@ updated: 2026-11-08
 
 Previous: [[Homelab server]] · Next: [[Homelab gateway and sign-in]]
 
+**Do it:** [[Homelab - Deploy a change]] · [[Homelab - Release an app]] · [[Homelab - Roll back]] · [[Homelab - Change a chart]] · [[Homelab - First deploy]]
+
 ## The mental model: desired state
 You never "start a container" by hand. You **describe** what you want (this image, this config, these ports) in files, and a tool makes reality match. If reality drifts (a pod dies), [[Kubernetes]] repairs it. If the files change, `make apply` pushes the difference. This is *declarative* infrastructure — the most important idea in this whole project.
 
@@ -98,10 +100,10 @@ Why order matters: Keycloak can't start without its database; the agent-toolbox 
 2. In homelab-infra: `apps.<app>: X.Y.Z` in `versions.yaml`, commit, push.
 3. On the server: `git pull`, `make apply R=<app>`.
 
-`develop` pushes publish `dev-<sha>` images only — to try one, see [[homelab-infra - Q&A]] (*dev image*).
+`develop` pushes publish `dev-<sha>` images only — to try one, see [[Homelab - Release an app#Try a dev image]].
 
 ## Edge cases
-- **Rebuilding under the same tag doesn't reach the server.** Helmfile caches the chart, k3s caches the image (`IfNotPresent`). Either bump the version (right way) or clear both caches — see Q&A. This is why tags must be immutable.
+- **Rebuilding under the same tag doesn't reach the server.** Helmfile caches the chart, k3s caches the image (`IfNotPresent`). Either bump the version (right way) or clear both caches — [[Homelab - Release an app#A version rebuilt under the same tag]]. This is why tags must be immutable.
 - **Something deleted by hand stays deleted.** `apply` only acts on diffs between git and the *Helm release*; a pod deleted by Kubernetes comes back, but a Deployment you `kubectl delete`d needs `make sync R=…`.
 - **`another operation is in progress`.** A Helm upgrade was interrupted; the release is stuck in `pending-upgrade`. `make rollback R=…`.
 - **Volumes and Secrets survive `destroy`.** Uninstalling a release keeps its data (`/var/lib/rancher/k3s/storage/`). Reinstalling finds it again — and an old password in the data won't match a new Secret.
