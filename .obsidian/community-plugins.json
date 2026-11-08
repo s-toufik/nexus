@@ -1,7 +1,5 @@
 [
   "obsidian-git",
-  "persistent-graph",
-  "obsidian-zotero-desktop-connector",
-  "zotero-bridge",
-  "obsidian-excalidraw-plugin"
+  "obsidian-excalidraw-plugin",
+  "base-graph"
 ]
