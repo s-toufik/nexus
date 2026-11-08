@@ -31,7 +31,7 @@ updated: 2026-11-08
 - [[Homelab - Roll back]]
 - [[Homelab - Change a chart]]
 - [[Homelab - Add an app]]
-- [[Homelab - Develop homelab-ui]]
+- [[Homelab UI guides]] — working on the UI itself.
 
 ## Run it
 - [[Homelab - Check the homelab]] — status, `make verify`, logs.

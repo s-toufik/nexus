@@ -15,11 +15,16 @@ tags: [home]
 - [[Log]] — what happened, and when.
 - [[Conventions]] — how the nexus is kept: where a note goes.
 
-## In progress
-- [[Homelab]] — the home server on Kubernetes. Map: [[Homelab.canvas|the canvas]].
+## Projects
+- [[Homelab]] and [[Homelab UI]] — the home server on Kubernetes, and its front door.
+- [[Agent runtime]] and [[Agent toolbox]] — the AI agent and its tools.
+- [[pycraftcore]] and [[Archetype]] — the foundation and the templates everything is built from.
+- [[Web framework benchmark]] · [[Pricelab]] · [[GitHub showcase]]
+- How they fit: [[Projects]].
 
 ## Learning
-- [[Homelab from zero to senior]] — the path through everything the homelab uses.
+- [[Homelab from zero to senior]] — the platform: servers, Kubernetes, gateway, data, observability.
+- [[Building services from zero to senior]] — the software: design, Python, web, frontend, AI agents.
 
 ## How to use it
 1. **Before working on a project**, read its note and its latest log entry.

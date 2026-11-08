@@ -30,8 +30,8 @@ updated: 2026-11-08
 |---|---|---|
 | The release train | [[homelab-infra]] | Every release, its settings and its version; the `make` commands; the guides |
 | The charts | [[kube-charts]] | The generic `app` [[Helm]] chart every service runs on, and `pg-cluster` for PostgreSQL |
-| The front door | homelab-ui | Angular control center: status, every tool as a page, the agent beside every page, Tasker |
-| The agent | agent-runtime, agent-toolbox | The AI agent and its tools ([[Model Context Protocol|MCP]]), fenced off by [[NetworkPolicy]] |
+| The front door | [[Homelab UI]] | Angular control center: status, every tool as a page, the agent beside every page, Tasker |
+| The agent | [[Agent runtime]], [[Agent toolbox]] | The AI agent and its tools ([[Model Context Protocol|MCP]]), fenced off by [[NetworkPolicy]] |
 
 The platform runs on [[k3s]], a small [[Kubernetes]]. Every service is a Helm release; [[helmfile]] deploys them together, in order — the *release train*.
 
@@ -69,4 +69,4 @@ Then [[Homelab decisions]] — why it's built this way and what was turned down 
 [[Homelab guides]] — one guide per job, steps only: setting up the server, deploying, releasing, accounts, secrets, databases, backups, the LLM, troubleshooting. Start with:
 - [[Homelab - Deploy a change]] and [[Homelab - Release an app]] — the everyday ones.
 - [[Homelab - Check the homelab]] and [[Homelab - Troubleshooting]] — when something looks wrong.
-- [[Homelab - Develop homelab-ui]] — working on the UI.
+- [[Homelab UI guides]] — working on the UI.

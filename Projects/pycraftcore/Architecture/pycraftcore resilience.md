@@ -37,4 +37,4 @@ The client is a plain `httpx.AsyncClient`, so any library that accepts one (Lang
 
 ## Go further
 - [Martin Fowler: CircuitBreaker](https://martinfowler.com/bliki/CircuitBreaker.html).
-- [AWS: timeouts, retries and backoff with jitter](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/).
+- [AWS: timeouts, retries and backoff with jitter](https://builder.aws.com/content/3EumjoZascWd1oZiEgL8ORlv3qE/timeouts-retries-and-backoff-with-jitter).

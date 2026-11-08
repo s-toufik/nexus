@@ -50,5 +50,5 @@ Anything destructive or secret-related is sent **without** auto-approve: the wor
 3. What does "flaky" tell you about an agent behaviour?
 
 ## Go further
-- [Anthropic: create strong empirical evaluations](https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests).
+- [Anthropic: create strong empirical evaluations](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests).
 - [Judging LLM-as-a-judge (Zheng et al.)](https://arxiv.org/abs/2306.05685).

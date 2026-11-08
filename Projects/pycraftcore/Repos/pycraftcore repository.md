@@ -8,7 +8,7 @@ tags: [repository, pycraftcore]
 updated: 2026-11-08
 ---
 
-# pycraftcore
+# pycraftcore repository
 
 > The library: `src/pycraftcore/<module>/` with `port/`, `adapter/`, `configuration/`, `schema/`, `enum/`; tests per module; extras in `pyproject.toml`.
 
