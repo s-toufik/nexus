@@ -30,5 +30,5 @@ Look at one example from every layer in [[Homelab security model]]. Two highligh
 2. What's the blast radius of a compromised homelab-ui container?
 
 ## Go further
-- [OWASP: principle of least privilege](https://owasp.org/www-community/Access_Control).
+- [OWASP: principle of least privilege](https://community.owasp.org/Access_Control).
 - [NSA/CISA Kubernetes hardening guide](https://media.defense.gov/2022/Aug/29/2003066362/-1/-1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF).

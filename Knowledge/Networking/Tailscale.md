@@ -36,5 +36,5 @@ Reaching a home server from outside usually means port forwarding — exposing i
 
 ## Go further
 - [How Tailscale works](https://tailscale.com/blog/how-tailscale-works).
-- [MagicDNS](https://tailscale.com/kb/1081/magicdns), [HTTPS certificates](https://tailscale.com/kb/1153/enabling-https), [ACLs](https://tailscale.com/kb/1018/acls).
+- [MagicDNS](https://tailscale.com/docs/features/magicdns), [HTTPS certificates](https://tailscale.com/docs/how-to/set-up-https-certificates), [ACLs](https://tailscale.com/docs/features/access-control/acls).
 - [WireGuard](https://www.wireguard.com/).

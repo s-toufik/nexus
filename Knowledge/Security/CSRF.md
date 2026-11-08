@@ -32,5 +32,5 @@ Cookie-based sessions are sent automatically. Without a defence, any web page yo
 2. Why must `GET` never change state?
 
 ## Go further
-- [OWASP: CSRF](https://owasp.org/www-community/attacks/csrf), [CSRF prevention cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html).
+- [OWASP: CSRF](https://community.owasp.org/attacks/csrf), [CSRF prevention cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html).
 - [MDN: CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) — preflight requests.

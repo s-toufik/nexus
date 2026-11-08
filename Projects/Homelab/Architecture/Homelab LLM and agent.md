@@ -64,5 +64,5 @@ So it can't reach PostgreSQL, MongoDB, Kafka, the LLM, your home network, the cl
 ## Go further
 - [Model Context Protocol](https://modelcontextprotocol.io/) — the spec and concepts.
 - [llama-swap](https://github.com/mostlygeek/llama-swap).
-- [Anthropic: building effective agents](https://www.anthropic.com/engineering/building-effective-agents).
+- [Anthropic: building effective agents](https://www.anthropic.com/research/building-effective-agents).
 - [Simon Willison: the lethal trifecta](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/).

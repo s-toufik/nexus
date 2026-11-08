@@ -33,4 +33,4 @@ A build on your laptop depends on your laptop. CI builds from the repository alo
 
 ## Go further
 - [GitHub Actions docs](https://docs.github.com/en/actions).
-- [Reusing workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows).
+- [Reusing workflows](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows).

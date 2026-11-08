@@ -76,4 +76,4 @@ Go from the outside in, and let Kubernetes tell you:
 ## Go further
 - [Kubernetes: debug pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-pods/).
 - [Kubernetes: debug services](https://kubernetes.io/docs/tasks/debug/debug-application/debug-service/).
-- [A visual guide to troubleshooting Kubernetes deployments](https://learnk8s.io/troubleshooting-deployments).
+- [A visual guide to troubleshooting Kubernetes deployments](https://learnkube.com/troubleshooting-deployments).

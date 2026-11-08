@@ -38,5 +38,5 @@ Check kinds: `httpGet` (2xx/3xx = OK), `tcpSocket` (port open), `exec` (exit 0),
 2. Why does Keycloak have a startup probe?
 
 ## Go further
-- [Liveness, readiness and startup probes](https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/).
+- [Liveness, readiness and startup probes](https://kubernetes.io/docs/concepts/workloads/pods/probes/).
 - [Configure probes (task)](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).

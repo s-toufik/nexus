@@ -79,4 +79,4 @@ Nobody clicks in Keycloak's console. `gateway/keycloak/sync.sh` runs as a [[Jobs
 - [Caddy: forward_auth](https://caddyserver.com/docs/caddyfile/directives/forward_auth) — the exact mechanism.
 - [oauth2-proxy: overview](https://oauth2-proxy.github.io/oauth2-proxy/) — and its `/oauth2/auth` endpoint.
 - [OpenID Connect, how it works](https://openid.net/developers/how-connect-works/).
-- [Tailscale HTTPS certificates](https://tailscale.com/kb/1153/enabling-https).
+- [Tailscale HTTPS certificates](https://tailscale.com/docs/how-to/set-up-https-certificates).

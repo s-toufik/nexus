@@ -16,7 +16,10 @@ tags: [home]
 - [[Conventions]] — how the nexus is kept: where a note goes.
 
 ## In progress
-- [[Homelab]] — the home server on Kubernetes.
+- [[Homelab]] — the home server on Kubernetes. Map: [[Homelab.canvas|the canvas]].
+
+## Learning
+- [[Homelab from zero to senior]] — the path through everything the homelab uses.
 
 ## How to use it
 1. **Before working on a project**, read its note and its latest log entry.

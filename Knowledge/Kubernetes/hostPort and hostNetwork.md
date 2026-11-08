@@ -34,5 +34,5 @@ Services are reachable inside the cluster only. To let your devices in, somethin
 2. Why does Alloy need `hostNetwork`, and what did we do to keep it off the LAN?
 
 ## Go further
-- [Configuration best practices: services](https://kubernetes.io/docs/concepts/configuration/overview/#services) — the hostPort caveats.
+- [Configuration good practices](https://kubernetes.io/blog/2025/11/25/configuration-good-practices/) — including why to avoid hostPort when you can.
 - [Linux network namespaces, explained](https://lwn.net/Articles/580893/).

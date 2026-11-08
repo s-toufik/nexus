@@ -66,7 +66,7 @@ MongoDB `:27017` (its own password), Kafka `:9094` and OTLP `:4317/4318` (no aut
 3. What would you add first: off-site backups, MFA, or Tailscale ACLs? Argue it.
 
 ## Go further
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/) — the common web risks.
+- [OWASP Top 10](https://owasp.org/projects/top-ten) — the common web risks.
 - [Kubernetes: security overview](https://kubernetes.io/docs/concepts/security/).
 - [NIST SP 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html) — modern password guidance.
-- [Tailscale ACLs](https://tailscale.com/kb/1018/acls).
+- [Tailscale ACLs](https://tailscale.com/docs/features/access-control/acls).
