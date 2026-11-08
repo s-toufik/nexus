@@ -1,0 +1,108 @@
+{
+	"nodes": [
+		{
+			"id": "read",
+			"type": "text",
+			"x": -760,
+			"y": -280,
+			"width": 300,
+			"height": 320,
+			"text": "## Read in order\n1. [[pycraftcore modules]]\n2. [[pycraftcore configuration]]\n3. [[pycraftcore web toolkits]]\n4. [[pycraftcore resilience]]\n5. [[pycraftcore runtime sandbox]]\n\n[[pycraftcore decisions]] \u00b7 [[pycraftcore guides]]",
+			"color": "6"
+		},
+		{
+			"id": "svc",
+			"type": "text",
+			"x": -760,
+			"y": 80,
+			"width": 300,
+			"height": 160,
+			"text": "## Services\n[[Agent runtime]] \u00b7 [[Agent toolbox]] \u00b7 [[Web framework benchmark]]\nimport ports, receive adapters",
+			"color": "5"
+		},
+		{
+			"id": "g",
+			"type": "group",
+			"x": -400,
+			"y": -280,
+			"width": 900,
+			"height": 560,
+			"label": "pycraftcore",
+			"color": "4"
+		},
+		{
+			"id": "setup",
+			"type": "text",
+			"x": -380,
+			"y": -250,
+			"width": 270,
+			"height": 170,
+			"text": "### Set up\napplication_configuration \u00b7 logger \u00b7 telemetry \u00b7 context \u00b7 authentication\n[[pycraftcore configuration]]"
+		},
+		{
+			"id": "out",
+			"type": "text",
+			"x": -90,
+			"y": -250,
+			"width": 270,
+			"height": 170,
+			"text": "### Talk out\nhttp \u00b7 resilient_http \u00b7 retry \u00b7 circuit_breaker\n[[pycraftcore resilience]]"
+		},
+		{
+			"id": "serve",
+			"type": "text",
+			"x": 200,
+			"y": -250,
+			"width": 270,
+			"height": 170,
+			"text": "### Serve\nweb + web_litestar \u00b7 web_fastapi \u00b7 web_blacksheep\n[[pycraftcore web toolkits]]"
+		},
+		{
+			"id": "store",
+			"type": "text",
+			"x": -380,
+			"y": -50,
+			"width": 270,
+			"height": 170,
+			"text": "### Store\nrepository: SQLite \u00b7 PostgreSQL \u00b7 MongoDB\n[[Repository pattern]]"
+		},
+		{
+			"id": "safe",
+			"type": "text",
+			"x": -90,
+			"y": -50,
+			"width": 270,
+			"height": 170,
+			"text": "### Run safely\nquery_language (read-only SQL) \u00b7 runtime (sandbox)\n[[pycraftcore runtime sandbox]]"
+		},
+		{
+			"id": "util",
+			"type": "text",
+			"x": 200,
+			"y": -50,
+			"width": 270,
+			"height": 170,
+			"text": "### Utilities\nfile_handler \u00b7 serializer \u00b7 computation_engine \u00b7 profiler"
+		},
+		{
+			"id": "shape",
+			"type": "text",
+			"x": -380,
+			"y": 170,
+			"width": 860,
+			"height": 90,
+			"text": "### Every module: port/ \u00b7 adapter/ \u00b7 configuration/ \u00b7 schema/ \u00b7 enum/ \u2014 one extra each\n[[pycraftcore modules]] \u00b7 [[Hexagonal architecture]]",
+			"color": "3"
+		}
+	],
+	"edges": [
+		{
+			"id": "e0",
+			"fromNode": "svc",
+			"toNode": "g",
+			"label": "depends on",
+			"fromSide": "right",
+			"toSide": "left"
+		}
+	]
+}

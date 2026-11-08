@@ -1,0 +1,162 @@
+{
+	"nodes": [
+		{
+			"id": "read",
+			"type": "text",
+			"x": -760,
+			"y": -280,
+			"width": 300,
+			"height": 280,
+			"text": "## Read in order\n1. [[Agent toolbox layers]]\n2. [[Agent toolbox sandbox]]\n3. [[Agent toolbox republished tools]]\n\n[[Agent toolbox decisions]] \u00b7 [[Agent toolbox guides]]",
+			"color": "6"
+		},
+		{
+			"id": "clients",
+			"type": "text",
+			"x": -760,
+			"y": 60,
+			"width": 300,
+			"height": 150,
+			"text": "## MCP clients\n[[Agent runtime]], MCP Inspector, homelab-ui Tools page\n[[Model Context Protocol]]",
+			"color": "5"
+		},
+		{
+			"id": "g",
+			"type": "group",
+			"x": -400,
+			"y": -280,
+			"width": 860,
+			"height": 520,
+			"label": "agent-toolbox",
+			"color": "4"
+		},
+		{
+			"id": "binder",
+			"type": "text",
+			"x": -380,
+			"y": -250,
+			"width": 380,
+			"height": 120,
+			"text": "### ToolBinder (inbound/mcp)\none MCP tool per Tool, schemas from pydantic, allowed hosts"
+		},
+		{
+			"id": "bridge",
+			"type": "text",
+			"x": 40,
+			"y": -250,
+			"width": 400,
+			"height": 120,
+			"text": "### SandboxToolBridge (inbound/sandbox)\nsandboxed code calls tools as functions"
+		},
+		{
+			"id": "uc",
+			"type": "text",
+			"x": -380,
+			"y": -100,
+			"width": 820,
+			"height": 100,
+			"text": "### InvokeToolUseCase \u2014 validate \u00b7 log \u00b7 run \u00b7 map failures\nsame path for both doors \u00b7 [[Agent toolbox layers]]"
+		},
+		{
+			"id": "tools",
+			"type": "text",
+			"x": -380,
+			"y": 30,
+			"width": 400,
+			"height": 190,
+			"text": "### Tools\nusers_tables (read-only SQL) \u00b7 file_reader / file_writer \u00b7 python_executor"
+		},
+		{
+			"id": "ext",
+			"type": "text",
+			"x": 40,
+			"y": 30,
+			"width": 400,
+			"height": 190,
+			"text": "### McpBackedTool\ngrafana_* \u00b7 mongodb_* \u00b7 postgres_*\n[[Agent toolbox republished tools]]"
+		},
+		{
+			"id": "sandbox",
+			"type": "text",
+			"x": -380,
+			"y": 300,
+			"width": 400,
+			"height": 130,
+			"text": "### PythonSandbox (pycraftcore runtime)\nown process, allowlist, 256 MB, timeout\n[[Agent toolbox sandbox]]",
+			"color": "3"
+		},
+		{
+			"id": "remote",
+			"type": "text",
+			"x": 500,
+			"y": 30,
+			"width": 300,
+			"height": 190,
+			"text": "### Remote MCP servers\ngrafana-mcp, mongodb-mcp, postgres-mcp (homelab, read-only by default)"
+		},
+		{
+			"id": "fence",
+			"type": "text",
+			"x": 500,
+			"y": -280,
+			"width": 300,
+			"height": 250,
+			"text": "### The fence (homelab)\nNetworkPolicy: no databases, no private ranges; data only via the MCP servers\n[[NetworkPolicy]]",
+			"color": "1"
+		}
+	],
+	"edges": [
+		{
+			"id": "e0",
+			"fromNode": "clients",
+			"toNode": "binder",
+			"label": "/mcp",
+			"fromSide": "right",
+			"toSide": "left"
+		},
+		{
+			"id": "e1",
+			"fromNode": "binder",
+			"toNode": "uc"
+		},
+		{
+			"id": "e2",
+			"fromNode": "bridge",
+			"toNode": "uc"
+		},
+		{
+			"id": "e3",
+			"fromNode": "uc",
+			"toNode": "tools"
+		},
+		{
+			"id": "e4",
+			"fromNode": "uc",
+			"toNode": "ext"
+		},
+		{
+			"id": "e5",
+			"fromNode": "tools",
+			"toNode": "sandbox",
+			"label": "python_executor",
+			"fromSide": "bottom",
+			"toSide": "top"
+		},
+		{
+			"id": "e6",
+			"fromNode": "sandbox",
+			"toNode": "bridge",
+			"label": "tool calls",
+			"fromSide": "right",
+			"toSide": "bottom"
+		},
+		{
+			"id": "e7",
+			"fromNode": "ext",
+			"toNode": "remote",
+			"label": "call_tool",
+			"fromSide": "right",
+			"toSide": "left"
+		}
+	]
+}

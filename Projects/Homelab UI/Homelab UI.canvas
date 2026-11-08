@@ -1,0 +1,186 @@
+{
+	"nodes": [
+		{
+			"id": "read",
+			"type": "text",
+			"x": -700,
+			"y": -300,
+			"width": 300,
+			"height": 330,
+			"text": "## Read in order\n1. [[Homelab UI structure]]\n2. [[Homelab UI state and streaming]]\n3. [[Homelab UI Tasker]]\n4. [[Homelab UI delivery]]\n\n[[Homelab UI decisions]] \u00b7 [[Homelab UI guides]]",
+			"color": "6"
+		},
+		{
+			"id": "browser",
+			"type": "text",
+			"x": -700,
+			"y": 80,
+			"width": 300,
+			"height": 140,
+			"text": "## Browser\none HTTPS origin, signed in\n[[Single-page application]]",
+			"color": "5"
+		},
+		{
+			"id": "g-app",
+			"type": "group",
+			"x": -340,
+			"y": -300,
+			"width": 820,
+			"height": 560,
+			"label": "homelab-ui (Angular)",
+			"color": "4"
+		},
+		{
+			"id": "config",
+			"type": "text",
+			"x": -320,
+			"y": -270,
+			"width": 780,
+			"height": 90,
+			"text": "### app.config.ts \u2014 the composition root\nprovideXxxFeature() for every page \u00b7 [[Dependency injection]]"
+		},
+		{
+			"id": "shell",
+			"type": "text",
+			"x": -320,
+			"y": -160,
+			"width": 250,
+			"height": 180,
+			"text": "### shell/\nlayout, menu, right panel, assistant drawer\nknows HOMELAB_FEATURES, never a feature"
+		},
+		{
+			"id": "features",
+			"type": "text",
+			"x": -50,
+			"y": -160,
+			"width": 250,
+			"height": 180,
+			"text": "### features/\none per page: domain \u00b7 application \u00b7 infrastructure \u00b7 pages\n[[Feature-first architecture]]"
+		},
+		{
+			"id": "shared",
+			"type": "text",
+			"x": 220,
+			"y": -160,
+			"width": 240,
+			"height": 180,
+			"text": "### shared/\nGatewayApi, GatewaySession, query services, charts"
+		},
+		{
+			"id": "stores",
+			"type": "text",
+			"x": -320,
+			"y": 40,
+			"width": 380,
+			"height": 200,
+			"text": "### Signal stores\nAgentStore, WorkflowDocumentStore\u2026\n[[Signals]]"
+		},
+		{
+			"id": "tasker",
+			"type": "text",
+			"x": 80,
+			"y": 40,
+			"width": 380,
+			"height": 200,
+			"text": "### Tasker\nexecuteGraph (plain TS) \u00b7 CanvasEngine port \u2192 Rete.js\n[[Homelab UI Tasker]]"
+		},
+		{
+			"id": "g-gw",
+			"type": "group",
+			"x": 540,
+			"y": -300,
+			"width": 380,
+			"height": 560,
+			"label": "homelab gateway",
+			"color": "1"
+		},
+		{
+			"id": "caddy",
+			"type": "text",
+			"x": 560,
+			"y": -270,
+			"width": 340,
+			"height": 120,
+			"text": "### Caddy + oauth2-proxy\n/api/<tool>/\u2026 allow-listed, X-Homelab-Request on writes\n[[Homelab gateway and sign-in]]"
+		},
+		{
+			"id": "agent",
+			"type": "text",
+			"x": 560,
+			"y": -120,
+			"width": 340,
+			"height": 110,
+			"text": "### /api/agent \u2192 agent-runtime\nSSE stream \u00b7 [[Server-sent events]] \u00b7 [[Agent runtime]]"
+		},
+		{
+			"id": "tools",
+			"type": "text",
+			"x": 560,
+			"y": 10,
+			"width": 340,
+			"height": 110,
+			"text": "### /api/prometheus, loki, tempo, kafka, llm, toolbox, kube\u2026\nthe tools' own APIs"
+		},
+		{
+			"id": "pgrst",
+			"type": "text",
+			"x": 560,
+			"y": 140,
+			"width": 340,
+			"height": 100,
+			"text": "### /api/tasker \u2192 PostgREST\nyour rows only \u00b7 [[Row-level security]]"
+		},
+		{
+			"id": "ship",
+			"type": "text",
+			"x": -340,
+			"y": 300,
+			"width": 1260,
+			"height": 120,
+			"text": "### Delivery \u2014 [[Homelab UI delivery]]\nng build \u2192 nginx-unprivileged image (amd64 + arm64) \u2192 tag vX.Y.Z \u2192 image + chart \u2192 homelab-infra versions.yaml \u2192 make apply R=homelab-ui",
+			"color": "3"
+		}
+	],
+	"edges": [
+		{
+			"id": "e0",
+			"fromNode": "browser",
+			"toNode": "g-app",
+			"label": "loads",
+			"fromSide": "right",
+			"toSide": "left"
+		},
+		{
+			"id": "e1",
+			"fromNode": "features",
+			"toNode": "shell",
+			"label": "registers into",
+			"fromSide": "left",
+			"toSide": "right"
+		},
+		{
+			"id": "e2",
+			"fromNode": "shared",
+			"toNode": "g-gw",
+			"label": "fetch, cookie",
+			"fromSide": "right",
+			"toSide": "left"
+		},
+		{
+			"id": "e3",
+			"fromNode": "stores",
+			"toNode": "agent",
+			"label": "for await events",
+			"fromSide": "right",
+			"toSide": "left"
+		},
+		{
+			"id": "e4",
+			"fromNode": "tasker",
+			"toNode": "pgrst",
+			"label": "save workflows",
+			"fromSide": "right",
+			"toSide": "left"
+		}
+	]
+}

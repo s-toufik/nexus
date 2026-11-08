@@ -1,0 +1,81 @@
+{
+	"nodes": [
+		{
+			"id": "bench",
+			"type": "text",
+			"x": -700,
+			"y": -200,
+			"width": 320,
+			"height": 300,
+			"text": "## shop_benchmark\n1. /v1/about\n2. preflight\n3. warm-up, oha run, CPU/memory probe\n4. reports \u2192 comparison\n[[Benchmarking web services]]",
+			"color": "5"
+		},
+		{
+			"id": "g",
+			"type": "group",
+			"x": -300,
+			"y": -260,
+			"width": 760,
+			"height": 420,
+			"label": "the shop (hexagonal)",
+			"color": "4"
+		},
+		{
+			"id": "fw",
+			"type": "text",
+			"x": -280,
+			"y": -230,
+			"width": 720,
+			"height": 100,
+			"text": "### Granian \u2192 FastAPI | Litestar | BlackSheep (pycraftcore toolkits), native routes and schemas\n[[Python web frameworks]] \u00b7 [[ASGI]]"
+		},
+		{
+			"id": "uc",
+			"type": "text",
+			"x": -280,
+			"y": -110,
+			"width": 720,
+			"height": 100,
+			"text": "### Use cases: GetProduct \u00b7 PlaceOrder \u00b7 FollowProduct \u00b7 TrackOrder \u2026 \u2014 no framework"
+		},
+		{
+			"id": "out",
+			"type": "text",
+			"x": -280,
+			"y": 10,
+			"width": 720,
+			"height": 120,
+			"text": "### SQLite repositories \u00b7 fake inventory / pricing / market APIs (fixed latency, deterministic) \u00b7 SSE presenter"
+		},
+		{
+			"id": "res",
+			"type": "text",
+			"x": -300,
+			"y": 200,
+			"width": 760,
+			"height": 110,
+			"text": "### Result: BlackSheep fastest at max load; all within a few % at a fixed rate\n[[Web framework benchmark]] \u00b7 [[Web framework benchmark design]]",
+			"color": "3"
+		}
+	],
+	"edges": [
+		{
+			"id": "e0",
+			"fromNode": "bench",
+			"toNode": "fw",
+			"label": "HTTP load",
+			"fromSide": "right",
+			"toSide": "left"
+		},
+		{
+			"id": "e1",
+			"fromNode": "fw",
+			"toNode": "uc"
+		},
+		{
+			"id": "e2",
+			"fromNode": "uc",
+			"toNode": "out"
+		}
+	]
+}

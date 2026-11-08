@@ -1,0 +1,166 @@
+{
+	"nodes": [
+		{
+			"id": "read",
+			"type": "text",
+			"x": -760,
+			"y": -300,
+			"width": 300,
+			"height": 320,
+			"text": "## Read in order\n1. [[Agent runtime layers]]\n2. [[Agent runtime turn]]\n3. [[Agent runtime plans and outcomes]]\n4. [[Agent runtime evaluation]]\n\n[[Agent runtime decisions]] \u00b7 [[Agent runtime guides]]",
+			"color": "6"
+		},
+		{
+			"id": "client",
+			"type": "text",
+			"x": -760,
+			"y": 60,
+			"width": 300,
+			"height": 150,
+			"text": "## Clients\nhomelab-ui, curl, the evaluation\nPOST /v1/stream \u2192 SSE\n[[Server-sent events]]",
+			"color": "5"
+		},
+		{
+			"id": "g",
+			"type": "group",
+			"x": -400,
+			"y": -300,
+			"width": 900,
+			"height": 620,
+			"label": "agent-runtime (hexagonal)",
+			"color": "4"
+		},
+		{
+			"id": "boot",
+			"type": "text",
+			"x": -380,
+			"y": -270,
+			"width": 860,
+			"height": 90,
+			"text": "### bootstrap \u2014 AgentDI, settings, Litestar API (pycraftcore.web_litestar), Granian\n[[Dependency injection]] \u00b7 [[ASGI]]"
+		},
+		{
+			"id": "in",
+			"type": "text",
+			"x": -380,
+			"y": -160,
+			"width": 260,
+			"height": 140,
+			"text": "### adapter/inbound\nStreamAgentController\nSsePresenter"
+		},
+		{
+			"id": "app",
+			"type": "text",
+			"x": -100,
+			"y": -160,
+			"width": 300,
+			"height": 140,
+			"text": "### application\nHandleMessage \u00b7 step handlers \u00b7 ports (Actor, Planner, ToolExecutor, WorkflowRunner)"
+		},
+		{
+			"id": "dom",
+			"type": "text",
+			"x": 220,
+			"y": -160,
+			"width": 260,
+			"height": 140,
+			"text": "### domain\nConversation \u00b7 Turn \u00b7 Plan \u00b7 TurnPolicy (the routing table)"
+		},
+		{
+			"id": "out",
+			"type": "text",
+			"x": -380,
+			"y": 0,
+			"width": 860,
+			"height": 140,
+			"text": "### adapter/outbound\nLangChain model per role + prompts \u00b7 Toolbox (MCP) \u00b7 LangGraph graph generated from TurnPolicy \u00b7 checkpointer\n[[LangGraph]] \u00b7 [[Hexagonal architecture]]"
+		},
+		{
+			"id": "steps",
+			"type": "text",
+			"x": -380,
+			"y": 160,
+			"width": 860,
+			"height": 140,
+			"text": "### A turn\nunderstand \u2192 clarify | plan (\u2192 screen) | act \u21c4 run_tools \u2192 review \u21c4 feedback \u2192 finish \u2192 summarize\n[[Agent runtime turn]] \u00b7 [[Agent patterns]]"
+		},
+		{
+			"id": "llm",
+			"type": "text",
+			"x": 560,
+			"y": -300,
+			"width": 300,
+			"height": 130,
+			"text": "### Model servers\nNVIDIA API or homelab llm\n[[OpenAI-compatible API]]"
+		},
+		{
+			"id": "tb",
+			"type": "text",
+			"x": 560,
+			"y": -140,
+			"width": 300,
+			"height": 130,
+			"text": "### MCP servers\n[[Agent toolbox]], external_mcp_*\n[[Model Context Protocol]]"
+		},
+		{
+			"id": "db",
+			"type": "text",
+			"x": 560,
+			"y": 20,
+			"width": 300,
+			"height": 120,
+			"text": "### Conversations\nMongoDB, SQLite fallback\n[[MongoDB]]"
+		},
+		{
+			"id": "otel",
+			"type": "text",
+			"x": 560,
+			"y": 170,
+			"width": 300,
+			"height": 120,
+			"text": "### Telemetry\nOTLP \u2192 collector\n[[OpenTelemetry]]"
+		}
+	],
+	"edges": [
+		{
+			"id": "e0",
+			"fromNode": "client",
+			"toNode": "in",
+			"label": "SSE",
+			"fromSide": "right",
+			"toSide": "left"
+		},
+		{
+			"id": "e1",
+			"fromNode": "out",
+			"toNode": "llm",
+			"label": "chat",
+			"fromSide": "right",
+			"toSide": "left"
+		},
+		{
+			"id": "e2",
+			"fromNode": "out",
+			"toNode": "tb",
+			"label": "tools",
+			"fromSide": "right",
+			"toSide": "left"
+		},
+		{
+			"id": "e3",
+			"fromNode": "out",
+			"toNode": "db",
+			"label": "checkpoints",
+			"fromSide": "right",
+			"toSide": "left"
+		},
+		{
+			"id": "e4",
+			"fromNode": "boot",
+			"toNode": "otel",
+			"label": "logs, traces",
+			"fromSide": "right",
+			"toSide": "left"
+		}
+	]
+}
