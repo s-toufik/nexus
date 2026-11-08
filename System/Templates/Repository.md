@@ -1,6 +1,6 @@
 ---
 type: repository
-project:
+project: "[[ ]]"
 repo:
 language:
 status: active
@@ -22,5 +22,5 @@ updated: {{date}}
 ## How it's released
 -
 
-## Read next
--
+## Knowledge it uses
+- [[ ]]

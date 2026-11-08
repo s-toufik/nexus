@@ -12,7 +12,7 @@ updated: {{date}}
 > One sentence: what it is and why it exists.
 
 ## In one picture
-![[{{title}} map.canvas]]
+![[{{title}}.canvas]]
 
 ## What it does
 -
@@ -21,16 +21,14 @@ updated: {{date}}
 | Part | Repository | Role |
 |---|---|---|
 
-## Key decisions
-See [[{{title}} decisions]].
-
-## Concepts it uses
--
+## Knowledge it uses
+- [[ ]]: where and how.
 
 ## Where it stands
 - Done:
 - Next:
 
-## Links
-- Repository:
-- Playbook:
+## Read next
+- [[Decisions]] — why it's built this way.
+- `Guides/` — how to run it.
+- `Repos/` — one note per repository.

@@ -7,14 +7,14 @@ updated: {{date}}
 
 # {{title}}
 
-> Where this path takes you, and how long it takes.
+> Where this path takes you, and roughly how long it takes.
 
 ## Steps
 - [ ] 1. [[ ]] — why this first.
 - [ ] 2. [[ ]]
 - [ ] 3. [[ ]]
 
-## Practice in our projects
+## Practise in our projects
 -
 
 ## You're done when

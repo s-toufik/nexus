@@ -1,6 +1,6 @@
 ## {{date}} — Decision title
 
-- **Context:** what problem we faced.
+- **Context:** the problem we faced.
 - **Decision:** what we chose.
 - **Why:** the reasons.
 - **Alternatives:** what we turned down, and why.

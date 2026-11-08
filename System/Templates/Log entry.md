@@ -1,17 +1,17 @@
 ---
-type: journal
+type: log
 date: {{date}}
 projects: []
-tags: [journal]
+tags: [log]
 ---
 
-# {{date}}
+# {{date}} {{title}}
 
 ## What we did
 -
 
 ## What I learned
--
+- [[ ]]
 
 ## Decisions
 -
