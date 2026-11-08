@@ -29,6 +29,7 @@ updated: {{date}}
 - Next:
 
 ## Read next
+- `Architecture/` — how it works, part by part.
 - [[Decisions]] — why it's built this way.
 - `Guides/` — how to run it.
 - `Repos/` — one note per repository.

@@ -27,6 +27,7 @@ Projects/<Project>/
 ├── <Project>.md        what, why, state, where to read next
 ├── <Project>.canvas    the picture: parts and how they talk
 ├── Decisions.md        one entry per decision, newest first
+├── Architecture/       how it works, one note per part, read in order
 ├── Guides/             how to run it: playbooks, Q&A
 └── Repos/              one note per repository
 ```
@@ -35,7 +36,7 @@ Projects/<Project>/
 - Notes are named for what they hold, in plain words: `NetworkPolicy`, not `k8s-netpol-notes`.
 - Log notes start with the date: `YYYY-MM-DD <topic>`.
 - Guides copied from a repository keep its name: `<repo> - <topic>`.
-- Folders inside `Knowledge/` are domains: `Kubernetes`, `AI`, `Architecture`, `Networking`… Add one when three notes share it.
+- Folders inside `Knowledge/` are domains: `Kubernetes`, `Networking`, `Security`, `Data`, `AI`… Add one when three notes share it.
 
 ## Properties
 Every note starts with properties from its template in `System/Templates`: at least `type` and `tags`. `type` is one of `project`, `repository`, `concept`, `path`, `source`, `log`, `guide`, `index`.
@@ -44,6 +45,7 @@ Every note starts with properties from its template in `System/Templates`: at le
 - Link the first mention of a concept, project or source: `[[NetworkPolicy]]`.
 - A concept note links to where our projects use it; a project note links to the concepts it uses. Backlinks do the rest.
 - A source's key ideas link to the concept notes they feed.
+- External pages (official docs, articles to look something up) are plain links in a note's *Go further*. A source gets its own note in `Sources/` when it's worth reading in full: a book, a course, a long article.
 - Don't repeat: link to the note that already says it.
 
 ## Sources and files
