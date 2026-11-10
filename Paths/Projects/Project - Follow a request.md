@@ -1,17 +1,16 @@
 ---
 type: path
-level: 1
-module: capstone
+track: Projects
 time: ~3 h
 projects: ["[[Homelab]]"]
-tags: [path, journey, capstone]
+tags: [path, project]
 updated: 2026-11-10
 ---
 
-# Capstone 1 - Follow a request
+# Project - Follow a request
 
-> **Prove Level 1:** follow one request from your phone to a pod and back, naming every layer, without notes. Then explain it to someone (or to a recording of yourself).
-> Previous: [[Module 03 - Containers and Kubernetes]] · Next level: [[Module 04 - Shipping changes]]
+> **Goal:** follow one request from your phone to a pod and back, naming every layer, without notes. Then explain it to someone (or to a recording of yourself).
+> **Before:** [[Path - Networks you can reason about]] · [[Path - Containers and Kubernetes]]. **Then:** [[Project - Ship and investigate]]. **All paths:** [[Paths]]
 
 ## The task
 On a blank page (Excalidraw or paper), draw what happens when you open `https://<HOMELAB_DOMAIN>/status` on your phone, already signed in. Include:

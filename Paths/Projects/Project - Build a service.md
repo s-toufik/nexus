@@ -1,17 +1,16 @@
 ---
 type: path
-level: 3
-module: capstone
+track: Projects
 time: ~10 h
 projects: ["[[pycraftcore]]", "[[Archetype]]"]
-tags: [path, journey, capstone]
+tags: [path, project]
 updated: 2026-11-10
 ---
 
-# Capstone 3 - Build a service
+# Project - Build a service
 
-> **Prove Level 3:** build a small service the way ours are built — hexagonal, configured, logged, streamed, tested, boundaries enforced. Not deployed: the point is the design.
-> Previous: [[Module 11 - The frontend]] · Next level: [[Module 12 - Models]]
+> **Goal:** build a small service the way ours are built — hexagonal, configured, logged, streamed, tested, boundaries enforced. Not deployed: the point is the design.
+> **Before:** [[Path - Design that lasts]] · [[Path - Serving HTTP well]]. **Then:** [[Project - A feature across three repos]]. **All paths:** [[Paths]]
 
 ## The service: `reading-list`
 A tiny API for your reading list (it could feed [[Sources]] one day).

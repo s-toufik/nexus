@@ -1,24 +1,24 @@
 ---
 type: path
-level: 4
-module: 13
+track: AI
 time: ~9 h
 projects: ["[[Agent runtime]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 13 - Agents
+# Path - Agents
 
 > **Goal:** know how an agent turns a message into an answer — routing, plans, tool use, self-review, budgets — and how ours is built to be reliable.
-> **Time:** ~9 h. Previous: [[Module 12 - Models]] · Next: [[Module 14 - Tools and safety]]
+> **Time:** ~9 h.
+> **Before:** [[Path - Models]] · [[Path - Design that lasts]]. **Then:** [[Path - Tools and safety]]. **All paths:** [[Paths]]
 
-## Warm-up
+## Warm-up (optional, from the paths before)
 1. What is a tool call, from the model's side?
 > [!success]- Answer
 > Instead of text, the model outputs a structured call — a tool name and JSON arguments — for the client to run and feed back as a `tool` message.
 
-## 13.1 Patterns · ~1.5 h
+## 1. Patterns · ~1.5 h
 **Read:** [[Agent patterns]] · source: [Anthropic: building effective agents](https://www.anthropic.com/research/building-effective-agents)
 
 **Check:**
@@ -26,13 +26,13 @@ updated: 2026-11-10
 > [!success]- Answer
 > Routing (understand), plan-and-execute (plan, act), human approval (`awaiting_approval`), ReAct inside a step (act ⇄ run_tools), reflection (review ⇄ feedback) — all bounded by budgets.
 
-## 13.2 A turn, step by step · ~2.5 h
+## 2. A turn, step by step · ~2.5 h
 **Read:** [[Agent runtime turn]] · [[LangGraph]]
 
 **Do:**
 1. 👀 `src/agent_runtime/domain/workflow/turn_policy.py` and `conditions.py` → the table and its conditions (`needs_plan`, `asks_for_tools`, `retry_allowed`…).
 2. 👀 `src/agent_runtime/application/step/` → one handler per step; open `act_step.py`.
-3. With `request_id` fixed, send three messages via curl (Module 10.2): a question, then "shorter", then "and the other one?". After each, `make logs R=agent-runtime | grep 'turn finished'` → the outcome and steps.
+3. With `request_id` fixed, send three messages with curl as in [[Path - Serving HTTP well]], lesson 2: a question, then "shorter", then "and the other one?". After each, `make logs R=agent-runtime | grep 'turn finished'` → the outcome and steps.
 
 **Check:**
 1. Trace "shorter" after an answer through the table.
@@ -43,7 +43,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > The rules live in one readable, testable table, independent of LangGraph; the engine follows the policy (and a test checks the generated edges match).
 
-## 13.3 Plans, approval and budgets · ~2 h
+## 3. Plans, approval and budgets · ~2 h
 **Read:** [[Agent runtime plans and outcomes]]
 
 **Do** (homelab-ui's Agent page, auto-approve **off**):
@@ -57,7 +57,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > The history is summarized when it grows; the plan must survive that intact, and be settled only when a run finishes.
 
-## 13.4 Reading the decisions · ~1 h
+## 4. Reading the decisions · ~1 h
 **Read:** [[Agent runtime decisions]] · [[Agent runtime layers]] (again — it reads differently now)
 
 **Check:**
@@ -65,7 +65,7 @@ updated: 2026-11-10
 > [!success]- Guidance
 > A good answer names a real cost of the current choice (e.g. an extra round trip for plans) and a condition under which the alternative wins.
 
-## 13.5 The code under test · ~2 h
+## 5. The code under test · ~2 h
 **Do:**
 1. In agent-runtime: `uv run pytest tests/agent_runtime/scenarios -q`.
 2. 👀 Find the scenario that reaches `ran_out_of_steps`; read its scripted model.

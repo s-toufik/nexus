@@ -48,7 +48,7 @@ The architecture notes walk through the homelab one layer at a time. Each links 
 8. [[Homelab failure modes]] — what breaks, why, and how to tell. The edge cases.
 9. [[Homelab change cookbook]] — to change X, edit Y, then run Z.
 
-Then [[Homelab decisions]] — why it's built this way and what was turned down — and the learning path [[Homelab from zero to senior]].
+Then [[Homelab decisions]] — why it's built this way and what was turned down — and the learning paths in [[Paths]] (Platform track first).
 
 ## Knowledge it uses
 - **Kubernetes:** [[Kubernetes]], [[k3s]], [[Pod]], [[Deployment and StatefulSet]], [[Service]], [[ConfigMap and Secret]], [[Volumes]], [[Probes]], [[Jobs and CronJobs]], [[NetworkPolicy]], [[RBAC]], [[Pod security context]], [[hostPort and hostNetwork]], [[Operator]], [[CoreDNS]]

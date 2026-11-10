@@ -1,21 +1,21 @@
 ---
 type: path
-level: 1
-module: 1
+track: Platform
 time: ~5 h
 projects: ["[[Homelab]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 01 - Linux, Git and the server
+# Path - Linux, Git and the server
 
 > **Goal:** be at ease on the server: know who runs what, who may read what, how services start and recover, and how a change travels through git.
-> **Time:** ~5 h over 2–3 sessions. **Before:** nothing — this is the start. **Map:** [[The learning journey]] · Next: [[Module 02 - Networks you can reason about]]
+> **Time:** ~5 h over 2–3 sessions.
+> **Before:** nothing — start here. **Then:** [[Path - Networks you can reason about]] · [[Path - Python for services]]. **All paths:** [[Paths]]
 
 👀 = only looks. ✋ = changes something (the undo is given).
 
-## 1.1 Processes, users and permissions · ~1 h
+## 1. Processes, users and permissions · ~1 h
 **Read:** [[Linux processes and permissions]]
 
 **Do** (on the server, over SSH):
@@ -35,7 +35,7 @@ updated: 2026-11-10
 
 **You can now:** read any permission line and say who can do what.
 
-## 1.2 Services that start and heal themselves · ~1.5 h
+## 2. Services that start and heal themselves · ~1.5 h
 **Read:** [[systemd]] · [[Homelab server]]
 
 **Do:**
@@ -56,7 +56,7 @@ updated: 2026-11-10
 
 **You can now:** find why a service isn't running, and what ran last night.
 
-## 1.3 Git as the source of truth · ~1.5 h
+## 3. Git as the source of truth · ~1.5 h
 **Read:** [[Git]] · [[Git flow]]
 
 **Do** (on your Mac):
@@ -76,7 +76,7 @@ updated: 2026-11-10
 
 **You can now:** say for any change where it lives in history and how it reaches the server.
 
-## 1.4 The server's design, as a whole · ~1 h
+## 4. The server's design, as a whole · ~1 h
 **Read:** [[Homelab server]] again, then skim [[Homelab - Prepare the server]] and [[Homelab - Keep the server running]] (don't run them — they're done).
 
 **Do:**

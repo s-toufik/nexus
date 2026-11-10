@@ -1,24 +1,24 @@
 ---
 type: path
-level: 2
-module: 5
+track: Platform
 time: ~7 h
 projects: ["[[Homelab]]", "[[Homelab UI]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 05 - The front door
+# Path - The front door
 
 > **Goal:** understand single sign-on end to end — the gateway, OIDC, sessions, the web attacks it stops — and manage accounts.
-> **Time:** ~7 h. Previous: [[Module 04 - Shipping changes]] · Next: [[Module 06 - Data]]
+> **Time:** ~7 h.
+> **Before:** [[Path - Networks you can reason about]] · [[Path - Containers and Kubernetes]]. **Then:** [[Path - Security and failure]]. **All paths:** [[Paths]]
 
-## Warm-up
+## Warm-up (optional, from the paths before)
 1. Which header does Caddy use to pick a site, and which certificate does it present on `:443`?
 > [!success]- Answer
 > `Host` (and the TLS SNI); the Let's Encrypt certificate for `<HOMELAB_DOMAIN>` it gets from tailscaled.
 
-## 5.1 The gateway · ~1.5 h
+## 1. The gateway · ~1.5 h
 **Read:** [[Reverse proxy]] · [[Forward authentication]]
 
 **Do:**
@@ -30,7 +30,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > Backends trust `Remote-User`. If clients could send it, anyone on the tailnet could claim any identity. Caddy deletes it from every request and sets it only from oauth2-proxy's answer.
 
-## 5.2 Sign-in with OIDC · ~2 h
+## 2. Sign-in with OIDC · ~2 h
 **Read:** [[OAuth 2.0 and OpenID Connect]] · [[Homelab gateway and sign-in]] · source: [[OAuth 2.0 Simplified]] (authorization code + PKCE chapters)
 
 **Do:**
@@ -47,7 +47,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > A secret verifier created by the client and sent only as a hash at the start; at the exchange the client proves it has the original. A stolen code is useless without it.
 
-## 5.3 Sessions and cookies · ~1 h
+## 3. Sessions and cookies · ~1 h
 **Read:** [[Cookies and sessions]]
 
 **Do:**
@@ -58,7 +58,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > It rotates oauth2-proxy's cookie secret: every existing cookie was encrypted with the old secret and can no longer be read, so every request looks signed out. It also ends Keycloak's sessions.
 
-## 5.4 Web attacks it stops · ~1 h
+## 4. Web attacks it stops · ~1 h
 **Read:** [[CSRF]] · [[Password hashing]]
 
 **Do:**
@@ -69,7 +69,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > The custom header makes it a non-simple request, so the browser first sends a CORS preflight; Caddy doesn't approve that origin, so the browser never sends the DELETE. And `SameSite=Lax` would keep the cookie off a cross-site `fetch` anyway — two layers.
 
-## 5.5 Accounts in practice · ~45 min
+## 5. Accounts in practice · ~45 min
 **Read:** [[Homelab - Manage accounts]]
 
 **Do** ✋: `make user-add ACCOUNT=test-junior`, sign in with it in a private window, see that the Kubernetes page isn't in its menu; then `make user-remove ACCOUNT=test-junior`.

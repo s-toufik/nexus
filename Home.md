@@ -23,8 +23,7 @@ tags: [home]
 - How they fit: [[Projects]].
 
 ## Learning
-- [[Homelab from zero to senior]] — the platform: servers, Kubernetes, gateway, data, observability.
-- [[Building services from zero to senior]] — the software: design, Python, web, frontend, AI agents.
+- [[Paths]] — short standalone paths in four tracks (Platform, Applications, AI, Judgement) and five projects. Start with [[Path - Linux, Git and the server]] or [[Path - Python for services]].
 
 ## How to use it
 1. **Before working on a project**, read its note and its latest log entry.

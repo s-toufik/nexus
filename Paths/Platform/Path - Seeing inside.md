@@ -1,24 +1,24 @@
 ---
 type: path
-level: 2
-module: 7
+track: Platform
 time: ~7 h
 projects: ["[[Homelab]]", "[[Homelab UI]]", "[[Agent runtime]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 07 - Seeing inside
+# Path - Seeing inside
 
 > **Goal:** answer "what is the system doing, and why?" with metrics, logs and traces — and pivot between them.
-> **Time:** ~7 h. Previous: [[Module 06 - Data]] · Next: [[Capstone 2 - Ship and investigate]]
+> **Time:** ~7 h.
+> **Before:** [[Path - Containers and Kubernetes]]. **Then:** [[Project - Ship and investigate]]. **All paths:** [[Paths]]
 
-## Warm-up
+## Warm-up (optional, from the paths before)
 1. Which signal answers "how many requests failed in the last hour", and which "why did this one fail"?
 > [!success]- Answer
 > A metric (a rate of errors); a log line or trace of that request.
 
-## 7.1 Three signals · ~1 h
+## 1. Three signals · ~1 h
 **Read:** [[Observability]] · [[Homelab observability]] · source: [[Site Reliability Engineering]] (*Monitoring distributed systems*)
 
 **Check:**
@@ -26,7 +26,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > Latency (request duration histograms, e.g. Tempo's span metrics), traffic (requests per second), errors (5xx rate, failed spans), saturation (container memory vs limit, CPU, disk fill).
 
-## 7.2 Metrics and PromQL · ~2 h
+## 2. Metrics and PromQL · ~2 h
 **Read:** [[Prometheus and PromQL]]
 
 **Do** (homelab-ui's **Metrics** page, or Grafana Explore):
@@ -40,7 +40,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > A counter only grows (and resets on restart); its raw value says "total since start". `rate()` gives the per-second increase over a window, which is what you compare and alert on, and it handles resets.
 
-## 7.3 Logs and LogQL · ~1.5 h
+## 3. Logs and LogQL · ~1.5 h
 **Read:** [[Loki and LogQL]] · [[Grafana Alloy]]
 
 **Do** (homelab-ui **Logs** page):
@@ -52,7 +52,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > Each label combination is a stream; unbounded values create huge numbers of tiny streams, which kills Loki's index and performance. Put it in the log line and filter with `|=` or a parser.
 
-## 7.4 Traces and the pivot · ~2 h
+## 4. Traces and the pivot · ~2 h
 **Read:** [[Distributed tracing and Tempo]] · [[OpenTelemetry]] · [[Grafana]]
 
 **Do:**

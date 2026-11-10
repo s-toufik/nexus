@@ -1,24 +1,24 @@
 ---
 type: path
-level: 1
-module: 3
+track: Platform
 time: ~8 h
 projects: ["[[Homelab]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 03 - Containers and Kubernetes
+# Path - Containers and Kubernetes
 
 > **Goal:** read any pod's state and explain it; know what each Kubernetes object is for and which one to reach for.
-> **Time:** ~8 h over 3–4 sessions. Previous: [[Module 02 - Networks you can reason about]] · Next: [[Capstone 1 - Follow a request]]
+> **Time:** ~8 h over 3–4 sessions.
+> **Before:** [[Path - Linux, Git and the server]] · [[Path - Networks you can reason about]]. **Then:** [[Path - Shipping changes]] · [[Project - Follow a request]]. **All paths:** [[Paths]]
 
-## Warm-up
+## Warm-up (optional, from the paths before)
 1. What does `10.43.0.0/16` hold in k3s?
 > [!success]- Answer
 > Service IPs (virtual addresses in front of pods). Pods are in `10.42.0.0/16`.
 
-## 3.1 Containers are processes · ~1 h
+## 1. Containers are processes · ~1 h
 **Read:** [[Containers]] · [[Container image]]
 
 **Do:**
@@ -31,7 +31,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > A container is a host process isolated by namespaces and cgroups; the kernel is shared, so the host sees it. A VM runs its own kernel, invisible to the host's process list.
 
-## 3.2 The control loop · ~1 h
+## 2. The control loop · ~1 h
 **Read:** [[Kubernetes]] · [[k3s]]
 
 **Do:**
@@ -43,7 +43,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > The Deployment's controller (via its ReplicaSet). It keeps comparing desired state (1 replica) with actual state (0) and creates a pod to close the gap — the reconciliation loop.
 
-## 3.3 Workloads and their identity · ~1.5 h
+## 3. Workloads and their identity · ~1.5 h
 **Read:** [[Pod]] · [[Deployment and StatefulSet]] · [[Operator]]
 
 **Do:**
@@ -57,7 +57,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > The container exceeded its memory **limit** (a cgroup limit) and the kernel killed it. Either fix a leak or raise `resources.limits.memory` in its values file, then `make apply R=<release>`.
 
-## 3.4 Finding each other: Services and DNS · ~45 min
+## 4. Finding each other: Services and DNS · ~45 min
 **Read:** [[Service]]
 
 **Do:**
@@ -68,7 +68,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > No. Only Ready pods are listed in the Service's endpoints.
 
-## 3.5 Config, secrets and data · ~1.5 h
+## 5. Config, secrets and data · ~1.5 h
 **Read:** [[ConfigMap and Secret]] · [[Volumes]] · [[YAML and templating]]
 
 **Do:**
@@ -81,7 +81,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > The `app` chart puts a checksum of the config files in a pod-template annotation. A changed file changes the checksum, so the pod template changes, so the Deployment rolls out a new pod.
 
-## 3.6 Health and tasks · ~1.5 h
+## 6. Health and tasks · ~1.5 h
 **Read:** [[Probes]] · [[Jobs and CronJobs]]
 
 **Do:**

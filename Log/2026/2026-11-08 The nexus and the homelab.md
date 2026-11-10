@@ -9,7 +9,7 @@ tags: [log]
 
 ## What we did
 - Set up the nexus: six folders (Projects, Knowledge, Paths, Sources, Log, System), [[Conventions]], templates, Obsidian Git sync.
-- Filled it with the homelab, from homelab-infra and kube-charts: the [[Homelab]] project note and canvas, nine architecture notes, [[Homelab decisions]], the repository notes, 53 knowledge notes, six sources, the path [[Homelab from zero to senior]].
+- Filled it with the homelab, from homelab-infra and kube-charts: the [[Homelab]] project note and canvas, nine architecture notes, [[Homelab decisions]], the repository notes, 53 knowledge notes, six sources, a learning path (since replaced by the standalone paths in [[Paths]]).
 - In the homelab itself: grafana-mcp, mongodb-mcp and postgres-mcp for the agent's toolbox (read-only by default), `make restart R=…`, k3s' own `resolv.conf` against `DNSConfigForming`.
 
 ## What I learned
@@ -21,7 +21,7 @@ tags: [log]
 - MCP write access is a deployment switch, two locks per server ([[Homelab decisions]]).
 
 ## Next
-- [ ] Start [[Homelab from zero to senior]], stage 1.
+- [ ] Start a path in [[Paths]].
 - [ ] Roll out the MCP servers on the server and run `make verify`.
 - [ ] Off-site copy of the backups ([[Backups and restores]]).
 - [ ] Add the other SandBox projects to the nexus.

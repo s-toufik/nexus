@@ -1,24 +1,24 @@
 ---
 type: path
-level: 2
-module: 4
+track: Platform
 time: ~7 h
 projects: ["[[Homelab]]", "[[Homelab UI]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 04 - Shipping changes
+# Path - Shipping changes
 
 > **Goal:** change anything on the homelab safely: know which file owns a setting, preview the change, apply it, prove it, undo it — and release an app version end to end.
-> **Time:** ~7 h. Previous: [[Capstone 1 - Follow a request]] · Next: [[Module 05 - The front door]]
+> **Time:** ~7 h.
+> **Before:** [[Path - Containers and Kubernetes]]. **Then:** [[Path - The front door]] · [[Path - Data]] · [[Path - Seeing inside]]. **All paths:** [[Paths]]
 
-## Warm-up
+## Warm-up (optional, from the paths before)
 1. Why does editing the Caddyfile restart the Caddy pod?
 > [!success]- Answer
 > A checksum of the config files is a pod-template annotation; changing the file changes the template, which triggers a rollout.
 
-## 4.1 Charts and releases · ~1.5 h
+## 1. Charts and releases · ~1.5 h
 **Read:** [[Helm]] · [[YAML and templating]] · [[kube-charts]]
 
 **Do:**
@@ -32,7 +32,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > A `hostPort` without `global.hostIP` (the Tailscale address). Without it, the port would bind every address of the server, including the LAN.
 
-## 4.2 The release train · ~1.5 h
+## 2. The release train · ~1.5 h
 **Read:** [[helmfile]] · [[Homelab deployment]] · [[homelab-infra]]
 
 **Do:**
@@ -49,7 +49,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > The last one listed: each layer overrides the one before, so the release's own values file wins.
 
-## 4.3 Your first real change · ~1.5 h
+## 3. Your first real change · ~1.5 h
 **Read:** [[Homelab - Deploy a change]] · [[Homelab change cookbook]]
 
 **Do** ✋ (undo given):
@@ -63,7 +63,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > The server runs what git says. A change applied but not committed is overwritten at the next `git pull` + `make apply`, and nobody can see what changed or why.
 
-## 4.4 Releasing an app · ~1.5 h
+## 4. Releasing an app · ~1.5 h
 **Read:** [[Semantic versioning]] · [[CI with GitHub Actions]] · [[Homelab - Release an app]] · [[Homelab UI - Release a version]]
 
 **Do:**
@@ -76,7 +76,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > The server caches the chart (helmfile) and the image (`IfNotPresent`), so the same tag keeps the old build; a new number skips both caches, and `make rollback` still knows the previous build.
 
-## 4.5 Undo · ~45 min
+## 5. Undo · ~45 min
 **Read:** [[Homelab - Roll back]]
 
 **Check:**

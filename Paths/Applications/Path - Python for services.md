@@ -1,24 +1,24 @@
 ---
 type: path
-level: 3
-module: 8
+track: Applications
 time: ~7 h
 projects: ["[[pycraftcore]]", "[[Agent runtime]]", "[[Agent toolbox]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 08 - Python for services
+# Path - Python for services
 
 > **Goal:** be at home in a modern async Python service: the toolchain, concurrency, validation, configuration — through pycraftcore, the foundation of the agent and the toolbox.
-> **Time:** ~7 h. Previous: [[Capstone 2 - Ship and investigate]] · Next: [[Module 09 - Design that lasts]]
+> **Time:** ~7 h.
+> **Before:** nothing — start here. **Then:** [[Path - Design that lasts]]. **All paths:** [[Paths]]
 
-## Warm-up
+## Warm-up (optional, from the paths before)
 1. Where does an app's configuration come from in a Kubernetes pod?
 > [!success]- Answer
 > Environment variables and mounted files from ConfigMaps and Secrets, set by the release's values.
 
-## 8.1 The toolchain · ~1 h
+## 1. The toolchain · ~1 h
 **Read:** [[uv and pyproject]] · [[Python packaging]] · [[Pre-commit hooks]]
 
 **Do** (in `pycraftcore`):
@@ -31,7 +31,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > To prove no module secretly needs another module's third-party packages. With everything installed together, such a missing dependency would go unnoticed until a service installs only that extra.
 
-## 8.2 Concurrency with asyncio · ~2 h
+## 2. Concurrency with asyncio · ~2 h
 **Read:** [[asyncio]]
 
 **Do** (anywhere, `uv run python`):
@@ -54,7 +54,7 @@ asyncio.run(main())
 > [!success]- Answer
 > `time.sleep` blocks the one thread the event loop runs on; nothing else can run until it returns. A CPU-heavy route does the same: every other request waits. Move such work to a process (the sandbox) or a thread pool.
 
-## 8.3 Validating data at the edges · ~1 h
+## 3. Validating data at the edges · ~1 h
 **Read:** [[Data validation with pydantic and msgspec]] · [[REST APIs and OpenAPI]]
 
 **Do:**
@@ -66,7 +66,7 @@ asyncio.run(main())
 > [!success]- Answer
 > In the tool's JSON schema returned by MCP `tools/list` — which the model reads to choose the tool and fill its arguments.
 
-## 8.4 Configuration as data · ~1.5 h
+## 4. Configuration as data · ~1.5 h
 **Read:** [[pycraftcore]] · [[pycraftcore modules]] · [[pycraftcore configuration]]
 
 **Do:**
@@ -78,7 +78,7 @@ asyncio.run(main())
 > [!success]- Answer
 > The empty string overrides the YAML default (`${oc.env:WEB_DOCS,false}` only uses `false` when the variable is *unset*), the value fails validation as a boolean, and the service refuses to start.
 
-## 8.5 Logs with a request id · ~30 min
+## 5. Logs with a request id · ~30 min
 **Read:** [[pycraftcore - Log and trace]]
 
 **Check:**

@@ -1,24 +1,24 @@
 ---
 type: path
-level: 2
-module: 6
+track: Platform
 time: ~8 h
 projects: ["[[Homelab]]", "[[Homelab UI]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 06 - Data
+# Path - Data
 
 > **Goal:** know where every byte lives, who may read it, how the schema changes, and how to get it back.
-> **Time:** ~8 h. Previous: [[Module 05 - The front door]] · Next: [[Module 07 - Seeing inside]]
+> **Time:** ~8 h.
+> **Before:** [[Path - Containers and Kubernetes]]. **Then:** [[Path - Seeing inside]]. **All paths:** [[Paths]]
 
-## Warm-up
+## Warm-up (optional, from the paths before)
 1. Why is a database run by an operator rather than a plain StatefulSet?
 > [!success]- Answer
 > The operator knows how to operate the database: roles, passwords, TLS, failover, backups — reconciled from a declared `Cluster` object.
 
-## 6.1 Roles and privileges · ~1.5 h
+## 1. Roles and privileges · ~1.5 h
 **Read:** [[PostgreSQL roles and privileges]] · [[Homelab data]]
 
 **Do:**
@@ -31,7 +31,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > It logs in with almost no rights of its own and only gains `tasker_web`'s rights when it explicitly switches role for a request. A leaked `postgrest` password alone can't read Tasker's tables.
 
-## 6.2 Row-level security · ~1.5 h
+## 2. Row-level security · ~1.5 h
 **Read:** [[Row-level security]] · [[PostgREST]]
 
 **Do** (in `make psql`):
@@ -47,7 +47,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > `tasker.check_request()` runs before every request and requires `X-Gateway-Secret` to match a secret only Caddy knows → 403. And Caddy strips `Remote-User` from clients.
 
-## 6.3 Changing the schema · ~1 h
+## 3. Changing the schema · ~1 h
 **Read:** [[Database migrations]] · [[Homelab - Migrate the database]]
 
 **Do:**
@@ -59,7 +59,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > dbmate records it as applied and won't run it again, so the edit never reaches existing databases — and a fresh database would differ from the old ones. Write a new migration instead.
 
-## 6.4 Documents and events · ~1.5 h
+## 4. Documents and events · ~1.5 h
 **Read:** [[MongoDB]] · [[Kafka]] · [[Homelab - Connect to the databases]]
 
 **Do:**
@@ -72,7 +72,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > A conversation checkpoint is a self-contained, evolving document read and written whole by one service; Tasker's data is per-account rows that need access control in the database (RLS) and a REST API from the schema (PostgREST).
 
-## 6.5 Getting it back · ~1.5 h
+## 5. Getting it back · ~1.5 h
 **Read:** [[Backups and restores]] · [[Homelab - Back up and restore]]
 
 **Do** ✋ (safe: a scratch database):

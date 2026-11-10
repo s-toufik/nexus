@@ -1,24 +1,24 @@
 ---
 type: path
-level: 4
-module: 12
+track: AI
 time: ~6 h
 projects: ["[[Homelab]]", "[[Agent runtime]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 12 - Models
+# Path - Models
 
 > **Goal:** understand what a language model does and costs, talk to one through its API, and run your own.
-> **Time:** ~6 h. Previous: [[Capstone 3 - Build a service]] · Next: [[Module 13 - Agents]]
+> **Time:** ~6 h.
+> **Before:** [[Path - Networks you can reason about]]. **Then:** [[Path - Agents]]. **All paths:** [[Paths]]
 
-## Warm-up
+## Warm-up (optional, from the paths before)
 1. How does the browser read the agent's answer as it's written?
 > [!success]- Answer
 > `fetch` + `response.body.getReader()`, splitting the SSE stream into frames on blank lines.
 
-## 12.1 How a model works · ~1.5 h
+## 1. How a model works · ~1.5 h
 **Read:** [[LLM fundamentals]]
 
 **Check:**
@@ -30,7 +30,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > Planning, routing and tool calls need repeatable, most-likely outputs; randomness helps creative text, not decisions.
 
-## 12.2 Talking to a model · ~1.5 h
+## 2. Talking to a model · ~1.5 h
 **Read:** [[OpenAI-compatible API]]
 
 **Do** (from your Mac):
@@ -43,7 +43,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > Only `llmBaseUrl` (→ `LLM_BASE_URL`) and the API key Secret: both speak the same OpenAI-compatible API.
 
-## 12.3 Running your own · ~2 h
+## 3. Running your own · ~2 h
 **Read:** [[Running LLMs locally]] · [[llama-swap]] · [[Homelab LLM and agent]] (first section)
 
 **Do:**

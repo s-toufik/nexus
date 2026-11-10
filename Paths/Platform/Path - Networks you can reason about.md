@@ -1,24 +1,24 @@
 ---
 type: path
-level: 1
-module: 2
+track: Platform
 time: ~6 h
 projects: ["[[Homelab]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 02 - Networks you can reason about
+# Path - Networks you can reason about
 
 > **Goal:** follow a request from your browser to the server: addresses, names, HTTP, encryption, and what's allowed through.
-> **Time:** ~6 h. **Before:** [[Module 01 - Linux, Git and the server]]. Previous: [[Module 01 - Linux, Git and the server]] · Next: [[Module 03 - Containers and Kubernetes]]
+> **Time:** ~6 h.
+> **Before:** [[Path - Linux, Git and the server]]. **Then:** [[Path - Containers and Kubernetes]] · [[Path - The front door]]. **All paths:** [[Paths]]
 
-## Warm-up (from Module 01)
+## Warm-up (optional, from the paths before)
 1. Who can read `/etc/rancher/k3s/k3s.yaml`?
 > [!success]- Answer
 > root and members of `k3s-admin`.
 
-## 2.1 Addresses and ranges · ~45 min
+## 1. Addresses and ranges · ~45 min
 **Read:** [[IP addresses and CIDR]]
 
 **Do:**
@@ -31,7 +31,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > `/10` fixes the first 10 bits: `100.64.0.0` to `100.127.255.255`. So yes for the first, no for the second.
 
-## 2.2 Names · ~1 h
+## 2. Names · ~1 h
 **Read:** [[DNS]] · [[CoreDNS]]
 
 **Do:**
@@ -45,7 +45,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > Your Mac gets the server's Tailscale IP from MagicDNS. A pod gets Caddy's Service from the CoreDNS rewrite. That way pods (oauth2-proxy, Grafana) reach Keycloak at the same `https://<domain>:8443` as browsers, with a certificate that matches the name.
 
-## 2.3 HTTP, by hand · ~1.5 h
+## 3. HTTP, by hand · ~1.5 h
 **Read:** [[HTTP]] · [[REST APIs and OpenAPI]]
 
 **Do** (from your Mac, on the tailnet):
@@ -59,7 +59,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > `/` is for browsers: a redirect to the sign-in page is useful. `/api/…` is called by homelab-ui's `fetch()`: a redirect would hand JavaScript an HTML sign-in page; a 401 lets the app react (it sends the browser to sign in).
 
-## 2.4 Encryption and trust · ~1 h
+## 4. Encryption and trust · ~1 h
 **Read:** [[TLS and certificates]]
 
 **Do:**
@@ -71,7 +71,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > At Caddy, which holds the certificate. Caddy → Grafana is plain HTTP inside the cluster; the trust boundary is the gateway.
 
-## 2.5 What's allowed in · ~1.5 h
+## 5. What's allowed in · ~1.5 h
 **Read:** [[Tailscale]] · [[Firewall and nftables]] · [[hostPort and hostNetwork]]
 
 **Do:**

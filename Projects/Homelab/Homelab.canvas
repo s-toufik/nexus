@@ -32,7 +32,7 @@
 		{"id":"mcp","type":"text","text":"### grafana-mcp · mongodb-mcp · postgres-mcp\nread-only unless `mcp.<server>.write`\n[[Model Context Protocol]]","x":1240,"y":-825,"width":380,"height":130},
 		{"id":"oauth","type":"text","text":"### oauth2-proxy\nsession cookie\n[[Forward authentication]]","x":-800,"y":80,"width":200,"height":130},
 		{"id":"kube","type":"text","text":"### kube-api · Headlamp\n`kubectl proxy`, admins only\n[[RBAC]]","x":-1330,"y":80,"width":420,"height":120},
-		{"id":"read","type":"text","text":"## Read in order\n1. [[Homelab server]]\n2. [[Homelab deployment]]\n3. [[Homelab gateway and sign-in]]\n4. [[Homelab data]]\n5. [[Homelab observability]]\n6. [[Homelab LLM and agent]]\n7. [[Homelab security model]]\n8. [[Homelab failure modes]]\n9. [[Homelab change cookbook]]\n\n[[Homelab decisions]] · [[Homelab guides]] · [[Homelab from zero to senior]]","x":-1940,"y":-1055,"width":300,"height":440,"color":"6"}
+		{"id":"read","type":"text","text":"## Read in order\n1. [[Homelab server]]\n2. [[Homelab deployment]]\n3. [[Homelab gateway and sign-in]]\n4. [[Homelab data]]\n5. [[Homelab observability]]\n6. [[Homelab LLM and agent]]\n7. [[Homelab security model]]\n8. [[Homelab failure modes]]\n9. [[Homelab change cookbook]]\n\n[[Homelab decisions]] · [[Homelab guides]] · [[Paths]]","x":-1940,"y":-1055,"width":300,"height":440,"color":"6"}
 	],
 	"edges":[
 		{"id":"e0","fromNode":"devices","fromSide":"right","toNode":"caddy","toSide":"left","label":"HTTPS :443 and tool ports"},

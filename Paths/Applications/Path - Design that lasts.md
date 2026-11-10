@@ -1,24 +1,24 @@
 ---
 type: path
-level: 3
-module: 9
+track: Applications
 time: ~8 h
 projects: ["[[Agent runtime]]", "[[Agent toolbox]]", "[[pycraftcore]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 09 - Design that lasts
+# Path - Design that lasts
 
 > **Goal:** understand — and be able to defend — the shape every service here shares: hexagonal layers, dependency injection, tests that guard the design.
-> **Time:** ~8 h. Previous: [[Module 08 - Python for services]] · Next: [[Module 10 - Serving HTTP well]]
+> **Time:** ~8 h.
+> **Before:** [[Path - Python for services]]. **Then:** [[Path - Serving HTTP well]] · [[Path - Agents]]. **All paths:** [[Paths]]
 
-## Warm-up
+## Warm-up (optional, from the paths before)
 1. Which file in agent-runtime decides which model each step uses?
 > [!success]- Answer
 > `config/<env>/operation/agent.yml` (with `operation/llm.yml` listing the models).
 
-## 9.1 Ports and adapters · ~2 h
+## 1. Ports and adapters · ~2 h
 **Read:** [[Hexagonal architecture]] · [[Agent runtime layers]]
 
 **Do:**
@@ -35,7 +35,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > So the rules (routing, plans, turns) don't depend on a fast-moving library: they can be tested without it, and the engine can be replaced (the scenario tests already run the same steps on a plain loop).
 
-## 9.2 Wiring: dependency injection · ~1.5 h
+## 2. Wiring: dependency injection · ~1.5 h
 **Read:** [[Dependency injection]] · [[Agent toolbox layers]]
 
 **Do:**
@@ -47,7 +47,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > The single place that chooses concrete classes and connects them (`ToolboxDI`, `AgentDI`). With one, every other class receives its dependencies and stays testable; wiring scattered across classes hides what depends on what.
 
-## 9.3 Data behind interfaces · ~45 min
+## 3. Data behind interfaces · ~45 min
 **Read:** [[Repository pattern]] · [[pycraftcore - Use databases and SQL]]
 
 **Check:**
@@ -55,7 +55,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > The interface (port) in the application layer, owned by the code that needs it; the SQLite implementation in an outbound adapter.
 
-## 9.4 Tests that guard behaviour · ~2 h
+## 4. Tests that guard behaviour · ~2 h
 **Read:** [[Unit tests and test doubles]] · [[Agent runtime - Test and check]]
 
 **Do:**
@@ -68,7 +68,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > That the behaviour comes from the steps and `TurnPolicy`, not from LangGraph: both runners must produce the same answers, events and stored conversation.
 
-## 9.5 Tests that guard the design · ~1.5 h
+## 5. Tests that guard the design · ~1.5 h
 **Read:** [[Architecture tests]]
 
 **Do** ✋ (undo given):

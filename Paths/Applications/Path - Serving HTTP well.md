@@ -1,24 +1,24 @@
 ---
 type: path
-level: 3
-module: 10
+track: Applications
 time: ~7 h
 projects: ["[[pycraftcore]]", "[[Agent runtime]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 10 - Serving HTTP well
+# Path - Serving HTTP well
 
 > **Goal:** build APIs that behave in production: the server/framework split, streaming that survives proxies and disconnects, conventions every service shares, and calls to other services that fail gracefully.
-> **Time:** ~7 h. Previous: [[Module 09 - Design that lasts]] · Next: [[Module 11 - The frontend]]
+> **Time:** ~7 h.
+> **Before:** [[Path - Design that lasts]] · [[Path - Networks you can reason about]]. **Then:** [[Path - The frontend]] · [[Project - Build a service]]. **All paths:** [[Paths]]
 
-## Warm-up
+## Warm-up (optional, from the paths before)
 1. What does an outbound port look like in Python here?
 > [!success]- Answer
 > A `typing.Protocol` in `application/port/outbound/`, implemented structurally by an adapter.
 
-## 10.1 Servers and frameworks · ~1.5 h
+## 1. Servers and frameworks · ~1.5 h
 **Read:** [[ASGI]] · [[Python web frameworks]] · [[Web framework benchmark]] (the result section)
 
 **Do:**
@@ -29,7 +29,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > Developer experience, ecosystem, validation and DI style, docs — unless the service is truly CPU-bound at the HTTP layer. At realistic load, I/O (database, APIs, models) dominates.
 
-## 10.2 Streaming · ~1.5 h
+## 2. Streaming · ~1.5 h
 **Read:** [[Server-sent events]] · [[Agent runtime - Call the API]]
 
 **Do** (from your Mac, on the tailnet):
@@ -41,7 +41,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > Proxies and load balancers close connections that stay silent too long. A comment line keeps bytes flowing; SSE clients ignore lines starting with `:`.
 
-## 10.3 One toolkit, three frameworks · ~1.5 h
+## 3. One toolkit, three frameworks · ~1.5 h
 **Read:** [[pycraftcore web toolkits]] · [[pycraftcore - Serve an HTTP API]]
 
 **Do:**
@@ -53,7 +53,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > So no traffic arrives before the agent has discovered its MCP tools and models. Kubernetes' readiness probe keeps the pod out of its Service until then, and helmfile's `wait` treats the deploy as unfinished.
 
-## 10.4 Calls that fail gracefully · ~1.5 h
+## 4. Calls that fail gracefully · ~1.5 h
 **Read:** [[Retry and backoff]] · [[Circuit breaker]] · [[pycraftcore resilience]]
 
 **Do:**
@@ -64,9 +64,9 @@ updated: 2026-11-10
 > [!success]- Answer
 > The first calls retry with growing delays and fail; after 3 failures the breaker opens, and calls fail immediately without reaching the backend. Every 30 s it lets one test call through (half-open); it closes again when one succeeds after the backend recovers.
 
-## 10.5 Run the agent yourself · ~1 h
+## 5. Run the agent yourself · ~1 h
 **Read:** [[Agent runtime - Run it locally]] · [[Agent runtime - Configure it]]
 
-**Do:** follow the guide with a `.env` pointing at the homelab: `LLM_BASE_URL=https://<HOMELAB_DOMAIN>:8090/v1`, `LLM_API_KEY=` the `llm-gateway` key ([[Homelab - Manage secrets#Read one]]), `TOOLBOX_URL=http://<HOMELAB_DOMAIN>:8001/mcp`, `DB_MONGO_CHECKPOINT_HOST=localhost` (no MongoDB on your Mac → it falls back to SQLite), `OTEL_HOST=` empty. `make run` → it listens on `:8001`; the boot log lists the toolbox's tools. Send 10.2's request to `http://localhost:8001`.
+**Do:** follow the guide with a `.env` pointing at the homelab: `LLM_BASE_URL=https://<HOMELAB_DOMAIN>:8090/v1`, `LLM_API_KEY=` the `llm-gateway` key ([[Homelab - Manage secrets#Read one]]), `TOOLBOX_URL=http://<HOMELAB_DOMAIN>:8001/mcp`, `DB_MONGO_CHECKPOINT_HOST=localhost` (no MongoDB on your Mac → it falls back to SQLite), `OTEL_HOST=` empty. `make run` → it listens on `:8001`; the boot log lists the toolbox's tools. Send lesson 2's request to `http://localhost:8001`.
 
 **Milestone:** you can serve, stream, protect and debug an HTTP API with the same conventions as our services.

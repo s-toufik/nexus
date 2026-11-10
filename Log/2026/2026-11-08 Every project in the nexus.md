@@ -11,7 +11,7 @@ tags: [log]
 - Added the eight other SandBox projects, each with a project note, a canvas (except the smallest), architecture notes in reading order, decisions, repository notes and guides rewritten one per job from their READMEs: [[Homelab UI]], [[Agent runtime]], [[Agent toolbox]], [[pycraftcore]], [[Web framework benchmark]], [[Archetype]], [[Pricelab]], [[GitHub showcase]].
 - homelab-ui's repository note and guide moved out of [[Homelab]] into [[Homelab UI]]; Homelab's decisions note became [[Homelab decisions]] so every note name stays unique.
 - 25 new knowledge notes in five new domains (Architecture, Testing, Web, Frontend, Python) and more in AI and Delivery.
-- A second path: [[Building services from zero to senior]].
+- A second learning path (since replaced by the standalone paths in [[Paths]]).
 
 ## What I learned
 - All three Python web frameworks are within a few percent of each other at a realistic rate; the differences only show at saturation — [[Benchmarking web services]].
@@ -23,4 +23,4 @@ tags: [log]
 
 ## Next
 - [ ] Write down why Pricelab has a C++ and a Rust core ([[Pricelab decisions]]).
-- [ ] Start [[Building services from zero to senior]], stage 1.
+- [ ] Start a path in [[Paths]].

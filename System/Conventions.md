@@ -15,7 +15,7 @@ Ask in this order; the first yes wins.
 | Did someone else write it? | `Sources/` | an article on KV caches, a Kubernetes book |
 | Is it about the nexus itself? | `System/` | a template, this note |
 | Is it about a day? | `Log/<year>/` | `2026-11-08 MCP servers in the toolbox` |
-| Is it an order to learn things in? | `Paths/` | `Kubernetes from zero` |
+| Is it a way to learn something? | `Paths/<Track>/` | `Path - Containers and Kubernetes`, `Project - Game day` |
 | Does it belong to one project? | `Projects/<Project>/` | a Homelab guide, an agent-toolbox decision |
 | Otherwise: an idea that outlives any project | `Knowledge/<domain>/` | `Knowledge/Kubernetes/NetworkPolicy` |
 
@@ -36,6 +36,7 @@ Projects/<Project>/
 - Notes are named for what they hold, in plain words: `NetworkPolicy`, not `k8s-netpol-notes`.
 - Every note name is unique in the vault, so links never need a path: a project's notes start with the project's name (`Homelab decisions`, `Agent runtime turn`).
 - Log notes start with the date: `YYYY-MM-DD <topic>`.
+- Paths are named `Path - <topic>`, projects that combine paths `Project - <what you build>`, filed by track (`Platform`, `Applications`, `AI`, `Judgement`, `Projects`). A path is standalone: it says what to know before and what to take then; lessons have Read, Do (👀/✋ with the result to expect), Check (answers in a collapsed `> [!success]-` callout), and end with a milestone.
 - Guides are named `<Project> - <job>`, the job in the imperative: `Homelab - Release an app`. One guide per job; the project's index is `<Project> guides`.
 - A guide is steps only, from the *Guide* template: numbered steps, each `make` command followed by its raw command, what each step should print. Explanations go in the notes listed under *Why it works*.
 - Folders inside `Knowledge/` are domains: `Kubernetes`, `Networking`, `Security`, `Data`, `AI`… Add one when three notes share it.

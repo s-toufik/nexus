@@ -1,24 +1,24 @@
 ---
 type: path
-level: 3
-module: 11
+track: Applications
 time: ~8 h
 projects: ["[[Homelab UI]]"]
-tags: [path, journey]
+tags: [path]
 updated: 2026-11-10
 ---
 
-# Module 11 - The frontend
+# Path - The frontend
 
 > **Goal:** read and extend homelab-ui confidently: how an Angular app is organised, how state flows, how it streams the agent, how it's tested and shipped.
-> **Time:** ~8 h. Previous: [[Module 10 - Serving HTTP well]] · Next: [[Capstone 3 - Build a service]]
+> **Time:** ~8 h.
+> **Before:** [[Path - Networks you can reason about]]. **Then:** [[Path - Models]]. **All paths:** [[Paths]]
 
-## Warm-up
+## Warm-up (optional, from the paths before)
 1. Why does `/api/*` answer 401 instead of redirecting?
 > [!success]- Answer
 > It's called by the app's `fetch()`; a 401 lets the app send the browser to sign in, while a redirect would hand it an HTML page.
 
-## 11.1 An app in the browser · ~1.5 h
+## 1. An app in the browser · ~1.5 h
 **Read:** [[Single-page application]] · [[Angular]]
 
 **Do** (in `homelab-ui`):
@@ -30,7 +30,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > In `direct` mode the app calls tools on their ports; their APIs (Prometheus' query API, PostgREST, `/api/health`) are reachable only behind the gateway's `/api/<tool>/` routes, with the session cookie.
 
-## 11.2 Structure · ~1.5 h
+## 2. Structure · ~1.5 h
 **Read:** [[Feature-first architecture]] · [[Homelab UI structure]]
 
 **Do:**
@@ -43,7 +43,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > The feature registers itself with `provideHomelabFeature(...)` — a multi provider for `HOMELAB_FEATURES`. The shell injects the token and gets an array of every registered feature.
 
-## 11.3 State and streaming · ~2 h
+## 3. State and streaming · ~2 h
 **Read:** [[Signals]] · [[Homelab UI state and streaming]]
 
 **Do:**
@@ -56,7 +56,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > Both inject the same root singleton `AgentStore`; its signals are the single source of truth.
 
-## 11.4 An editor in plain TypeScript · ~1.5 h
+## 4. An editor in plain TypeScript · ~1.5 h
 **Read:** [[Homelab UI Tasker]]
 
 **Do:**
@@ -68,7 +68,7 @@ updated: 2026-11-10
 > [!success]- Answer
 > They never run: only a successful block queues the blocks it connects to. The failed block's error is recorded and shown.
 
-## 11.5 Tested and shipped · ~1.5 h
+## 5. Tested and shipped · ~1.5 h
 **Read:** [[Homelab UI delivery]] · [[Homelab UI - Run, test and build]]
 
 **Do:**
