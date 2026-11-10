@@ -27,7 +27,7 @@ Services are reachable inside the cluster only. To let your devices in, somethin
 ## Pitfalls we met
 - hostPorts force `Recreate` updates on one node.
 - A hostNetwork pod needs `dnsPolicy: ClusterFirstWithHostNet` to still resolve cluster names.
-- `ss -tlnp` on the host shows hostPorts as owned by the CNI, not by the app.
+- `ss -tlnp` on the host doesn't show hostPorts at all: the CNI's portmap plugin implements them as NAT rules (`sudo iptables-save -t nat | grep CNI-HOSTPORT`), not listening sockets.
 
 ## Check yourself
 1. What would happen if `hostIP` were left out for MongoDB's 27017?
