@@ -9,13 +9,23 @@ updated: 2026-11-10
 > Short, standalone learning paths, each one topic, each finished in a few sessions. Every path has a goal, lessons with notes to read, a lab on our own projects (with the result to expect), check questions with hidden answers, and a milestone. **Projects** put several paths to work on something real.
 
 ## How a path works
-1. **Read** the linked notes (Knowledge for the idea, Projects for how we use it).
+1. **Learn:** each lesson defines its terms, explains how the thing works, walks through a real example from our code, and names the common mistake. The linked notes go further.
 2. **Do** the lab: 👀 only looks, ✋ changes something (the undo is given).
 3. **Check:** answer out loud *before* opening the hidden answer. Wrong? Reread, don't just read the answer.
 4. Tick the path below when you can pass its checks without looking.
 5. Write one line in the [[Log]] after each path: what clicked, what didn't.
 
 Each path lists what to know **before** it and what to take **then** — take them in any order that respects that.
+
+## Tours — know your projects first (start here)
+One per project: what it is and why, how it's built, how it connects to the others, how to run and change it, and a map of the principles inside it with the path that teaches each. Take all five first (~24 h): every topic path then deepens something you've already seen in your own code.
+| Done | Path | Time | You'll be able to |
+|:-:|---|---|---|
+| ☐ | [[Path - Tour of the homelab]] | 6 h | Give a 10-minute tour of the homelab: what runs, why, how it changes, how it's protected |
+| ☐ | [[Path - Tour of Homelab UI]] | 5 h | Explain any page: what it calls, how its state flows, where its code is |
+| ☐ | [[Path - Tour of the agent runtime]] | 5 h | Explain any reply of the agent and point to the file that decided it |
+| ☐ | [[Path - Tour of the agent toolbox]] | 4 h | List the tools, add one, and explain every limit around it |
+| ☐ | [[Path - Tour of pycraftcore]] | 4 h | Say which module any line of our services' setup comes from, and why |
 
 ## Platform — the homelab and how it runs
 | Done | Path | Time | You'll be able to |
@@ -62,10 +72,11 @@ Each path lists what to know **before** it and what to take **then** — take th
 (Tick by replacing ☐ with ✅.)
 
 ## Suggested routes
-- **From zero, everything (~3 months at ~10 h/week):** Linux → Networks → Containers → *Follow a request* → Python → Design → Shipping → Front door → Data → Seeing inside → *Ship and investigate* → Serving HTTP → *Build a service* → Frontend → Models → Agents → Tools and safety → Proving it works → *Feature across three repos* → Security and failure → Decisions → *Game day*.
-- **"I want to work on the agent" (~6 weeks):** Python → Design → Serving HTTP → Models → Agents → Tools and safety → Proving it works → *Feature across three repos*.
-- **"I want to run the homelab" (~5 weeks):** Linux → Networks → Containers → Shipping → Front door → Data → Seeing inside → Security and failure → *Game day*.
-- **"I want to work on the UI" (~3 weeks):** Networks → Python (skim) → Serving HTTP (lessons 1–2) → Frontend → *Follow a request*.
+- **Always first: the five tours** (~24 h, ~2–3 weeks): homelab → Homelab UI → agent runtime → agent toolbox → pycraftcore.
+- **Then, everything (~3 months at ~10 h/week):** Linux → Networks → Containers → *Follow a request* → Python → Design → Shipping → Front door → Data → Seeing inside → *Ship and investigate* → Serving HTTP → *Build a service* → Frontend → Models → Agents → Tools and safety → Proving it works → *Feature across three repos* → Security and failure → Decisions → *Game day*.
+- **"I want to work on the agent" (~6 weeks, after the tours):** Python → Design → Serving HTTP → Models → Agents → Tools and safety → Proving it works → *Feature across three repos*.
+- **"I want to run the homelab" (~5 weeks, after the tours):** Linux → Networks → Containers → Shipping → Front door → Data → Seeing inside → Security and failure → *Game day*.
+- **"I want to work on the UI" (~3 weeks, after the tours):** Networks → Python (skim) → Serving HTTP (lessons 1–2) → Frontend → *Follow a request*.
 
 Mix tracks: alternating a platform path with an application path keeps both fresh, and each makes the other easier.
 
