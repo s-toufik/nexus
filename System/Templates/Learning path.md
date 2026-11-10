@@ -13,7 +13,10 @@ updated: {{date}}
 > **Time:** ~ h over N sessions.
 > **Before:** [[Path - ]] (or "nothing — start here"). **Then:** [[Path - ]]. **All paths:** [[Paths]]
 
-👀 = only looks. ✋ = changes something (the undo is given).
+## Principles → projects
+| Principle | Where it lives in our projects |
+|---|---|
+| | file or setting, in which project |
 
 ## Warm-up (optional, from the paths before)
 1. A question from a prerequisite path?
@@ -21,13 +24,27 @@ updated: {{date}}
 > The answer.
 
 ## 1. Lesson title · ~1 h
-**Read:** [[ ]] · [[ ]]
 
-**Do:**
-1. 👀 `command` → what it should print.
+### Learn
+**Definitions**
+- **Term** — a precise definition in one or two sentences ([[Concept note]]).
 
-**Check:**
-1. Question that needs understanding, not recall?
+**How it works**
+The mechanism, step by step; a small diagram if it helps.
+
+**Example from our projects** — `path/to/file` (excerpt):
+```yaml
+real lines, verified in the repository
+```
+1. What each line does, and why it's there.
+
+**Common mistake** — what goes wrong without it, ideally something that happened here.
+
+### Do
+1. 👀 `command` → what it should print. (✋ for changes, with the undo.)
+
+### Check
+1. A question that needs understanding, not recall?
 > [!success]- Answer
 > The answer, with the why.
 

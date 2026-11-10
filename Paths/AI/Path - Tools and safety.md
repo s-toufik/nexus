@@ -191,7 +191,7 @@ egress:
   - to: [{ podSelector: { matchLabels: { app.kubernetes.io/name: grafana-mcp } } }, { podSelector: { matchLabels: { app.kubernetes.io/name: postgres-mcp } } }]
   - to: [{ ipBlock: { cidr: 0.0.0.0/0, except: [10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 100.64.0.0/10, 169.254.0.0/16] } }]
 ```
-(Condensed; ports elided except DNS.) DNS, telemetry, the MCP servers, the internet — and nothing internal.
+(Condensed: ports elided except DNS; mongodb-mcp has its own entry on port 3000.) DNS, telemetry, the MCP servers, the internet — and nothing internal.
 
 **Common mistake** — an egress policy without the DNS rule: nothing resolves and everything "times out".
 

@@ -1,60 +1,132 @@
 ---
 type: path
 track: Judgement
-time: ~8 h
-projects: ["[[Homelab]]"]
+time: ~9 h
+projects: ["[[Homelab]]", "[[Agent toolbox]]", "[[Homelab UI]]"]
 tags: [path]
 updated: 2026-11-10
 ---
 
 # Path - Security and failure
 
-> **Goal:** think like the person on call: name every layer of defence and what it stops, and debug any failure from symptom to cause.
-> **Time:** ~8 h.
+> **Goal:** think like the person on call: name every layer of defence and what it stops, and debug any failure from symptom to cause with a method.
+> **Time:** ~9 h.
 > **Before:** [[Path - The front door]] · [[Path - Shipping changes]]. **Then:** [[Project - Game day]]. **All paths:** [[Paths]]
 
-## Warm-up (optional, from the paths before)
-1. Name two ways a request can be refused at the gateway before reaching a tool.
+## Principles → projects
+| Principle | Where it lives in our projects |
+|---|---|
+| Threat modelling | the threats table in [[Homelab security model]] |
+| Defence in depth | network → TLS → identity → session → request → authorisation → pod → network inside → data → secrets → recovery → proof |
+| Least privilege | RBAC (no token by default), dropped capabilities, read-only accounts, RLS |
+| Secrets lifecycle | `scripts/secrets.sh`, k3s encryption, Reloader, CNPG reload |
+| Prove, don't assume | `make validate`, `make verify` |
+| A debugging method | status → describe → logs → network → verify |
+
+## Warm-up (optional)
+1. Name two ways the gateway refuses a request before it reaches a tool.
 > [!success]- Answer
-> No session (401 or redirect to sign-in); a write without `X-Homelab-Request` (403); a path not on the route's allow-list (404); not `admin` where required (403).
+> No session (401 / redirect), a write without `X-Homelab-Request` (403), a path not on the allow-list (404), not `admin` where required (403).
 
-## 1. The defence in depth · ~2 h
-**Read:** [[Least privilege and defence in depth]] · [[Homelab security model]]
+## 1. Defence in depth · ~2.5 h
 
-**Check:**
-1. Pick "a compromised homelab-ui container". Which layers limit what it can do?
+### Learn
+**Definitions**
+- **Threat model** — who you defend against and what they could do ([[Least privilege and defence in depth]]).
+- **Attack surface** — everything reachable by an attacker.
+- **Blast radius** — what one compromised piece can reach.
+- **Defence in depth** — independent layers, each assuming the one before can fail.
+- **Least privilege** — each user and program gets only what it needs.
+
+**How it works** — for each threat, list every layer in its way; a design is sound when no single failure exposes everything.
+
+**Example from our projects** — one threat traced through the layers: *a malicious web page you visit while signed in*.
+| Layer | Stops it because |
+|---|---|
+| Session | `SameSite=Lax`: its cross-site `fetch` carries no cookie |
+| Request | writes need `X-Homelab-Request`: a CORS preflight the gateway doesn't approve |
+| Routes | only allow-listed API paths exist |
+| Authorisation | Kubernetes, Kafka writes, model unload need `admin` |
+
+**Common mistake** — one strong wall and nothing behind it ("it's on Tailscale, so it's safe"): a stolen signed-in laptop is on the tailnet.
+
+### Check
+1. A compromised homelab-ui container: what limits it?
 > [!success]- Answer
-> It runs non-root with a read-only filesystem, no capabilities and no Kubernetes token; it holds no secrets (the gateway adds the Tasker secret); it serves static files, so a takeover mostly means serving bad JavaScript — which the gateway's CSRF header and sign-in still constrain, and which is why image provenance (CI on tags) matters.
+> Non-root, read-only filesystem, no capabilities, no Kubernetes token; it holds no secrets (Caddy adds Tasker's); it serves static files — so the main risk is serving bad JavaScript, still bound by the gateway's sign-in and CSRF rules, which is why image provenance (CI on tags) matters.
 
-## 2. Secrets and rights · ~2 h
-**Read:** [[Secrets management]] · [[RBAC]] · [[Pod security context]] · [[Homelab - Manage secrets]]
+## 2. Secrets and rights · ~2.5 h
 
-**Do:**
+### Learn
+**Definitions**
+- **Secret lifecycle** — generate, store, deliver, rotate, revoke ([[Secrets management]]).
+- **ServiceAccount / Role / RoleBinding** — a pod's identity and its API rights ([[RBAC]]).
+- **securityContext** — user, capabilities, seccomp, read-only root ([[Pod security context]]).
+- **Capability** — one slice of root's power (`NET_BIND_SERVICE`: bind ports < 1024).
+
+**Example from our projects** — `scripts/secrets.sh`'s spec list (excerpt):
+```bash
+SPECS=(
+  "pg-role-postgrest|kubernetes.io/basic-auth|username=postgrest password:24"
+  "oauth2-proxy|Opaque|client-secret:32 cookie-secret:16"
+  "tasker-gateway|Opaque|secret:32"
+  "grafana-mcp|Opaque|token?"
+  "agent-runtime|Opaque|llm-api-key?"
+)
+```
+`name|type|keys`: `password:24` = generate 24 characters; `username=postgrest` = a fixed value; `token?` = you type it at a hidden prompt. `pg-role-*` Secrets get `cnpg.io/reload: "true"` so the operator re-applies passwords. And Caddy's capabilities:
+```yaml
+securityContext:
+  readOnlyRootFilesystem: true
+  capabilities:
+    add: [NET_BIND_SERVICE]
+```
+merged over the chart's `drop: [ALL]`: exactly one power, to listen on 443.
+
+**Common mistake** — a Secret value in a values file "just for now": it's in git forever, and the repository is shared.
+
+### Do
 1. 👀 `kubectl auth can-i list secrets -n homelab --as=system:serviceaccount:homelab:alloy` → `no`.
-2. 👀 `kubectl -n homelab get pod -l app.kubernetes.io/name=caddy -o jsonpath='{.items[0].spec.containers[0].securityContext}'; echo` → `capabilities` with `NET_BIND_SERVICE` added and `ALL` dropped.
-3. ✋ `make secret-rotate SECRET=llm-gateway KEY=api-key`, watch `make status` (Caddy restarts via Reloader), then update any script that used the old key.
+2. 👀 `kubectl -n homelab get pod -l app.kubernetes.io/name=caddy -o jsonpath='{.items[0].spec.containers[0].securityContext}'; echo`.
+3. ✋ `make secret-rotate SECRET=llm-gateway KEY=api-key` → Caddy restarts (Reloader); update scripts using the key.
 
-**Check:**
-1. Trace a password from `make secrets` to PostgREST's process. Where is it encrypted, where in plain text?
+### Check
+1. Trace a password from `make secrets` to PostgREST's process. Where is it encrypted, where plain?
 > [!success]- Answer
-> Generated by `secrets.sh`, sent to the API server, stored encrypted at rest by k3s; decrypted by the API server and delivered to the kubelet, injected as an environment variable into PostgREST's process — plain text in its memory and environment.
+> Generated by `secrets.sh`, sent to the API server, stored encrypted at rest by k3s; decrypted for the kubelet, injected as an env variable — plain in PostgREST's memory and environment.
 
-## 3. Failure, decoded · ~2 h
-**Read:** [[Homelab failure modes]] · [[Homelab - Troubleshooting]]
+## 3. Failure, decoded · ~2.5 h
 
-**Check:**
-1. A pod is `Running 0/1` for ten minutes. Two possible causes, and the command that tells them apart?
+### Learn
+**Definitions**
+- **Symptom / cause** — what you see / what's wrong; debug from the first to the second, one layer at a time ([[Homelab failure modes]]).
+- **Pod states** — `Pending`, `ContainerCreating`, `ImagePullBackOff`, `CreateContainerConfigError`, `CrashLoopBackOff`, `Running 0/1`.
+- **Events** — what Kubernetes did and why, at the bottom of `kubectl describe`.
+
+**How it works — the method**
+1. `make status` → the state. 2. `kubectl describe pod` → Kubernetes' reason. 3. `make logs` (`--previous` for the crash before the restart) → the app's reason. 4. a connection test from an allowed pod → the network. 5. `make verify` → the whole.
+
+**Example from our projects** — a real one, decoded: *Kubernetes warns `DNSConfigForming` every minute*. Symptom: events. Layer: node DNS. Cause: Ethernet and Wi-Fi both up → the router listed twice → more than 3 nameservers. Fix: k3s' own one-line `resolv.conf`. The path from symptom to cause took four layers.
+
+**Common mistake** — restarting things until it works: the cause stays, and comes back at 3 a.m.
+
+### Check
+1. A pod is `Running 0/1` for ten minutes. Two causes, and the command that tells them apart?
 > [!success]- Answer
-> The app isn't ready (its dependency is down, it's still booting) or the readiness probe is wrong (wrong port or path). `kubectl describe pod` shows the probe's failures and their messages; the app's logs show whether it's waiting on something.
+> The app isn't ready (a dependency down, still booting) or the readiness probe is wrong (port/path). `kubectl describe pod` shows probe failures and messages; logs show what the app waits for.
 
 2. `make apply` says nothing changed, but a release's pods are gone. Why, and the fix?
 > [!success]- Answer
-> `apply` diffs git against the Helm release, not the cluster; something deleted by hand isn't a Helm change. `make sync R=<release>` re-applies it.
+> Apply diffs git against the Helm release, not the cluster; a manual deletion isn't a Helm change. `make sync R=<release>`.
 
-## 4. Known limits · ~1 h
-**Check:**
-1. Rank: off-site backups, MFA on Keycloak, Tailscale ACLs. Justify the first.
+## 4. Known limits · ~1.5 h
+
+### Learn
+An honest design lists its gaps ([[Homelab security model]], *Known limits*): one disk for data and backups; forced 90-day password expiry (against current NIST advice); no MFA; the tailnet trusted by non-sign-in ports.
+
+### Check
+1. Rank: off-site backups, MFA, Tailscale ACLs. Justify the first.
 > [!success]- Guidance
-> A strong answer starts from impact × likelihood: a dead disk loses data *and* backups (high impact, real likelihood on a laptop), so off-site backups often come first; MFA protects admin power if a password leaks; ACLs narrow trust inside the tailnet.
+> Start from impact × likelihood: a dead laptop disk loses data *and* backups — high impact, real likelihood — so off-site backups often come first; MFA protects admin power if a password leaks; ACLs narrow trust inside the tailnet.
 
-**Milestone:** you can defend the homelab's security design and its gaps, and you have a debugging method for any symptom.
+**Milestone:** you can defend the homelab's security design and its gaps, and you have a method for any symptom.
