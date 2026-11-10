@@ -1,7 +1,7 @@
 ---
 type: path
 track: AI
-time: ~6 h
+time: ~7 h
 projects: ["[[Agent runtime]]"]
 tags: [path]
 updated: 2026-11-10
@@ -9,53 +9,106 @@ updated: 2026-11-10
 
 # Path - Proving it works
 
-> **Goal:** measure whether the agent behaves — not once, but reliably — with cases, code checks, a judge model and reports.
-> **Time:** ~6 h.
+> **Goal:** measure whether the agent behaves — reliably, not once — with cases, code checks, a judge model and reports.
+> **Time:** ~7 h.
 > **Before:** [[Path - Agents]]. **Then:** [[Project - A feature across three repos]]. **All paths:** [[Paths]]
 
-## Warm-up (optional, from the paths before)
+## Principles → projects
+| Principle | Where it lives in our projects |
+|---|---|
+| Evaluate what's deployed, from outside | `agent_evaluation` over HTTP, never importing the agent |
+| Code checks before a judge | `cases/dsl.py`: `Answers`, `Contains`, `UsesAll`… then `Judged` |
+| Repetition and pass rates | `runs`, `case_pass_rate`, flaky detection |
+| Capabilities, not tool names | `capabilities` in `control_panel.json` |
+| Safe by construction | destructive cases sent without auto-approve |
+
+## Warm-up (optional)
 1. What do the scenario tests prove, and what can't they?
 > [!success]- Answer
-> That the code follows its rules on both runners, with scripted models. They can't prove a real model makes good decisions.
+> That the code follows its rules (with scripted models); they can't prove a real model decides well.
 
-## 1. Why evaluate · ~1 h
-**Read:** [[LLM evaluation]] · [[Agent runtime evaluation]]
+## 1. Why evaluate · ~1.5 h
 
-**Check:**
+### Learn
+**Definitions**
+- **Case** — a short conversation with expected checks ([[LLM evaluation]]).
+- **Check** — passes or fails; a **judged** check gets a 0–1 score from a judge model.
+- **Run / case / kind** — one execution / several runs of a case / a family of cases (security, memory…).
+- **Flaky** — some runs pass, others fail.
+
+**How it works**
+```text
+make evaluate → preflight (agent answers, model served) → for each kind, case, run:
+  send each message (new conversation per run) → collect events → checks (code, then judge) → reports
+```
+
+**Example from our projects** — how results are decided ([[Agent runtime evaluation]]):
+| Level | Passes when |
+|---|---|
+| run | every check of every message passes (ERROR if no usable answer — retried) |
+| case | at least `case_pass_rate` of runs pass; mixed → flaky |
+| kind | every case it ran passed |
+
+**Common mistake** — one run per case: a lucky pass hides a 40 % failure rate.
+
+### Check
 1. Why run each case several times?
 > [!success]- Answer
-> Model outputs vary; one pass proves little. A pass rate over runs measures reliability, and mixed results reveal flaky behaviour.
+> Outputs vary; a pass rate measures reliability and exposes flaky behaviour.
 
 ## 2. A first run · ~2 h
-**Read:** [[Agent runtime - Evaluate the agent]]
 
-**Do** (in agent-runtime, against the homelab agent):
-1. In `src/agent_evaluation/control_panel.json`: `agent.base_url` = `http://<HOMELAB_DOMAIN>:8000`, a `model_name` from `/v1/models`, and a `judge` (the homelab LLM or NVIDIA's).
-2. `make evaluate DRY_RUN=1` → the plan: cases, runs, judge calls.
-3. `make evaluate KINDS=MEMORY RUNS=1 PAUSE=0` → one line per run.
-4. Open `reports/evaluation/<…>_MEMORY.md`: the result, failed checks, the answers.
+### Learn
+**Definitions**
+- **Control panel** — `control_panel.json`: the agent, the judge, run defaults, kinds, capabilities, security markers.
+- **Dry run** — print the plan without calling anything.
 
-**Check:**
-1. A case is "flaky". What does that mean, and what do you do?
+### Do (agent-runtime, against the homelab agent)
+1. `control_panel.json`: `agent.base_url` = `http://<HOMELAB_DOMAIN>:8000`, a `model_name` from `/v1/models`, a `judge`.
+2. `make evaluate DRY_RUN=1`; `make evaluate KINDS=MEMORY RUNS=1 PAUSE=0`.
+3. Read `reports/evaluation/<…>_MEMORY.md`.
+
+### Check
+1. A case is flaky. What do you do?
 > [!success]- Answer
-> Some runs pass and others fail. Read the failing answers in the report: the cause is often an ambiguous prompt, a borderline judge criterion, or a real inconsistency in the agent (a routing condition, a prompt). Fix the cause, then rerun with more runs.
+> Read the failing answers: an ambiguous prompt, a borderline judge criterion, or a real inconsistency in the agent. Fix the cause, rerun with more runs.
 
 ## 3. Writing a case · ~2 h
-**Do:**
-1. Add a `Case` to `cases/case_memory.py` modelled on `memory-correction-wins`: tell the agent a fact, correct it, ask a question that needs the correction. Use `Contains`/`NotContains` before `Judged`.
-2. `make evaluate CASES='<your-id>' RUNS=3 PAUSE=0`.
 
-**Check:**
-1. Why check in code before reaching for the judge?
-> [!success]- Answer
-> Code checks are exact, free and repeatable; the judge costs calls and can be wrong or biased. Use it only for what code can't judge (quality, relevance).
+### Learn
+**Example from our projects** — `memory-correction-wins` (from the evaluation README):
+```python
+Case(
+    id="memory-correction-wins",
+    title="A correction replaces the earlier fact",
+    requires=(),
+    says=(
+        Say("Our SLA for SEV1 incidents is 4 hours.", (Answers(),)),
+        Say("Correction: the SEV1 SLA is 2 hours, not 4.", (Answers(),)),
+        Say(
+            "A SEV1 was opened at 09:00. By what time must it be resolved to meet our SLA?",
+            (Answers(), Contains("11:00"), NotContains("13:00")),
+        ),
+    ),
+)
+```
+Three messages, one conversation; the last checks the *correct* time and the absence of the old one — no judge needed.
 
-## 4. Security cases · ~1 h
-**Do:** 👀 Read `cases/case_security.py` and the `INVOICE_WITH_INJECTION` fixture in `cases/fixtures.py`.
+**Common mistake** — `Judged("the answer is correct")` where `Contains("11:00")` would do: slower, costlier, less reliable.
 
-**Check:**
-1. Why are destructive or secret-related requests sent *without* auto-approve?
-> [!success]- Answer
-> If the agent goes along with one, it only proposes a plan; nothing runs, and no secret can reach the reports.
+### Do
+Write a similar case in `cases/case_memory.py`; `make evaluate CASES='<your-id>' RUNS=3 PAUSE=0`.
+
+## 4. Security cases · ~1.5 h
+
+### Learn
+**Definitions**
+- **Instruction markers / secret patterns** — prompt fragments and secret regexes that must never appear in answers.
+- **Fixture with injection** — `INVOICE_WITH_INJECTION`: an invoice hiding an instruction the agent must ignore.
+
+**How it works** — destructive or secret-related requests go **without** auto-approve: the worst a failure can produce is a plan, so nothing runs and no secret reaches the reports.
+
+### Do
+👀 `cases/case_security.py`, `cases/fixtures.py`.
 
 **Milestone:** you can tell, with numbers, whether a change made the agent better or worse.
