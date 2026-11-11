@@ -131,6 +131,7 @@ sudo apt install -y curl jq lm-sensors openssh-server nftables
    [Service]
    Restart=always
    RestartSec=5
+   RuntimeDirectoryPreserve=restart
    EOF
    sudo systemctl daemon-reload
    ```
@@ -142,7 +143,7 @@ sudo apt install -y curl jq lm-sensors openssh-server nftables
    ```bash
    sudo systemctl disable --now cups.service cups-browsed.service bluetooth.service ModemManager.service
    ```
-4. Reboot, then check: `systemctl is-active tailscaled` → `active`.
+4. Reboot, then check: `systemctl is-active tailscaled` → `active`, and `systemctl show tailscaled -p RuntimeDirectoryPreserve` → `RuntimeDirectoryPreserve=restart`.
 5. From another tailnet device: `ssh <user>@<tailscale-ip>`.
 
 ## If it goes wrong

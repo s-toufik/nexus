@@ -146,23 +146,33 @@ Caddy picks the site by port and `Host`, then the route by path; the gateway ans
 - **Certificate** — a public key plus names (SAN) and dates, signed by a **CA** your device trusts.
 - **SNI** — the name the client asks for in the handshake, so one IP can serve several names.
 - **Termination** — where TLS is decrypted (Caddy); behind it traffic is plain inside the cluster.
+- **Unix socket** — a file two programs on the same machine talk through. `tailscaled` listens on `/run/tailscale/tailscaled.sock` and answers a small HTTP API there, the *LocalAPI* (`/localapi/v0/status`, `/localapi/v0/cert/<name>`).
+- **Bind mount** — what a `hostPath` volume is: a path of the host shown inside the container. It follows the **inode** (the file's identity on disk), not its name.
+- **Runtime directory** — a folder systemd makes in `/run` for a service (`RuntimeDirectory=tailscale`) and deletes when the service stops, unless `RuntimeDirectoryPreserve` says to keep it.
 
 **How it works**
-Tailscale obtains a Let's Encrypt certificate for the server's `ts.net` name; Caddy fetches it from `tailscaled` through its socket (mounted into the pod) and presents it on every HTTPS port.
+Tailscale obtains a Let's Encrypt certificate for the server's `ts.net` name. Caddy keeps no certificate file: at each handshake it reads the SNI and asks `tailscaled` for the pair (certificate + key) through the LocalAPI, over the socket mounted into the pod, then presents it on every HTTPS port. No answer from the socket → no certificate → the handshake ends with a TLS alert.
 
-**Example from our projects** — the socket mount in Caddy's values:
+**Example from our projects** — the mount in Caddy's values (`gateway/caddy/values.yaml.gotmpl`) is the *folder*, not the socket file:
 ```yaml
 extraVolumes:
   - name: tailscale
     hostPath:
-      path: /run/tailscale/tailscaled.sock
-      type: Socket
+      path: /run/tailscale
+      type: Directory
 extraVolumeMounts:
   - name: tailscale
-    mountPath: /var/run/tailscale/tailscaled.sock
+    mountPath: /var/run/tailscale
 ```
+and tailscaled's drop-in keeps that folder when it restarts (`/etc/systemd/system/tailscaled.service.d/restart.conf`, excerpt):
+```ini
+[Service]
+Restart=always
+RuntimeDirectoryPreserve=restart
+```
+Both are needed: tailscaled deletes its socket and makes a new one at each restart, so a file mount would keep the dead one; and without `RuntimeDirectoryPreserve`, systemd would make a new folder too, so a folder mount would go stale the same way.
 
-**Common mistake** — MagicDNS or HTTPS certificates left off in the Tailscale admin console: Caddy can't get a certificate and HTTPS fails.
+**Common mistake** — mounting the socket *file* (`type: Socket`). It worked until the Tailscale watchdog restarted `tailscaled`; then Caddy logged `dial unix /var/run/tailscale/tailscaled.sock: connect: connection refused` (the file is there, nobody listens), browsers got `tlsv1 alert internal error`, and Kubernetes saw nothing — the probes only check that port 443 opens. The other classic: MagicDNS or HTTPS certificates left off in the Tailscale admin console.
 
 ### Do
 👀 `openssl s_client -connect <HOMELAB_DOMAIN>:443 -servername <HOMELAB_DOMAIN> </dev/null 2>/dev/null | openssl x509 -noout -subject -issuer -dates` → your domain, Let's Encrypt, ~90 days.
@@ -171,6 +181,9 @@ extraVolumeMounts:
 1. Where is TLS terminated for Grafana on `:3000`, and is Caddy → Grafana encrypted?
 > [!success]- Answer
 > At Caddy; Caddy → Grafana is plain HTTP inside the cluster.
+2. `connection refused` on a Unix socket, and `no such file or directory`: what does each tell you?
+> [!success]- Answer
+> `connection refused`: the socket file exists but no program listens on it — a stale socket, here one left by a `tailscaled` that restarted. `no such file or directory`: there's no file at that path at all — tailscaled isn't running, or the path or mount is wrong.
 
 ## 5. What's allowed in · ~1.5 h
 

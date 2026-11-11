@@ -57,6 +57,15 @@ updated: 2026-11-08
 1. `make status` → caddy `Running`?
 2. `make logs R=caddy` → certificate errors: MagicDNS and HTTPS certificates on in the Tailscale admin console; `make validate` (Tailscale's socket).
 
+## HTTPS fails with `tlsv1 alert internal error`; Caddy's logs say `dial unix /var/run/tailscale/tailscaled.sock: connect: connection refused`
+1. `systemctl show tailscaled -p ActiveEnterTimestamp` → later than Caddy's start: `kubectl -n homelab get pod -l app.kubernetes.io/instance=caddy -o custom-columns=NAME:.metadata.name,START:.status.startTime`
+2. `journalctl -t tailscale-watchdog --since "-3 days" --no-pager` → `Restarting tailscaled` if the watchdog did it.
+3. `make restart R=caddy`
+   ```bash
+   kubectl -n homelab rollout restart deploy/caddy && kubectl -n homelab rollout status deploy/caddy
+   ```
+4. `make validate` → `tailscaled keeps /run/tailscale when it restarts`; otherwise add `RuntimeDirectoryPreserve=restart` to the drop-in ([[Homelab - Prepare the server]]), then `sudo systemctl daemon-reload`.
+
 ## Signing in fails (error page or endless redirect)
 1. `make logs R=oauth2-proxy`
 2. Inside the cluster the Tailscale name must reach Caddy: `kubectl -n homelab exec deploy/caddy -- wget -qO- https://<HOMELAB_DOMAIN>:8443/realms/homelab/.well-known/openid-configuration` → JSON. If not: `kubectl -n kube-system get configmap coredns-custom -o yaml` and `make apply R=caddy`.

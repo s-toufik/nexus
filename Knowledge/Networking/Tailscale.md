@@ -23,7 +23,7 @@ Reaching a home server from outside usually means port forwarding — exposing i
 ## In our projects
 - The only way into the homelab. Every published port binds to the server's Tailscale IP ([[hostPort and hostNetwork]]).
 - `HOMELAB_DOMAIN` *is* the server's MagicDNS name; `make local` reads it and the IP into `environments/local.yaml`; `global.yaml.gotmpl` refuses anything that doesn't look like `*.ts.net` and `100.64.0.0/10`.
-- Caddy gets the certificate from `tailscaled`'s socket.
+- Caddy gets the certificate from `tailscaled`'s socket, through the folder `/run/tailscale` mounted into its pod; `RuntimeDirectoryPreserve=restart` keeps that folder when tailscaled restarts.
 - A watchdog restarts Tailscale if it stops being `Running` ([[Homelab server]]).
 
 ## Pitfalls we met

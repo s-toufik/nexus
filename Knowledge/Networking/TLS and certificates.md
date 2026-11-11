@@ -21,7 +21,7 @@ Without TLS anyone on the path reads passwords and cookies. Without a *valid* ce
 - **mTLS**: both sides present certificates.
 
 ## In our projects
-- Tailscale gets a Let's Encrypt certificate for the server's `ts.net` name (MagicDNS + HTTPS on in the admin console). Caddy asks `tailscaled` for it through its socket, mounted into the pod ([[Homelab gateway and sign-in]]).
+- Tailscale gets a Let's Encrypt certificate for the server's `ts.net` name (MagicDNS + HTTPS on in the admin console). Caddy asks `tailscaled` for it through its socket, mounted into the pod ([[Homelab gateway and sign-in]]). The pod mounts the folder `/run/tailscale`, which systemd keeps across tailscaled restarts: a mount of the socket file goes stale when tailscaled restarts, and HTTPS then fails with `tlsv1 alert internal error` ([[Homelab - Troubleshooting]]).
 - Inside the cluster most traffic is plain HTTP between pods; PostgreSQL connections use TLS (`sslmode=require`) with CloudNativePG's own CA.
 - The k3s API certificate includes the Tailscale name and IP (`tls-san`).
 
