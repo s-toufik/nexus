@@ -4,7 +4,7 @@ status: active
 started: 2026-09
 repos: [homelab-ui]
 tags: [project, homelab-ui, frontend]
-updated: 2026-11-08
+updated: 2026-11-11
 ---
 
 # Homelab UI
@@ -35,6 +35,7 @@ updated: 2026-11-08
 | Deployed by | [[Homelab deployment]] | Tag → image + chart → `versions.yaml` → `make apply R=homelab-ui` |
 
 ## Read it in this order
+0. [[Homelab UI pages]] — every page, as you see it: an annotated screenshot of the real homelab, what each part is, what it's for, how it works.
 1. [[Homelab UI structure]] — the shell, features and shared code, and the rule that keeps them apart.
 2. [[Homelab UI state and streaming]] — signals stores, the gateway client, the agent's event stream.
 3. [[Homelab UI Tasker]] — a workflow editor whose engine is plain TypeScript.

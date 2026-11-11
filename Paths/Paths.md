@@ -18,11 +18,11 @@ updated: 2026-11-10
 Each path lists what to know **before** it and what to take **then** — take them in any order that respects that.
 
 ## Tours — know your projects first (start here)
-One per project: what it is and why, how it's built, how it connects to the others, how to run and change it, and a map of the principles inside it with the path that teaches each. Take all five first (~24 h): every topic path then deepens something you've already seen in your own code.
+One per project: what it is and why, how it's built, how it connects to the others, how to run and change it, and a map of the principles inside it with the path that teaches each. Take all five first (~25 h): every topic path then deepens something you've already seen in your own code.
 | Done | Path | Time | You'll be able to |
 |:-:|---|---|---|
 | ☐ | [[Path - Tour of the homelab]] | 6 h | Give a 10-minute tour of the homelab: what runs, why, how it changes, how it's protected |
-| ☐ | [[Path - Tour of Homelab UI]] | 5 h | Explain any page: what it calls, how its state flows, where its code is |
+| ☐ | [[Path - Tour of Homelab UI]] | 6.5 h | Explain any page — what each part shows, what it's for, what it calls, where its code is ([[Homelab UI pages]]) |
 | ☐ | [[Path - Tour of the agent runtime]] | 5 h | Explain any reply of the agent and point to the file that decided it |
 | ☐ | [[Path - Tour of the agent toolbox]] | 4 h | List the tools, add one, and explain every limit around it |
 | ☐ | [[Path - Tour of pycraftcore]] | 4 h | Say which module any line of our services' setup comes from, and why |
@@ -72,7 +72,7 @@ One per project: what it is and why, how it's built, how it connects to the othe
 (Tick by replacing ☐ with ✅.)
 
 ## Suggested routes
-- **Always first: the five tours** (~24 h, ~2–3 weeks): homelab → Homelab UI → agent runtime → agent toolbox → pycraftcore.
+- **Always first: the five tours** (~25 h, ~2–3 weeks): homelab → Homelab UI → agent runtime → agent toolbox → pycraftcore.
 - **Then, everything (~3 months at ~10 h/week):** Linux → Networks → Containers → *Follow a request* → Python → Design → Shipping → Front door → Data → Seeing inside → *Ship and investigate* → Serving HTTP → *Build a service* → Frontend → Models → Agents → Tools and safety → Proving it works → *Feature across three repos* → Security and failure → Decisions → *Game day*.
 - **"I want to work on the agent" (~6 weeks, after the tours):** Python → Design → Serving HTTP → Models → Agents → Tools and safety → Proving it works → *Feature across three repos*.
 - **"I want to run the homelab" (~5 weeks, after the tours):** Linux → Networks → Containers → Shipping → Front door → Data → Seeing inside → Security and failure → *Game day*.

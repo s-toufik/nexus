@@ -1,16 +1,16 @@
 ---
 type: path
 track: Tours
-time: ~5 h
+time: ~6.5 h
 projects: ["[[Homelab UI]]"]
 tags: [path, tour]
-updated: 2026-11-10
+updated: 2026-11-11
 ---
 
 # Path - Tour of Homelab UI
 
 > **Goal:** know homelab-ui end to end — every page and what it calls, how the code is organised, how state and streaming work, how it ships — and the principles it's built on.
-> **Time:** ~5 h. **Before:** [[Path - Tour of the homelab]] helps. **Then:** [[Path - Tour of the agent runtime]] · [[Path - The frontend]]. **All paths:** [[Paths]]
+> **Time:** ~6.5 h. **Before:** [[Path - Tour of the homelab]] helps. **Then:** [[Path - Tour of the agent runtime]] · [[Path - The frontend]]. **All paths:** [[Paths]]
 
 How each lesson works: **Learn** → **Do** (👀 looks, ✋ changes) → **Check** → **You can now**.
 
@@ -50,7 +50,63 @@ homelab-ui is one static app served by nginx in a pod, behind Caddy. Everything 
 
 **You can now:** say what every page shows and which API it calls.
 
-## 2. Through the gateway · ~45 min
+## 2. Every page, what it's for · ~1.5 h
+
+### Learn
+**Definitions**
+- **Route** — the path after the domain that picks the page (`/logs`); each route lazy-loads one *feature* folder (`src/app/features/loki/`).
+- **Signal of the system** (not Angular's signals) — the three kinds of telemetry: **metrics** (numbers over time → Dashboards, Metrics), **logs** (lines of text → Logs), **traces** (one request's path through services → Traces) ([[Observability]]).
+- **Summary page vs query page** — a summary page answers a fixed question with no typing (Control center, Status, Dashboards); a query page answers *your* question in a query language (Metrics: PromQL, Logs: LogQL, Traces: TraceQL).
+- **Admin-only** — pages or actions that need the `role:admin` group at the gateway: the Kubernetes page, Kafka changes, unloading models.
+
+**How it works**
+The pages fall into groups by the question they answer — learn the question, and you know where to go:
+```text
+Is it healthy?       Control center · Status
+Why did it break?    Kubernetes (events, logs, shell) · Logs · Traces
+How is it trending?  Dashboards · Metrics · Pipeline (is it even collected?)
+AI                   Agent · Assistant · Models · Tools
+Data in motion       Kafka
+Do it for me         Tasker
+You and the tools    Account · Tool UIs
+```
+Each page has its own note with an annotated screenshot of the real homelab: [[Homelab UI pages]].
+
+**Example from our projects** — the control center's *All good* is a rule you can read (`features/control-center/application/control-center.store.ts`, excerpt):
+```typescript
+if ((gauges.disk ?? 0) > 85) list.push(`Disk ${Math.round(gauges.disk!)}% full`);
+if ((gauges.memory ?? 0) > 90) list.push(`Memory ${Math.round(gauges.memory!)}% used`);
+if ((gauges.temperature ?? 0) > 85) list.push(`CPU at ${Math.round(gauges.temperature!)} °C`);
+if ((this.stats().targetsDown ?? 0) > 0)
+  list.push(`${this.stats().targetsDown} scrape target(s) down`);
+if (kube?.notReady.length) list.push(`${kube.notReady.length} pod(s) not ready`);
+```
+plus firing alerts and backups older than 26 h. *All good* = Prometheus answered, no alert fires, and none of these is true. It says nothing about restarts, slow answers or a broken agent — which is why the other pages exist.
+
+**Common mistake** — trusting a green badge for more than it checks. *Ready* on Status means a health endpoint answered; the agent can be Ready and still fail every message, as it did on 2026-11-11 ([[Homelab UI page - Agent]]).
+
+### Do
+1. 👀 The 30-minute first tour at the end of [[Homelab UI pages]].
+2. 👀 **Investigate with the pages:** a new browser's agent answers *The model server rejected the request (404 page not found)*. Using only pages, find out why:
+   - [[Homelab UI page - Logs|Logs]]: `{service_name=~"agent-runtime.*"} |= "rejected"` → the error is in the *understand* step, from the model call.
+   - [[Homelab UI page - Models|Models]]: *Try a model* with the same model works → the model server is fine.
+   - [[Homelab UI page - Agent|Agent]] settings: switch to an `nvidia/…` model → it answers.
+   - Conclusion: the agent sends local model names to the wrong server. Where is that set? (Answer in [[Homelab UI page - Agent]].)
+
+### Check
+1. A container restarted ten minutes ago, now fine. Which page shows it, and which doesn't?
+> [!success]- Answer
+> The control center's Kubernetes card (*restarts, last hour*) and the Kubernetes page (restarts, events) show it. The attention banner doesn't: it only checks pods not ready *now*.
+2. Why does the Metrics page say 11 targets when the control center says 13?
+> [!success]- Answer
+> The control center counts `up` series; Alloy scrapes two jobs itself and pushes them by remote write, so they have `up` series but aren't Prometheus targets ([[Homelab UI page - Metrics]]).
+3. You ask the assistant on the Logs page *"why this error?"*. What does the agent receive?
+> [!success]- Answer
+> Only your words, the model name, the conversation id and auto-approve. Not the page. Paste the line or name the service and time ([[Homelab UI page - Assistant]]).
+
+**You can now:** pick the right page for any question about the homelab, and read every part of it.
+
+## 3. Through the gateway · ~45 min
 
 ### Learn
 **Definitions**
@@ -91,7 +147,7 @@ if (response.status === 401 && this.session.enabled) {
 
 **You can now:** explain how the UI talks to the homelab safely.
 
-## 3. How the code is organised · ~1 h
+## 4. How the code is organised · ~1 h
 
 ### Learn
 **Definitions**
@@ -149,7 +205,7 @@ and its route in `app.routes.ts`:
 
 **You can now:** find the code behind any page. Deep dive: [[Homelab UI structure]].
 
-## 4. State and streaming · ~1 h
+## 5. State and streaming · ~1 h
 
 ### Learn
 **Definitions**
@@ -201,7 +257,7 @@ readonly canSend = computed(() => this.draft().trim().length > 0 && !this.isStre
 
 **You can now:** explain how the agent's answer appears word by word. Deep dives: [[Homelab UI state and streaming]] · [[Homelab UI Tasker]].
 
-## 5. How it ships, and the principles inside · ~1 h
+## 6. How it ships, and the principles inside · ~1 h
 
 ### Learn
 **How it works**

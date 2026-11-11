@@ -117,7 +117,7 @@ constructor() {
   });
 }
 ```
-`canSend` recomputes only when `draft`, `isStreaming` or `modelName` change; the `effect` saves preferences whenever they change. The stream parser: [[Path - Tour of Homelab UI]], lesson 4.
+`canSend` recomputes only when `draft`, `isStreaming` or `modelName` change; the `effect` saves preferences whenever they change. The stream parser: [[Path - Tour of Homelab UI]], lesson 5.
 
 **Common mistake** — using `effect` to derive state (setting one signal from another): use `computed`.
 

@@ -29,6 +29,7 @@ Projects/<Project>/
 ├── <Project> decisions.md   one entry per decision, newest first
 ├── Architecture/       how it works, one note per part, read in order
 ├── Guides/             how to run it: one guide per job, and an index `<Project> guides`
+├── Pages/              an app with a UI: one note per page, `<Project> page - <Page>`, with an annotated screenshot (in `System/Assets/<Project>/`), and an index `<Project> pages`
 └── Repos/              one note per repository
 ```
 
@@ -57,3 +58,4 @@ Every note starts with properties from its template in `System/Templates`: at le
 
 ## Public repository
 Never write secrets, passwords, tokens, internal IP addresses, domain names of the home server or personal data. Use placeholders: `<router-ip>`, `<domain>`.
+Screenshots too: mask them before they're taken (`<HOMELAB_DOMAIN>`, `<server>`, `<pod-ip>`, `you@example.com`), and look at every picture before it's committed.
