@@ -51,9 +51,9 @@ Every page is a lazy-loaded *feature* (`src/app/features/<feature>/`) that calls
 ## What the real homelab showed (2026-11-11)
 Taking these pictures from the live homelab turned up real findings — each is explained on its page:
 1. **The agent fails on any local model** (`404 page not found`): `llmBaseUrl` points to NVIDIA's API, and a new browser picks a local model by default → [[Homelab UI page - Agent]].
-2. **Traces are one span each**, and MCP calls aren't linked to the agent's trace → [[Homelab UI page - Traces]].
+2. **Traces are one span each**, and MCP calls aren't linked to the agent's trace → [[Homelab UI page - Traces]]. *Fixed in the code: a span per request and per step.*
 3. **13 `up` series vs 11 targets** — Alloy's own scrapes → [[Homelab UI page - Metrics]].
-4. **`INFO` and `info` are different levels**, and oauth2-proxy logs one line per request → [[Homelab UI page - Logs]].
+4. **`INFO` and `info` are different levels**, and oauth2-proxy logs one line per request → [[Homelab UI page - Logs]]. *Fixed in the code: one case, no session-check lines, a link from a line to its trace.*
 5. **Every client address is the pod network's** (hostPort NAT) → [[Homelab UI page - Account]].
 6. **Kafka is empty**: no topic yet → [[Homelab UI page - Kafka]].
 7. **A raw label `password-display-name`** on the Account page → [[Homelab UI page - Account]].

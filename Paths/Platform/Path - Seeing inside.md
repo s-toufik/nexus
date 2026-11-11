@@ -135,7 +135,19 @@ So `{service_name="caddy"} |= "error"` works for every app — and pods annotate
 2026-09-27 10:47:52.310 | INFO     | my-conversation | handle_message:handle:42 - turn finished: answered, 1/20 steps in 4.5s
 ```
 
-**Common mistake** — searching three tools separately. Start from the symptom (metric), jump to an example (trace), then the detail (log).
+**Example from our projects** — where the trace context comes from in agent-runtime (`agent_node.py`): every step opens a span, so the model call and the tool calls made during that step become its children:
+```python
+async def __call__(self, state: GraphState) -> GraphState:
+    conversation, turn = self._codec.decode(state)
+    with _tracer.start_as_current_span(f"agent {self.name}") as span:
+        span.set_attribute("agent.step", self.name)
+        await self._events.publish(TurnEvent.entering(self.step, turn))
+        await self.work(conversation, turn)
+    return self._codec.encode(conversation, turn)
+```
+The parent is the request's server span; the MCP SDK then puts the current span's context in each tool call's `_meta.traceparent`, and the toolbox continues it. Before this, the agent opened no span: every tool call and every model call was its own trace ([[Homelab UI page - Traces]]).
+
+**Common mistake** — searching three tools separately. Start from the symptom (metric), jump to an example (trace), then the detail (log). And a second one: believing propagation is "automatic". Libraries carry the *current* span — if your code never opens one, there is nothing to carry.
 
 ### Do
 1. Agent page (auto-approve on): ask for something that needs a tool.
@@ -146,6 +158,6 @@ So `{service_name="caddy"} |= "error"` works for every app — and pods annotate
 ### Check
 1. How do you tie the agent's and the toolbox's records of one request together?
 > [!success]- Answer
-> By the request id: the agent sends `X-Request-ID` on its MCP calls and both services print it in every log line (and as a telemetry attribute). When `traceparent` also travels, the toolbox's spans join the agent's trace; otherwise match by request id and time.
+> By the trace: the agent's step spans are open during the call, the MCP SDK sends their context in `_meta.traceparent`, and the toolbox's `tools/call` span joins the agent's trace. Also by the request id: the agent sends `X-Request-ID` on its MCP calls and both services print it in every log line (and as a telemetry attribute).
 
 **Milestone:** given "the agent was slow at 10:00", you can find the slow step in under 5 minutes. Deep dive: [[Homelab observability]].

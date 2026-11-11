@@ -17,6 +17,7 @@ Full-text log indexes (Elasticsearch) are powerful but heavy. Loki's "labels lik
 - A **stream** = one unique label set; lines in it are compressed chunks.
 - **LogQL**: `{service_name="caddy"} |= "error"` (contains), `!=`, `|~ "regex"`, `| json` / `| logfmt` (parse), `| status >= 500` (filter on parsed fields).
 - **Metric queries**: `sum by (service_name) (rate({namespace="homelab"} |= "error" [5m]))`.
+- **`detected_level`**: the level Loki adds to each line. From a level *field* (a label or structured metadata named `level`, `severity`… — the list is `log_level_fields`) it copies the value as written (`INFO`); from an OTLP severity number or from the line's text it writes lower-case (`info`). Mixed sources → mixed cases, unless you choose the fields.
 - Ingest: push API (`/loki/api/v1/push`) or OTLP (`/otlp`); retention by time.
 - Same cardinality rule as Prometheus: few labels, many lines.
 

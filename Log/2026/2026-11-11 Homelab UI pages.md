@@ -22,5 +22,5 @@ tags: [log, homelab-ui]
 
 ## Next
 - [ ] Fix the agent's model routing (local models to llama-swap, or list only NVIDIA's).
-- [ ] Spans per agent step, and `traceparent` over MCP.
+- [x] Spans per agent step, and `traceparent` over MCP → [[2026-11-11 Logs and traces]].
 - [ ] Translate `password-display-name` on the Account page.

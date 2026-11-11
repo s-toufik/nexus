@@ -14,7 +14,7 @@ updated: 2026-11-08
 In a system of several services, "it's slow" has no single log to read. A trace shows the whole path — UI → API → agent → LLM → tool — with the time each took. It's how you find the one slow hop.
 
 ## How it works
-- **Context propagation**: the W3C `traceparent` header carries trace ID + parent span ID across HTTP calls; libraries do it automatically.
+- **Context propagation**: the W3C `traceparent` header carries trace ID + parent span ID across HTTP calls; libraries do it automatically — but only for the span that is *current*: code that never opens a span has nothing to propagate. Over MCP, the context travels in the JSON-RPC request's `_meta` (`traceparent`, `tracestate`), not in a header.
 - **Span**: `service.name`, operation, start/end, status, attributes (`http.route`, `db.statement`), events.
 - **Sampling**: keep all, a percentage, or decide at the end (tail sampling: keep errors and slow ones).
 - **Tempo**: stores traces by ID in object storage or disk; TraceQL search; **metrics generator** turns spans into RED metrics and a service graph.
