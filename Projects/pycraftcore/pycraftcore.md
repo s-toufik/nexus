@@ -4,7 +4,7 @@ status: active
 started: 2025
 repos: [pycraftcore]
 tags: [project, pycraftcore, python, library]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # pycraftcore
@@ -40,5 +40,5 @@ Then [[pycraftcore decisions]] and [[pycraftcore guides]].
 [[Hexagonal architecture]] · [[Dependency injection]] · [[Repository pattern]] · [[Retry and backoff]] · [[Circuit breaker]] · [[ASGI]] · [[Python web frameworks]] · [[Server-sent events]] · [[Data validation with pydantic and msgspec]] · [[asyncio]] · [[OpenTelemetry]] · [[Python packaging]] · [[uv and pyproject]] · [[AI agents and sandboxing]]
 
 ## Where it stands (2026-11-08)
-- Published on PyPI (development builds on TestPyPI); Python 3.14, `ty` strict.
+- Published on PyPI by a tag on `main`, development builds on TestPyPI by a tag on `develop` ([[pycraftcore - Release a version]]); Python 3.14, `ty` strict.
 - Work in progress on `develop`: circuit breaker and sandbox runner changes.

@@ -3,7 +3,7 @@ type: concept
 domain: Python
 level: intermediate
 tags: [concept, python, delivery]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Python packaging
@@ -18,7 +18,7 @@ updated: 2026-11-08
 - `py.typed` marks a typed package for type checkers.
 
 ## In our projects
-pycraftcore: `make build`, `make publish_dev` (TestPyPI, `TEST_PYPI_TOKEN`), `make publish` (PyPI, `RELEASE_PYPI_TOKEN`), then services raise their minimum and `uv lock --upgrade-package pycraftcore` ([[pycraftcore - Release a version]]).
+pycraftcore: a git tag publishes — on `develop` a pre-release (`v5.1.0rc1`) to TestPyPI, on `main` the release (`v5.1.0`) to PyPI; CI takes the version from the tag (`uv version --frozen`), finds the branch with `git merge-base --is-ancestor`, then services raise their minimum and `uv lock --upgrade-package pycraftcore` ([[pycraftcore - Release a version]]). A tag name is used once, so the trial and the release are two versions.
 
 ## Check yourself
 1. Why try a TestPyPI build in a service before PyPI?

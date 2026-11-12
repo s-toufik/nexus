@@ -14,10 +14,12 @@ tags: [log]
   - toolbox: `DependencyHealth`, `DependencyState`, `RefreshPolicy` → domain; `CatalogChange`, `ExternalSource`, `ToolLookup` → next to their ports;
   - agent: `ToolPort`, `ToolProviderPort`, `ToolSource` → `application/port/outbound/tool_provider.py`; `RegistryChange`, `RefreshPolicy` → `domain/tool/`; `ToolRegistry`, `ToolCatalogRefresher` → `application/tool/`.
 
+- pycraftcore's CI publishes on tags only, like the services: a tag on `main` to PyPI, on `develop` to TestPyPI, the version taken from the tag ([[pycraftcore - Release a version]]).
+
 ## What I learned
 - One loop for several dependencies shares one failure count: one server down made the healthy ones be re-read at its back-off pace.
 - A data class that crosses a port belongs to the port; one that only holds plain values can be domain.
 
 ## Next
-- [ ] Release pycraftcore 5.1.0, then `uv lock --upgrade-package pycraftcore` in both services.
+- [ ] Tag `v5.1.0` on `main` to release pycraftcore, then `uv lock --upgrade-package pycraftcore` in both services.
 - [ ] Release and deploy agent-toolbox and agent-runtime.
