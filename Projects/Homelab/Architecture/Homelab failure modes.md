@@ -3,7 +3,7 @@ type: architecture
 project: "[[Homelab]]"
 order: 8
 tags: [homelab, architecture, troubleshooting]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Homelab failure modes
@@ -41,7 +41,7 @@ Go from the outside in, and let Kubernetes tell you:
 ### Deploying
 - **`make apply` says nothing changed, but the pod is gone**: it compares git with the *Helm release*, not with the cluster. `make sync R=…`.
 - **Same tag rebuilt, old code runs**: chart cached by helmfile, image cached by k3s (`IfNotPresent`). Tags must be immutable; bump the version.
-- **`dev` tag never updates**: same reason; use `dev-<sha>`.
+- **`dev` tag never updates**: same reason; deploy the pre-release's own tag, `X.Y.Z-rc.N`.
 - **`another operation is in progress`**: a Helm operation was interrupted (Ctrl-C, timeout) and left the release `pending-*`. `make rollback R=…`.
 - **`docker-credential-desktop not found`**: Helm reads `~/.docker/config.json`, which names a credential helper from Docker Desktop that isn't installed on the server.
 - **A release with hostPorts can't roll**: the new pod needs the port the old one holds. The chart uses `Recreate` (stop old, start new) — a few seconds of downtime is the price of one node.

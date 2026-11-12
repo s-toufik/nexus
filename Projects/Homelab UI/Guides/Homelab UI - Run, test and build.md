@@ -2,7 +2,7 @@
 type: guide
 project: "[[Homelab UI]]"
 tags: [guide, homelab-ui]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Homelab UI - Run, test and build
@@ -23,9 +23,9 @@ updated: 2026-11-08
 | All checks                                                                                                                        | `make check`                      | lint + typecheck + test                                                                                                      |
 | Production build to `dist/homelab-ui`                                                                                             | `make build`                      | `rm -rf dist && npx ng build`                                                                                                |
 | Local image                                                                                                                       | `make docker_build`               | `docker build -f devops/docker/Dockerfile -t homelab-ui:local .`                                                             |
-| Publish a test image (releases: git tag, see below)                                                                               | `make docker_publish [TAG=1.4.0]` | `docker buildx build --platform linux/amd64,linux/arm64 -f devops/docker/Dockerfile -t toufik142/homelab-ui:latest --push .` |
+| Publish a test image (releases: git tag, see below)                                                                               | `make docker_publish [TAG=manual]` | `docker buildx build --platform linux/amd64,linux/arm64 -f devops/docker/Dockerfile -t toufik142/homelab-ui:manual --push .` |
 
-`npm start` calls the backends directly on their ports, without the gateway, from a machine on the tailnet: the Agent page and the assistant work against the server's agent-runtime (`http://<your-server>:8000`). The tool pages, PostgREST and the `/api/health` routes exist only behind the gateway, so they need the deployed UI (`https://<server>.<tailnet>.ts.net/`) or a dev image deployed with `helmfile -l name=homelab-ui apply --set image.tag=dev-<sha>` in homelab-infra ([[Homelab - Release an app#Try a dev image]]).
+`npm start` calls the backends directly on their ports, without the gateway, from a machine on the tailnet: the Agent page and the assistant work against the server's agent-runtime (`http://<your-server>:8000`). The tool pages, PostgREST and the `/api/health` routes exist only behind the gateway, so they need the deployed UI (`https://<server>.<tailnet>.ts.net/`) or a pre-release image deployed with `helmfile -l name=homelab-ui apply --set image.tag=X.Y.Z-rc.N` in homelab-infra ([[Homelab - Release an app#Try a dev image]]).
 
 ## Try it against a backend on your Mac
 

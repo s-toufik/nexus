@@ -3,7 +3,7 @@ type: concept
 domain: Delivery
 level: beginner
 tags: [concept, delivery, ci]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # CI with GitHub Actions
@@ -20,7 +20,7 @@ A build on your laptop depends on your laptop. CI builds from the repository alo
 - **Reusable workflows** (`workflow_call`): one workflow called by many repositories.
 
 ## In our projects
-- Each app: on `develop` push → image `dev-<sha>`; on tag `vX.Y.Z` → image `X.Y.Z` on Docker Hub and chart on GHCR, via kube-charts' reusable `app-chart.yml` ([[kube-charts]]).
+- Each app publishes on tags only: a tag `vX.Y.Z-rc.N` on `develop` → images `X.Y.Z-rc.N` and `dev`; a tag `vX.Y.Z` on `main` → images `X.Y.Z` and `latest` on Docker Hub and chart on GHCR, via kube-charts' reusable `app-chart.yml` ([[kube-charts]]).
 - kube-charts: `charts.yml` lints and renders every chart on every push; publishes new chart versions on `main`.
 - GHCR packages must be **public** for the server to pull charts without a login.
 

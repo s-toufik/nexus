@@ -3,7 +3,7 @@ type: architecture
 project: "[[Homelab UI]]"
 order: 4
 tags: [homelab-ui, architecture, delivery]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Homelab UI delivery
@@ -26,7 +26,7 @@ FROM nginxinc/nginx-unprivileged:1.27-alpine                # the runtime: no No
 - **Unprivileged nginx** listens on 8080 as uid 101; the chart adds `readOnlyRootFilesystem` and an `emptyDir` for `/tmp` ([[Pod security context]]).
 
 ## CI
-`.github/workflows/cicd.yml`: LINT (prettier) → TYPECHECK (`tsc`) → TEST (vitest via `ng test`) → BUILD (image, not pushed); on `develop`/`main` also PUBLISH (`dev`, `latest`); on a tag `vX.Y.Z` PUBLISH `X.Y.Z` and CHART (kube-charts' reusable workflow bakes `devops/helm/values.yml` into a chart) ([[CI with GitHub Actions]], [[Git flow]]).
+`.github/workflows/cicd.yml`: LINT (prettier) → TYPECHECK (`tsc`) → TEST (vitest via `ng test`) → BUILD (image, not pushed); only tags publish: a tag `vX.Y.Z-rc.N` on `develop` pushes `X.Y.Z-rc.N` and `dev`, a tag `vX.Y.Z` on `main` pushes `X.Y.Z` and `latest`, then CHART (kube-charts' reusable workflow bakes `devops/helm/values.yml` into a chart) ([[CI with GitHub Actions]], [[Git flow]]).
 
 ## How it runs on the homelab
 `devops/helm/values.yml`: one replica, port 8080, readiness and liveness on `/`, 10m CPU / 128 Mi. Caddy serves it on `/` behind the sign-in; it can scale out because it has no volume and no host port.

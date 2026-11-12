@@ -25,7 +25,7 @@ The server runs homelab-ui as a Helm release: the chart `oci://ghcr.io/s-toufik/
 
 Ports, probes, resources and env variables are in `devops/helm/values.yml`; the next release carries a change there to the server.
 
-`make docker_publish` still pushes `latest` (or `TAG=…`) from a Mac for both `linux/amd64` and `linux/arm64`: built with plain `docker build` on a Mac, an image would be arm64 only and fail on an x86-64 server with `exec format error`. The Dockerfile builds the static files once on the builder's own platform (`--platform=$BUILDPLATFORM`), then copies them into an nginx image for each target.
+`make docker_publish` pushes `manual` (or `TAG=…`; never `latest` or `dev`, which CI moves to the last release and pre-release) from a Mac for both `linux/amd64` and `linux/arm64`: built with plain `docker build` on a Mac, an image would be arm64 only and fail on an x86-64 server with `exec format error`. The Dockerfile builds the static files once on the builder's own platform (`--platform=$BUILDPLATFORM`), then copies them into an nginx image for each target.
 
 ## If it goes wrong
 - Same tag rebuilt, old UI still served: [[Homelab - Release an app#A version rebuilt under the same tag]].

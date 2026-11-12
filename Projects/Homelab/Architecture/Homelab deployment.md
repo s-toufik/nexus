@@ -3,7 +3,7 @@ type: architecture
 project: "[[Homelab]]"
 order: 2
 tags: [homelab, architecture, delivery]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Homelab deployment
@@ -100,7 +100,7 @@ Why order matters: Keycloak can't start without its database; the agent-toolbox 
 2. In homelab-infra: `apps.<app>: X.Y.Z` in `versions.yaml`, commit, push.
 3. On the server: `git pull`, `make apply R=<app>`.
 
-`develop` pushes publish `dev-<sha>` images only — to try one, see [[Homelab - Release an app#Try a dev image]].
+Pushes publish nothing; a tag `vX.Y.Z-rc.N` on `develop` publishes the image `X.Y.Z-rc.N` (and `dev`), never a chart — to try one, see [[Homelab - Release an app#Try a dev image]].
 
 ## Edge cases
 - **Rebuilding under the same tag doesn't reach the server.** Helmfile caches the chart, k3s caches the image (`IfNotPresent`). Either bump the version (right way) or clear both caches — [[Homelab - Release an app#A version rebuilt under the same tag]]. This is why tags must be immutable.

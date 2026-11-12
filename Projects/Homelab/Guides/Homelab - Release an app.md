@@ -36,26 +36,26 @@ updated: 2026-11-12
 
 ## Try a dev image
 
-Every push to `develop` of agent-runtime (or agent-toolbox) publishes the image `toufik142/agent-runtime:dev-<commit sha>`. The homelab normally runs the version tagged `vX.Y.Z`; you can point it at a dev image instead.
+A tag `vX.Y.Z-rc.N` on `develop` of agent-runtime (or agent-toolbox) publishes the image `toufik142/agent-runtime:X.Y.Z-rc.N` (and moves `:dev` to it); pushes publish nothing. The homelab normally runs the version tagged `vX.Y.Z` on `main`; you can point it at a pre-release instead.
 
-1. Find the commit's full sha: the green **PUBLISH** run in the repository's **Actions**, or on your Mac `git rev-parse origin/develop`.
+1. On your Mac, in the app repository: `git switch develop && git pull`, `git tag vX.Y.Z-rc.N`, `git push origin vX.Y.Z-rc.N`; **Actions**: RELEASE TARGET says `prerelease`, PUBLISH is green.
 2. Pick how long it should stay:
    - **Just to try it** (undone by the next `make apply`):
      ```bash
-     helmfile -l name=agent-runtime apply --set image.tag=dev-<sha>
+     helmfile -l name=agent-runtime apply --set image.tag=X.Y.Z-rc.N
      ```
    - **Until you remove it**: on your Mac, in `apps/agent-runtime/values.yaml.gotmpl`, add
      ```yaml
      image:
-       tag: dev-<sha>
+       tag: X.Y.Z-rc.N
      ```
      commit, push; on the server `git pull`, `make apply R=agent-runtime` — raw: `helmfile -l name=agent-runtime apply`.
-3. Check: `kubectl -n homelab get deploy agent-runtime -o jsonpath='{.spec.template.spec.containers[0].image}'; echo` → `toufik142/agent-runtime:dev-<sha>`; `make logs R=agent-runtime`.
+3. Check: `kubectl -n homelab get deploy agent-runtime -o jsonpath='{.spec.template.spec.containers[0].image}'; echo` → `toufik142/agent-runtime:X.Y.Z-rc.N`; `make logs R=agent-runtime`.
 4. Back to the release: remove the `image:` lines (or just `make apply R=agent-runtime` for the "just to try it" way).
 
-- Use `dev-<sha>`, not `dev`: the server keeps an image it already has, so `:dev` would not pick up a newer push.
-- Only the image changes. The chart, with the repository's `devops/helm/values.yml` (env variables, Secrets, probes), stays the one of the release. A dev build that needs a new env variable needs it in `apps/agent-runtime/values.yaml.gotmpl` too, under `env:`.
-- Same for agent-toolbox: `name=agent-toolbox`, `apps/agent-toolbox/values.yaml.gotmpl`, image `toufik142/agent-toolbox:dev-<sha>`.
+- Use `X.Y.Z-rc.N`, not `dev`: the server keeps an image it already has, so `:dev` would not pick up a newer pre-release.
+- Only the image changes. The chart, with the repository's `devops/helm/values.yml` (env variables, Secrets, probes), stays the one of the release. A pre-release that needs a new env variable needs it in `apps/agent-runtime/values.yaml.gotmpl` too, under `env:`.
+- Same for agent-toolbox: `name=agent-toolbox`, `apps/agent-toolbox/values.yaml.gotmpl`, image `toufik142/agent-toolbox:X.Y.Z-rc.N`.
 
 ## A version rebuilt under the same tag
 

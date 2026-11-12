@@ -126,10 +126,9 @@ The server never commits: git history is the complete record of what changed, wh
 | Event | Publishes | Deployed? |
 |---|---|---|
 | PR to develop/main | nothing (checks only) | no |
-| push to develop | image `:dev`, `:dev-<sha>` | no |
-| push to main | image `:latest` | no |
-| tag `vX.Y.Z-rc.N` on develop | image `:X.Y.Z-rc.N` | no |
-| tag `vX.Y.Z` on main | image `:X.Y.Z` + chart `X.Y.Z` | when `versions.yaml` says so |
+| push to develop or main | nothing (checks only) | no |
+| tag `vX.Y.Z-rc.N` on develop | images `:X.Y.Z-rc.N`, `:dev` | no |
+| tag `vX.Y.Z` on main | images `:X.Y.Z`, `:latest` + chart `X.Y.Z` | when `versions.yaml` says so |
 
 **Common mistake** — moving a tag after publishing (`git tag -f`): the server cached the old image and chart under that version and keeps running them.
 

@@ -3,7 +3,7 @@ type: concept
 domain: Delivery
 level: beginner
 tags: [concept, delivery, containers]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Container image
@@ -22,13 +22,13 @@ updated: 2026-11-08
 - Registries: Docker Hub, GHCR (GitHub), Quay. Charts can live in registries too, as **OCI artifacts**.
 
 ## In our projects
-- Apps are built by GitHub Actions on a tag and pushed to Docker Hub as `toufik142/<app>:X.Y.Z`; `develop` pushes `dev-<sha>` ([[CI with GitHub Actions]]).
+- Apps are built by GitHub Actions on a tag and pushed to Docker Hub as `toufik142/<app>:X.Y.Z`; a tag on `develop` pushes a pre-release `X.Y.Z-rc.N`; `latest` and `dev` follow the last release and pre-release ([[CI with GitHub Actions]]).
 - k3s pulls with a Docker Hub read-only login (`registries.yaml`) to avoid anonymous rate limits.
 - Image versions of every service are in `environments/versions.yaml` ([[Homelab deployment]]).
 
 ## Pitfalls we met
 - **Rebuilt same tag, old code runs**: `IfNotPresent` keeps the cached image. Never reuse a tag; or remove it with `sudo k3s crictl rmi`.
-- **`dev` tag**: same trap; use `dev-<sha>`.
+- **`dev` tag**: same trap; deploy `X.Y.Z-rc.N`, which never moves.
 - Check what really runs: the pod's `imageID` digest.
 
 ## Check yourself
