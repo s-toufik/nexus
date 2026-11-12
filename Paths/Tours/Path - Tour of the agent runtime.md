@@ -4,7 +4,7 @@ track: Tours
 time: ~5 h
 projects: ["[[Agent runtime]]"]
 tags: [path, tour]
-updated: 2026-11-10
+updated: 2026-11-12
 ---
 
 # Path - Tour of the agent runtime
@@ -197,7 +197,7 @@ List it under `mcp:` in `config/root.yml` and deploy: its tools join the catalog
 ### Check
 1. How does the agent find its tools, and what if the toolbox is down when it starts?
 > [!success]- Answer
-> At boot it lists the tools of every MCP connector (`toolbox` and any `external_mcp_*`), then keeps doing it in the background (`ToolCatalogRefresher`). A server that's down is retried after 5 s, 10, 20, 40, then every 60 s; its tools join as soon as it answers, with no restart. The agent is ready meanwhile and answers without those tools.
+> At boot it lists the tools of every MCP connector (`toolbox` and any `external_mcp_*`), then keeps doing it in the background (`ToolCatalogRefresher`). Each server has its own loop: one that's down is retried after 5 s, 10, 20, 40, then every 60 s (the `refresh` block of its connector), and its tools join as soon as it answers, with no restart. The agent is ready meanwhile and answers without those tools.
 
 ## 5. The principles inside · ~30 min
 | Principle | Concept | Where it lives here | Go deep |

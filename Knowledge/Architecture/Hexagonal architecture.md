@@ -3,7 +3,7 @@ type: concept
 domain: Architecture
 level: intermediate
 tags: [concept, architecture]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Hexagonal architecture
@@ -37,11 +37,23 @@ Frameworks, databases and AI libraries change faster than business rules. When r
 ## Pitfalls we met
 - **Over-abstraction:** a port with one adapter that will never change is just indirection. Add one where the dependency is volatile or slow to test.
 - **Leaky ports:** a port returning a library's types (a LangChain message) ties the core to it anyway — keep library types in adapters.
+- **Things in the wrong ring** (fixed 2026-11-12 in both agent services):
+  - a port that imported its data from inside the application (`ToolPublisher` → `CatalogChange`): the data that crosses a port lives with the port;
+  - pure rules sitting in the application (`DependencyHealth`, the back-off delays): no dependency, so domain;
+  - ports defined inside an adapter, and application logic with no technology in it (the agent's tool registry and refresher) living there too: move them inward;
+  - what stays out: `McpSessionFactory` returns an `mcp.ClientSession`, a library type, so it remains inside the MCP adapter.
 
 ## Check yourself
 1. Who owns a port: the application or the adapter? Why does that matter?
 2. Name an inbound and an outbound adapter in agent-runtime.
 3. When is a port not worth it?
+4. `CatalogChange` holds `Tool` objects, and `Tool` is a port. Can `CatalogChange` be domain?
+
+> [!success]- Answers
+> 1. The application: it says what it needs in its own words, so adapters depend on it and not the other way round; swapping a technology then never touches the rules.
+> 2. Inbound: `StreamAgentController` (HTTP and SSE). Outbound: the LangChain model adapters, or `Toolbox` with its MCP calls.
+> 3. When it has one adapter that will never change and is quick to test as it is: then it's only indirection.
+> 4. No: the domain may not depend on a port. It goes with the `ToolPublisher` port it crosses; the agent's `RegistryChange` holds only names, so that one is domain.
 
 ## Go further
 - [Alistair Cockburn: Hexagonal architecture](https://alistair.cockburn.us/hexagonal-architecture/).

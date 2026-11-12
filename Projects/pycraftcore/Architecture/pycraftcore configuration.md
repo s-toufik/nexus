@@ -3,7 +3,7 @@ type: architecture
 project: "[[pycraftcore]]"
 order: 2
 tags: [pycraftcore, architecture, configuration]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # pycraftcore configuration
@@ -32,6 +32,7 @@ Previous: [[pycraftcore modules]] · Next: [[pycraftcore web toolkits]]
 - `oc.env` always yields **strings**: convert `parameters` where you read them.
 - An env variable passed **empty** overrides the YAML default — e.g. Compose's `${WEB_DOCS}` with nothing set makes the service refuse to start. Don't pass optional variables empty.
 - `server: {}` is required (even empty) for a service with no HTTP API (the toolbox).
+- An MCP connector's optional `refresh` block (`interval`, `retry_delay`, `max_retry_delay`, in seconds; 60, 5 and 60 when left out) sets how often a client re-reads that server's tools. pycraftcore only carries and checks the numbers (`McpRefresh`: all above 0, the ceiling not below the first delay); the loop is the service's ([[Start order and dependencies]]). agent-runtime and agent-toolbox read them from `MCP_REFRESH_INTERVAL`, `MCP_RETRY_DELAY` and `MCP_MAX_RETRY_DELAY`.
 
 ## Check yourself
 1. What's the difference between a connector and an operation?
