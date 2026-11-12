@@ -2,7 +2,7 @@
 type: architecture
 project: "[[Homelab UI]]"
 tags: [homelab-ui, ui-page]
-updated: 2026-11-11
+updated: 2026-11-12
 ---
 
 # Homelab UI page - Tools
@@ -33,7 +33,7 @@ updated: 2026-11-11
 The page is a small [[Model Context Protocol|MCP]] client: `initialize` → `tools/list` → `tools/call` over Streamable HTTP to the toolbox ([[Agent toolbox]]). The republished tools are proxies: `postgres_list_schemas` → the toolbox → `postgres-mcp` → PostgreSQL with the read-only `mcp` role ([[Agent toolbox republished tools]]).
 
 ## What the real homelab showed (2026-11-11)
-The agent's three-sentence answer used **15.5 k input tokens** ([[Homelab UI page - Agent]]). Part of what goes into a model call is the tool catalogue; 55 descriptions are many tokens. More tools make every call costlier and the choice harder. That's what the toolbox's per-server `tools` allowlist is for (`config/<env>/operation/mcp.yml`); today it's empty for all three servers, which means *every* tool.
+The agent's three-sentence answer used **15.5 k input tokens** ([[Homelab UI page - Agent]]). Part of what goes into a model call is the tool catalogue; 55 descriptions are many tokens. More tools make every call costlier and the choice harder. That's what the toolbox's per-server `tools` allowlist is for (`config/<env>/operation/mcp.yml`); today it's empty for all three servers, which means *every* tool. *Since then, agent-runtime lists each tool in one line and sends full definitions only for the tools a plan uses: a direct answer starts at about 2.5k tokens instead of 13.7k.*
 
 ## Try it
 1. 👀 `postgres_list_schemas` → Run → five schemas.

@@ -61,7 +61,7 @@ Each message is `POST /api/agent/v1/stream` with `{message, model_name, request_
 ## What the real homelab showed (2026-11-11)
 - **A new browser gets a broken agent.** The page picks the first model of the list, `qwen3.5-0.8b`, a *local* model. But agent-runtime sends every model call to `llmBaseUrl` = NVIDIA's hosted API (homelab-infra `environments/default.yaml`), which doesn't know that name: every message fails with *The model server rejected the request (404 page not found)*. NVIDIA's models work. *Fixed in the code: each model names its provider in `operation/llm.yml`; local models go to llama-swap (`HOMELAB_LLM_BASE_URL`), NVIDIA's to NVIDIA, each with its own client and circuit breaker.*
 - **The answer is fluent and wrong.** Asked *what is a KV cache?*, the model described a web-style key-value cache that "sits between the application and the backend" (and it gave the same answer when asked again). In LLMs, the KV cache keeps each token's attention keys and values so the next token doesn't recompute them ([[LLM fundamentals]]). The review step accepted it. Lesson: be specific (*"in a transformer"*), and check the source of facts.
-- **15.5 k input tokens for a one-line question:** the system prompts, the tool catalogue and the history ride along with every call ([[Homelab UI page - Tools]]).
+- **15.5 k input tokens for a one-line question:** the system prompts, the tool catalogue and the history ride along with every call ([[Homelab UI page - Tools]]). *Fixed in the code: one line per tool in the prompt, full definitions only for the plan's tools; about 2.5k tokens for a direct answer.*
 
 ## Try it
 1. 👀 Ask *"What is a KV cache in a transformer?"* → compare with the answer above.

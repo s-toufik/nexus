@@ -25,6 +25,8 @@ tags: [log]
 
 - agent-runtime sizes every model call to the window: room for the answer and the tool definitions, tool results of the turn cut oldest first; fixes a `400` from llama.cpp (45,621 tokens for 32,768) — [[LLM fundamentals]].
 
+- Cut the fixed part of every model call, measured on the 55 real tools: one line per tool in the prompt, a plan step binds only the plan's tools, `python_executor` lists functions in two lines each. Direct answer 13.7k → 2.5k tokens, plan step 42.5k → 4–10k.
+
 ## What I learned
 - One loop for several dependencies shares one failure count: one server down made the healthy ones be re-read at its back-off pace.
 - A data class that crosses a port belongs to the port; one that only holds plain values can be domain.
@@ -32,6 +34,8 @@ tags: [log]
 - A tag doesn't belong to a branch; `git merge-base --is-ancestor` is how CI tells which branch a tagged commit is on.
 
 - Trimming the history isn't enough: what the current turn adds (tool results, tool definitions) must fit too.
+
+- Measure before trimming: the tool definitions, not the history, filled the window.
 
 ## Next
 - [ ] Tag `v5.1.0` on `main` to release pycraftcore, then `uv lock --upgrade-package pycraftcore` in both services.
