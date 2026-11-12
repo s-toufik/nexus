@@ -40,6 +40,6 @@ The agent's three-sentence answer used **15.5 k input tokens** ([[Homelab UI pag
 2. 👀 `file_reader` with `file_path` = a file the agent wrote → its content; with `../etc/passwd` → refused: paths stay in the working directory ([[Agent toolbox sandbox]]).
 
 > [!question]- Check: a tool works here but the agent says it failed. Name two causes outside the tool.
-> The model filled the arguments differently (wrong name, wrong type — compare in the agent's trace or logs); or the agent started before the toolbox had that tool (it lists tools at start: restart the agent).
+> The model filled the arguments differently (wrong name, wrong type — compare in the agent's trace or logs); or the tool is less than a minute old and the agent hasn't re-read the toolbox yet (it does every 60 s, and at once when a model asks for a tool it doesn't know).
 
 Back to [[Homelab UI pages]].

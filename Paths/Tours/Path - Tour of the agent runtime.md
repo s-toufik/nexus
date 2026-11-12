@@ -187,7 +187,7 @@ connector:
       key_name: Authorization
       key_value: ${oc.env:ANALYTICS_MCP_TOKEN,''}
 ```
-List it under `mcp:` in `config/root.yml`, restart: its tools join the catalogue.
+List it under `mcp:` in `config/root.yml` and deploy: its tools join the catalogue, and keep following it — the agent re-reads every MCP server in the background ([[Start order and dependencies]]).
 
 **Common mistake** — setting an optional variable to an empty string in a deployment (`WEB_DOCS=`): it overrides the YAML default and the agent refuses to start.
 
@@ -197,7 +197,7 @@ List it under `mcp:` in `config/root.yml`, restart: its tools join the catalogue
 ### Check
 1. How does the agent find its tools, and what if the toolbox is down when it starts?
 > [!success]- Answer
-> At boot it lists the tools of every MCP connector (`toolbox` and any `external_mcp_*`). A server that's down is skipped with a warning; its tools are missing until the agent restarts.
+> At boot it lists the tools of every MCP connector (`toolbox` and any `external_mcp_*`), then keeps doing it in the background (`ToolCatalogRefresher`). A server that's down is retried after 5 s, 10, 20, 40, then every 60 s; its tools join as soon as it answers, with no restart. The agent is ready meanwhile and answers without those tools.
 
 ## 5. The principles inside · ~30 min
 | Principle | Concept | Where it lives here | Go deep |

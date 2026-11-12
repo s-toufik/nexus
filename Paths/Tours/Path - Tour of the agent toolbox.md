@@ -39,7 +39,7 @@ result = df.sort_values("users", ascending=False).head(3).to_dict("records")
 ```
 One call does a query, an analysis and a file — and the rows never pass through the model's context.
 
-**Common mistake** — expecting a new tool to appear in the agent at once: the agent lists tools when it starts, so restart it after the toolbox changes.
+**Common mistake** — expecting a new tool to appear in the agent at once: the agent re-reads the toolbox every 60 s, so allow up to a minute (or ask for the tool: an unknown name makes it re-read at once). The same holds between the toolbox and the MCP servers it republishes ([[Start order and dependencies]]).
 
 ### Do
 👀 homelab-ui's **Tools** page: run `file_reader` on a file the agent wrote, then `postgres_list_schemas`. Open the same in the MCP Inspector (`https://<HOMELAB_DOMAIN>:6274`).
@@ -92,7 +92,7 @@ Those descriptions are what the model reads in `tools/list` to fill the call.
 ### Check
 1. A new tool is added. What does it take for the agent and the UI to show it?
 > [!success]- Answer
-> Register it in `ToolboxDI` and release; then restart the agent (it lists tools at boot). homelab-ui's Tools page lists whatever the toolbox publishes, with no change.
+> Add it to the catalogue in `ToolboxDI` and release. The agent picks it up within a minute, with no restart (it re-reads the toolbox in the background). homelab-ui's Tools page lists whatever the toolbox publishes, with no change.
 
 **You can now:** read and write a tool. Deep dive: [[Agent toolbox layers]].
 

@@ -10,6 +10,7 @@ What happened, and when. One note per work session in `Log/<year>/`, named `YYYY
 Before working on a project, read its latest entry: you know where we stopped.
 
 ## 2026
+- [[2026-11-12 Start order without depends_on]]
 - [[2026-11-11 Logs and traces]]
 - [[2026-11-11 Homelab UI pages]]
 - [[2026-11-11 Caddy lost its certificate]]

@@ -9,7 +9,7 @@ What things are and how they work, in your words. One note per idea, from the *C
 
 | Domain | Notes |
 |---|---|
-| **Kubernetes** | [[Kubernetes]] · [[k3s]] · [[Pod]] · [[Deployment and StatefulSet]] · [[Service]] · [[ConfigMap and Secret]] · [[Volumes]] · [[Probes]] · [[Jobs and CronJobs]] · [[NetworkPolicy]] · [[RBAC]] · [[Pod security context]] · [[hostPort and hostNetwork]] · [[Operator]] · [[CoreDNS]] |
+| **Kubernetes** | [[Kubernetes]] · [[k3s]] · [[Pod]] · [[Deployment and StatefulSet]] · [[Service]] · [[ConfigMap and Secret]] · [[Volumes]] · [[Probes]] · [[Start order and dependencies]] · [[Jobs and CronJobs]] · [[NetworkPolicy]] · [[RBAC]] · [[Pod security context]] · [[hostPort and hostNetwork]] · [[Operator]] · [[CoreDNS]] |
 | **Delivery** | [[Git]] · [[YAML and templating]] · [[Container image]] · [[Helm]] · [[helmfile]] · [[Semantic versioning]] · [[CI with GitHub Actions]] · [[Git flow]] · [[Pre-commit hooks]] · [[Building C++ with CMake and Conan]] · [[Rust with Cargo]] |
 | **Networking** | [[IP addresses and CIDR]] · [[DNS]] · [[TLS and certificates]] · [[Reverse proxy]] · [[Tailscale]] · [[Firewall and nftables]] |
 | **Security** | [[Least privilege and defence in depth]] · [[OAuth 2.0 and OpenID Connect]] · [[Forward authentication]] · [[Cookies and sessions]] · [[CSRF]] · [[Password hashing]] · [[Secrets management]] |

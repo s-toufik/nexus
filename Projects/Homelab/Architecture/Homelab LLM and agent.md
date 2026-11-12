@@ -52,8 +52,8 @@ So it can't reach PostgreSQL, MongoDB, Kafka, the LLM, your home network, the cl
 
 ## Edge cases
 - **MCP servers reject unknown `Host` headers** (DNS-rebinding protection). grafana-mcp needs `--allowed-hosts=grafana-mcp:8000`; mongodb-mcp refuses to listen on `0.0.0.0` without `MDB_MCP_DANGEROUS_HOST_BINDING`. A `403 host not allowed` is this, not auth.
-- **Tools are discovered at start**: add or restart an MCP server, then `make restart R=agent-toolbox` (and agent-runtime, which caches the tool list).
-- **A server down at start** is skipped with a warning; its tools are missing until the next restart.
+- **Tools are re-read in the background**: the toolbox re-lists each MCP server's tools every 60 s, the agent the toolbox's; a change shows within a minute, with no restart.
+- **A server down at start** is retried (5 s, then 10, 20, 40, every 60 s) and its tools join when it answers; one that goes down keeps its tools listed, and calls fail with a clear message until it's back. Why: Kubernetes has no start order ([[Start order and dependencies]]).
 - **Too many tools** degrade a model's choices and fill its context: hence the allowlist (`categories` for Grafana).
 - **Scraping keeps models loaded** — see llm-sd in [[Homelab observability]].
 

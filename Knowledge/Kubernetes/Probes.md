@@ -30,6 +30,7 @@ Check kinds: `httpGet` (2xx/3xx = OK), `tcpSocket` (port open), `exec` (exit 0),
 
 ## Pitfalls we met
 - **Liveness that depends on another service** (the database) restarts healthy pods when the database blips — cascading restarts. Put dependencies in readiness, not liveness.
+- **Readiness that depends on an *optional* service** takes the whole service away for one missing piece: agent-toolbox stays ready when an MCP server is down and lists it in `/actuator/health` instead ([[Start order and dependencies]]).
 - A liveness probe without a startup probe can kill a slow starter in a loop.
 - `Running 0/1` = readiness failing; read the Events in `kubectl describe pod`.
 
