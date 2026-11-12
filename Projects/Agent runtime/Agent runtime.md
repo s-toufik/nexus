@@ -4,7 +4,7 @@ status: active
 started: 2026-09
 repos: [agent-runtime]
 tags: [project, agent-runtime, ai]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Agent runtime
@@ -12,6 +12,10 @@ updated: 2026-11-08
 > An AI agent served over HTTP. It understands a message, answers straight away when it can, writes a plan when the request needs tools, runs the tools once you approve, reviews its own answer, and streams everything back as server-sent events.
 
 ## In one picture
+![[Agent runtime - Harness.svg]]
+
+The harness around the model, and what it holds: models, memory, protocols. How the parts connect, file by file:
+
 ![[Agent runtime.canvas]]
 
 ## Why it exists

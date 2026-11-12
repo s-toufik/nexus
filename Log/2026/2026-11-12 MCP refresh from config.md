@@ -19,6 +19,8 @@ tags: [log]
 
 - Images publish on tags only: a tag on `develop` pushes `X.Y.Z-rc.N` and `dev`, a tag on `main` pushes `X.Y.Z` and `latest`; trying a build on the homelab uses the rc tag, which replaces `dev-<sha>`.
 
+- A picture of agent-runtime as a harnessed LLM agent (harness, models, memory, protocols, and the route of a turn), on the GitHub homepage and in [[Agent runtime]]: `System/Assets/Agent runtime/Agent runtime - Harness.svg`.
+
 ## What I learned
 - One loop for several dependencies shares one failure count: one server down made the healthy ones be re-read at its back-off pace.
 - A data class that crosses a port belongs to the port; one that only holds plain values can be domain.
