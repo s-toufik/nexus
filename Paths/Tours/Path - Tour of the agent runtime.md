@@ -17,6 +17,9 @@ How each lesson works: **Learn** → **Do** (👀 looks, ✋ changes) → **Chec
 ## 1. What it is, and why · ~45 min
 
 ### Learn
+![[Agent runtime - Harness.svg]]
+The whole agent in one picture: the **harness** in the middle (what this tour is mostly about), and around it the **models** it calls, the **memory** it keeps and the **protocols** it speaks. Come back to it after each lesson and point at what you just learned.
+
 **Definitions**
 - **Agent** — a program that uses a language model in a loop to decide and take actions (tool calls) until it can answer ([[AI agents and sandboxing]]).
 - **Turn** — one user message and all the work done for it.
