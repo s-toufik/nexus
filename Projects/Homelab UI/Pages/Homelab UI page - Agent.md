@@ -2,7 +2,7 @@
 type: architecture
 project: "[[Homelab UI]]"
 tags: [homelab-ui, ui-page]
-updated: 2026-11-11
+updated: 2026-11-12
 ---
 
 # Homelab UI page - Agent
@@ -59,7 +59,7 @@ When the server pins steps to models, a *Fixed by the server* list appears below
 Each message is `POST /api/agent/v1/stream` with `{message, model_name, request_id, auto_approve}`; the reply is a stream of `status`, `token`, `final` and `complete` events ([[Homelab UI state and streaming]], [[Agent runtime]]).
 
 ## What the real homelab showed (2026-11-11)
-- **A new browser gets a broken agent.** The page picks the first model of the list, `qwen3.5-0.8b`, a *local* model. But agent-runtime sends every model call to `llmBaseUrl` = NVIDIA's hosted API (homelab-infra `environments/default.yaml`), which doesn't know that name: every message fails with *The model server rejected the request (404 page not found)*. NVIDIA's models work. To fix: give local models their own base URL (llama-swap), or list only NVIDIA's.
+- **A new browser gets a broken agent.** The page picks the first model of the list, `qwen3.5-0.8b`, a *local* model. But agent-runtime sends every model call to `llmBaseUrl` = NVIDIA's hosted API (homelab-infra `environments/default.yaml`), which doesn't know that name: every message fails with *The model server rejected the request (404 page not found)*. NVIDIA's models work. *Fixed in the code: each model names its provider in `operation/llm.yml`; local models go to llama-swap (`HOMELAB_LLM_BASE_URL`), NVIDIA's to NVIDIA, each with its own client and circuit breaker.*
 - **The answer is fluent and wrong.** Asked *what is a KV cache?*, the model described a web-style key-value cache that "sits between the application and the backend" (and it gave the same answer when asked again). In LLMs, the KV cache keeps each token's attention keys and values so the next token doesn't recompute them ([[LLM fundamentals]]). The review step accepted it. Lesson: be specific (*"in a transformer"*), and check the source of facts.
 - **15.5 k input tokens for a one-line question:** the system prompts, the tool catalogue and the history ride along with every call ([[Homelab UI page - Tools]]).
 

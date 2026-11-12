@@ -2,7 +2,7 @@
 type: architecture
 project: "[[Homelab UI]]"
 tags: [homelab-ui, ui-page]
-updated: 2026-11-11
+updated: 2026-11-12
 ---
 
 # Homelab UI page - Models
@@ -35,7 +35,7 @@ updated: 2026-11-11
 ## What the real homelab showed (2026-11-11)
 - `qwen3-8b` loaded; the control center's Busiest containers shows the `llm` container at ~5.5 GiB — that's the model in memory.
 - The logs say `GPU monitoring not available` — the server runs models on CPU only, which is why answers take seconds per sentence.
-- **The agent can't use these models today.** Its model list includes them, but its `llmBaseUrl` (homelab-infra `environments/default.yaml`) points to NVIDIA's hosted API, which answers `404 page not found` for a local name. This page talks to llama-swap directly, so *Try a model* works. See [[Homelab UI page - Agent]].
+- **The agent can't use these models today.** Its model list includes them, but its `llmBaseUrl` (homelab-infra `environments/default.yaml`) points to NVIDIA's hosted API, which answers `404 page not found` for a local name. This page talks to llama-swap directly, so *Try a model* works. See [[Homelab UI page - Agent]]. *Fixed in the code: agent-runtime now has two providers, the homelab's (`HOMELAB_LLM_BASE_URL`, llama-swap) and NVIDIA's, and calls each model on its own.*
 
 ## Try it
 1. 👀 Pick `qwen3-1.7b` in *Try a model*, ask `What is 17 × 23?` → it loads (watch the Logs), answers, and the list shows it *ready*.

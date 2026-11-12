@@ -2,7 +2,7 @@
 type: index
 project: "[[Homelab UI]]"
 tags: [homelab-ui, ui-page, index]
-updated: 2026-11-11
+updated: 2026-11-12
 ---
 
 # Homelab UI pages
@@ -50,7 +50,7 @@ Every page is a lazy-loaded *feature* (`src/app/features/<feature>/`) that calls
 
 ## What the real homelab showed (2026-11-11)
 Taking these pictures from the live homelab turned up real findings — each is explained on its page:
-1. **The agent fails on any local model** (`404 page not found`): `llmBaseUrl` points to NVIDIA's API, and a new browser picks a local model by default → [[Homelab UI page - Agent]].
+1. **The agent fails on any local model** (`404 page not found`): `llmBaseUrl` points to NVIDIA's API, and a new browser picks a local model by default → [[Homelab UI page - Agent]]. *Fixed in the code: one provider per model, the homelab's and NVIDIA's side by side.*
 2. **Traces are one span each**, and MCP calls aren't linked to the agent's trace → [[Homelab UI page - Traces]]. *Fixed in the code: a span per request and per step.*
 3. **13 `up` series vs 11 targets** — Alloy's own scrapes → [[Homelab UI page - Metrics]].
 4. **`INFO` and `info` are different levels**, and oauth2-proxy logs one line per request → [[Homelab UI page - Logs]]. *Fixed in the code: one case, no session-check lines, a link from a line to its trace.*

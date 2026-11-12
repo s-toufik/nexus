@@ -2,7 +2,7 @@
 type: guide
 project: "[[Homelab]]"
 tags: [guide, homelab]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Homelab - Run the LLM and agent
@@ -25,10 +25,11 @@ updated: 2026-11-08
 ## List and try the tools in the browser
 - `https://<HOMELAB_DOMAIN>:6274` (MCP Inspector, signed in) → **Connect** → **Tools → List Tools**.
 
-## Change the LLM provider
-1. `llmBaseUrl` in `environments/default.yaml`: NVIDIA's `https://integrate.api.nvidia.com/v1`, or the local `http://llm:8080/v1`.
-2. Its API key: `make secret-set SECRET=agent-runtime KEY=llm-api-key`
-3. `make apply R=agent-runtime`
+## The agent's model providers
+1. NVIDIA's key: `make secret-set SECRET=agent-runtime KEY=llm-api-key` — raw: `./scripts/secrets.sh set agent-runtime llm-api-key`
+2. Leave out the homelab's models: remove `HOMELAB_LLM_BASE_URL` from `apps/agent-runtime/values.yaml.gotmpl`.
+3. `make apply R=agent-runtime` — raw: `helmfile -l name=agent-runtime apply`
+4. Check: `make logs R=agent-runtime` → no `Model provider '…' has no URL` line for a provider you want.
 
 ## The local LLM
 - Up, and its models: `make llm-status` — raw: `kubectl -n homelab exec deploy/caddy -c caddy -- wget -q -O - http://llm:8080/v1/models`

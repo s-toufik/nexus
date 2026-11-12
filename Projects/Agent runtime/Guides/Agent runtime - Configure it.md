@@ -2,7 +2,7 @@
 type: guide
 project: "[[Agent runtime]]"
 tags: [guide, agent-runtime]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Agent runtime - Configure it
@@ -24,7 +24,8 @@ updated: 2026-11-08
 | `WEB_BASE_PATH` | empty | A prefix for every route, e.g. `/agent-runtime` → `/agent-runtime/v1/stream`. Use it when the gateway keeps the prefix. Starts with `/`, no trailing `/` |
 | `WEB_DOCS` | `false` | `true` serves the API documentation at `<base path>/docs` |
 | `AGENT_ANSWER_DELIVERY` | `stream` | `stream`: answers that need no review arrive as `token` events, then `final`. `whole`: only `final` |
-| `LLM_BASE_URL`, `LLM_API_KEY` | required | The model server, e.g. `http://<llm-server>:<port>/v1`, and its key (empty for a local server) |
+| `HOMELAB_LLM_BASE_URL`, `HOMELAB_LLM_API_KEY` | one provider required | The homelab's model server, e.g. `http://<llm-server>:<port>/v1`, and its key (empty for a local server) |
+| `NVIDIA_LLM_BASE_URL`, `NVIDIA_LLM_API_KEY` | one provider required | NVIDIA's API, `https://integrate.api.nvidia.com/v1`, and its `nvapi-…` key |
 | `TOOLBOX_URL` | required | The MCP server, e.g. `http://<toolbox-host>:<port>/mcp` |
 | `DB_MONGO_CHECKPOINT_HOST` / `_PORT` / `_NAME` / `_USERNAME` / `_PASSWORD` | required | Conversation storage in MongoDB |
 | `DB_SQLITE_CHECKPOINT_HOST` / `_NAME` | required | SQLite fallback (folder and file name) |

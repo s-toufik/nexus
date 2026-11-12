@@ -15,7 +15,7 @@ updated: 2026-11-12
 
 `make docker_build` builds `agent:local`. The image listens on port 8000, reads its configuration from `/app/config`, and takes the [[Agent runtime - Configure it]] above.
 
-On the homelab it runs as a Helm release: [`devops/helm/values.yml`](https://github.com/s-toufik/agent-runtime/blob/develop/devops/helm/values.yml) is how it runs there (env variables, Secrets it reads, port, probes, volumes). homelab-infra adds only this server's choices, in `apps/agent-runtime/values.yaml.gotmpl` (its LLM provider, from `environments/default.yaml`).
+On the homelab it runs as a Helm release: [`devops/helm/values.yml`](https://github.com/s-toufik/agent-runtime/blob/develop/devops/helm/values.yml) is how it runs there (env variables, Secrets it reads, port, probes, volumes). homelab-infra adds only this server's choices, in `apps/agent-runtime/values.yaml.gotmpl` (the address of its own LLM, `HOMELAB_LLM_BASE_URL`).
 
 ## What each branch and tag publishes
 

@@ -21,6 +21,8 @@ tags: [log]
 
 - A picture of agent-runtime as a harnessed LLM agent (harness, models, memory, protocols, and the route of a turn), in the dark terminal theme, under *In one picture* in [[Agent runtime]]: `System/Assets/Agent runtime/Agent runtime - Harness.svg`. The same picture opens agent-runtime's own Readme.
 
+- agent-runtime calls each model on its own provider: the homelab's llama-swap (`HOMELAB_LLM_BASE_URL`) and NVIDIA (`NVIDIA_LLM_BASE_URL`), each with its own client and circuit breaker; fixes the `404` on local models found on [[Homelab UI page - Agent]].
+
 ## What I learned
 - One loop for several dependencies shares one failure count: one server down made the healthy ones be re-read at its back-off pace.
 - A data class that crosses a port belongs to the port; one that only holds plain values can be domain.

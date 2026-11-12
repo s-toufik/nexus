@@ -2,7 +2,7 @@
 type: guide
 project: "[[Homelab]]"
 tags: [guide, homelab]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Homelab - First deploy
@@ -22,7 +22,7 @@ updated: 2026-11-08
 3. Create the passwords and keys:
    - `make secrets`
    - raw: `./scripts/secrets.sh`
-4. Type the LLM provider's API key (NVIDIA's `nvapi-…`; any text if `llmBaseUrl` in `environments/default.yaml` is the local `http://llm:8080/v1`):
+4. Type NVIDIA's API key (`nvapi-…`), for the agent's NVIDIA models; the homelab's own models need none:
    - `make secret-set SECRET=agent-runtime KEY=llm-api-key`
    - raw: `./scripts/secrets.sh set agent-runtime llm-api-key`
 5. Create the backups folder (root only):

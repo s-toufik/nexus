@@ -4,7 +4,7 @@ track: AI
 time: ~7 h
 projects: ["[[Homelab]]", "[[Agent runtime]]"]
 tags: [path]
-updated: 2026-11-10
+updated: 2026-11-12
 ---
 
 # Path - Models
@@ -18,7 +18,7 @@ updated: 2026-11-10
 |---|---|
 | Tokens and context windows | agent-runtime's `max_context_tokens`, summarize at half the context, last 20 tool calls |
 | Sampling | `temperature: 0.0` by default; llama.cpp `--temp 0.7 --top-p 0.8 --top-k 20` for local models |
-| One API, many providers | agent-runtime's `LLM_BASE_URL`: NVIDIA's API or the homelab `llm` |
+| One API, many providers | agent-runtime's two providers, `HOMELAB_LLM_BASE_URL` (the homelab `llm`) and `NVIDIA_LLM_BASE_URL`, one per model |
 | Quantization and memory | GGUF `Q8_0`, `Q4_K_M` in `llm/llm/config.yml`; 26 GiB limit |
 | Load on demand | llama-swap groups `always-on` and `on-demand`, `ttl: 300` |
 
@@ -83,7 +83,7 @@ curl -s https://<HOMELAB_DOMAIN>:8090/v1/chat/completions \
 ```
 (Shape of the answer; your text and counts will differ.)
 
-**Common mistake** — hard-coding one provider's SDK: agent-runtime switches between NVIDIA's API and the local model by changing only `LLM_BASE_URL` and the key.
+**Common mistake** — sending every model to one provider. agent-runtime once did: a local model's name sent to NVIDIA's API got `404 page not found`. Now each model in `operation/llm.yml` names its provider, and each provider has its own URL, key, client and circuit breaker.
 
 ### Do
 1. `KEY=` the `llm-gateway` key ([[Homelab - Manage secrets#Read one]]); `curl -s https://<HOMELAB_DOMAIN>:8090/v1/models -H "Authorization: Bearer $KEY" | jq '.data[].id'`.
@@ -91,9 +91,9 @@ curl -s https://<HOMELAB_DOMAIN>:8090/v1/chat/completions \
 3. Again with `"stream": true` and `curl -N` → `data:` chunks then `[DONE]`.
 
 ### Check
-1. What changes in agent-runtime to use NVIDIA's API instead of the homelab model?
+1. How does agent-runtime know to call a model on the homelab or on NVIDIA, and what happens to the homelab's models when NVIDIA fails?
 > [!success]- Answer
-> Only `llmBaseUrl` (→ `LLM_BASE_URL`) and the API key Secret.
+> Each model's entry in `operation/llm.yml` names its provider (`connector:`). Each provider has its own client and circuit breaker (`llm-homelab`, `llm-nvidia_nim`), so NVIDIA failing opens only NVIDIA's breaker; the homelab's models keep working.
 
 ## 3. Running your own · ~3 h
 
