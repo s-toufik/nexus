@@ -42,7 +42,7 @@ A bare `pycraftcore` installs no third-party packages: only `authentication`, `c
 
 List every module your code imports, even when one extra already brings in another. That way your service stays correct if these links change. For the Python sandbox, use `runtime-sandbox` rather than `runtime`: the sandboxed code runs on your service's interpreter, so the libraries it may import (pandas, numpy, matplotlib, dateutil) must be installed there.
 
-Development builds (tags on `develop`, such as `5.1.0rc1`) are published to TestPyPI; use them for testing only. Their dependencies come from PyPI, so add it as an extra index, and name the version, since pip skips pre-releases otherwise:
+Development builds (tags on `develop`, such as `v5.1.0-rc.1`, published as `5.1.0rc1`) are published to TestPyPI; use them for testing only. Their dependencies come from PyPI, so add it as an extra index, and name the version, since pip skips pre-releases otherwise:
 
 ```bash
 pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ "pycraftcore[http]==5.1.0rc1"

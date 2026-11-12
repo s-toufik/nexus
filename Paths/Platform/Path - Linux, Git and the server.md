@@ -4,7 +4,7 @@ track: Platform
 time: ~6 h
 projects: ["[[Homelab]]"]
 tags: [path]
-updated: 2026-11-10
+updated: 2026-11-12
 ---
 
 # Path - Linux, Git and the server
@@ -117,6 +117,7 @@ The script it runs counts failures: restart `tailscaled` after 2 (~4 min), reboo
 **How it works**
 ```text
 feature/… ──PR──► develop ──PR──► main ──tag vX.Y.Z──► release (image + chart)
+                       └──tag vX.Y.Z-rc.N──► pre-release (image only)
 homelab-infra: edit on the Mac → commit → push → on the server git pull → make apply
 ```
 The server never commits: git history is the complete record of what changed, when and why.
@@ -127,7 +128,8 @@ The server never commits: git history is the complete record of what changed, wh
 | PR to develop/main | nothing (checks only) | no |
 | push to develop | image `:dev`, `:dev-<sha>` | no |
 | push to main | image `:latest` | no |
-| tag `vX.Y.Z` | image `:X.Y.Z` + chart `X.Y.Z` | when `versions.yaml` says so |
+| tag `vX.Y.Z-rc.N` on develop | image `:X.Y.Z-rc.N` | no |
+| tag `vX.Y.Z` on main | image `:X.Y.Z` + chart `X.Y.Z` | when `versions.yaml` says so |
 
 **Common mistake** — moving a tag after publishing (`git tag -f`): the server cached the old image and chart under that version and keeps running them.
 
@@ -140,7 +142,7 @@ The server never commits: git history is the complete record of what changed, wh
 ### Check
 1. Which branch or tag makes a new agent-runtime image reach the homelab?
 > [!success]- Answer
-> Only a tag `vX.Y.Z`, and only once homelab-infra's `environments/versions.yaml` names that version.
+> Only a tag `vX.Y.Z` on `main` (CI's RELEASE TARGET checks the branch), and only once homelab-infra's `environments/versions.yaml` names that version.
 
 **You can now:** say for any change where it lives in history and how it reaches the server. Deep dives: [[Git]] · [[Git flow]].
 

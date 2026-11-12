@@ -2,7 +2,7 @@
 type: guide
 project: "[[Agent runtime]]"
 tags: [guide, agent-runtime]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Agent runtime - Release a version
@@ -20,12 +20,15 @@ On the homelab it runs as a Helm release: [`devops/helm/values.yml`](https://git
 ## What each branch and tag publishes
 
 ```text
- feature/…  ──PR──►  develop  ──PR──►  main  ──tag vX.Y.Z──►  a release
-                        │                 │                        │
-                        ▼                 ▼                        ▼
-                  image :dev        image :latest       image toufik142/agent-runtime:X.Y.Z
-                  (never deployed)  (never deployed)    chart oci://ghcr.io/s-toufik/charts/agent-runtime:X.Y.Z
-                                                        deployed once homelab-infra's versions.yaml says X.Y.Z
+ feature/…  ──PR──►  develop  ──PR──►  main
+                        │                 │
+                        ├─ push           ├─ push
+                        │  image :dev     │  image :latest          (never deployed)
+                        │                 │
+                        └─ tag            └─ tag vX.Y.Z             a release
+                           vX.Y.Z-rc.N       image toufik142/agent-runtime:X.Y.Z
+                           image only        chart oci://ghcr.io/s-toufik/charts/agent-runtime:X.Y.Z
+                           (never deployed)  deployed once homelab-infra's versions.yaml says X.Y.Z
 ```
 
 | Event | CI ([`.github/workflows/cicd.yml`](https://github.com/s-toufik/agent-runtime/blob/develop/.github/workflows/cicd.yml)) | Publishes | On the homelab |
@@ -33,9 +36,11 @@ On the homelab it runs as a Helm release: [`devops/helm/values.yml`](https://git
 | Pull request to `develop` or `main` | LINT, TYPECHECK, TEST, BUILD | nothing | nothing changes |
 | Push to `develop` | the same + PUBLISH | image `:dev`, `:dev-<sha>` | nothing changes |
 | Push to `main` | the same + PUBLISH | image `:latest`, `:latest-<sha>` | nothing changes |
-| Tag `vX.Y.Z` | the same + PUBLISH + CHART | image `:X.Y.Z`, chart `agent-runtime:X.Y.Z` | nothing yet: deployed once homelab-infra asks for `X.Y.Z` |
+| Tag `vX.Y.Z-rc.N` on a commit only on `develop` | the same + RELEASE TARGET + PUBLISH | image `:X.Y.Z-rc.N` | nothing changes |
+| Tag `vX.Y.Z` on a commit of `main` | the same + RELEASE TARGET + PUBLISH + CHART | image `:X.Y.Z`, chart `agent-runtime:X.Y.Z` | nothing yet: deployed once homelab-infra asks for `X.Y.Z` |
 
-Only tags reach the homelab. The `dev` and `latest` images are for trying a build by hand; the server never pulls them.
+- Only tags on `main` reach the homelab. The `dev`, `latest` and `-rc.N` images are for trying a build by hand; the server never pulls them.
+- RELEASE TARGET finds the branch the tag is on, the same job in every repository with this pipeline (pycraftcore and homelab-ui too). A commit on both branches counts as `main`. It refuses a tag on neither branch, a pre-release on `main` and a final version only on `develop`, and then nothing is published.
 
 ## What is deployed
 
@@ -55,7 +60,7 @@ kubectl -n homelab get deploy agent-runtime -o jsonpath='{.spec.template.spec.co
    git tag vX.Y.Z
    git push origin vX.Y.Z
    ```
-3. **Actions**: PUBLISH and CHART are green.
+3. **Actions**: RELEASE TARGET says `release`, PUBLISH and CHART are green.
 4. In homelab-infra: `apps.agentRuntime: X.Y.Z` in `environments/versions.yaml`, commit, push.
 5. On the server, in homelab-infra: `git pull`, `make diff R=agent-runtime`, `make apply R=agent-runtime` (raw: `helmfile -l name=agent-runtime apply`).
 6. Check: the `helm list` above shows `X.Y.Z`; `make logs R=agent-runtime`.

@@ -2,7 +2,7 @@
 type: guide
 project: "[[Homelab]]"
 tags: [guide, homelab]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Homelab - Release an app
@@ -18,7 +18,7 @@ updated: 2026-11-08
    git tag v<X.Y.Z>
    git push origin v<X.Y.Z>
    ```
-3. **Actions**: PUBLISH (image `toufik142/<app>:<X.Y.Z>`) and CHART (`oci://ghcr.io/s-toufik/charts/<app>:<X.Y.Z>`) are green.
+3. **Actions**: RELEASE TARGET says `release`; PUBLISH (image `toufik142/<app>:<X.Y.Z>`) and CHART (`oci://ghcr.io/s-toufik/charts/<app>:<X.Y.Z>`) are green.
 
 ## In homelab-infra
 4. Set the version in `environments/versions.yaml` (`apps.homelabUi`, `apps.agentToolbox` or `apps.agentRuntime`), commit, push.

@@ -18,7 +18,7 @@ updated: 2026-11-12
 - `py.typed` marks a typed package for type checkers.
 
 ## In our projects
-pycraftcore: a git tag publishes — on `develop` a pre-release (`v5.1.0rc1`) to TestPyPI, on `main` the release (`v5.1.0`) to PyPI; CI takes the version from the tag (`uv version --frozen`), finds the branch with `git merge-base --is-ancestor`, then services raise their minimum and `uv lock --upgrade-package pycraftcore` ([[pycraftcore - Release a version]]). A tag name is used once, so the trial and the release are two versions.
+pycraftcore: a git tag publishes — on `develop` a pre-release (`v5.1.0-rc.1`, built as `5.1.0rc1`) to TestPyPI, on `main` the release (`v5.1.0`) to PyPI; CI takes the version from the tag (`uv version --frozen`), finds the branch with `git merge-base --is-ancestor`, then services raise their minimum and `uv lock --upgrade-package pycraftcore` ([[pycraftcore - Release a version]]). A tag name is used once, so the trial and the release are two versions.
 
 ## Check yourself
 1. Why try a TestPyPI build in a service before PyPI?

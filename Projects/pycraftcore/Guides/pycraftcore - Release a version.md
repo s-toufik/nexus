@@ -13,9 +13,9 @@ updated: 2026-11-12
 
 ## Try a version on TestPyPI
 1. `git switch develop && git pull`
-2. `git tag vX.Y.ZrcN`
-3. `git push origin vX.Y.ZrcN`
-4. GitHub **Actions**: RELEASE TARGET says `testpypi`, PUBLISH is green.
+2. `git tag vX.Y.Z-rc.N`
+3. `git push origin vX.Y.Z-rc.N`
+4. GitHub **Actions**: RELEASE TARGET says `prerelease`, PUBLISH is green.
 5. In a fresh venv: `pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ "pycraftcore[<extras>]==X.Y.ZrcN"` installs it ([[pycraftcore - Install it]]).
 
 ## Release it on PyPI
@@ -24,7 +24,7 @@ updated: 2026-11-12
 3. `git switch main && git pull`
 4. `git tag vX.Y.Z`
 5. `git push origin vX.Y.Z`
-6. GitHub **Actions**: RELEASE TARGET says `pypi`, PUBLISH is green.
+6. GitHub **Actions**: RELEASE TARGET says `release`, PUBLISH is green.
 7. In each service that needs it: `pycraftcore[<extras>]>=X.Y.Z` in `pyproject.toml`, then `make update_dependency PACKAGE=pycraftcore` — raw: `uv lock --upgrade-package pycraftcore && uv sync`.
 
 ## Develop against a local checkout

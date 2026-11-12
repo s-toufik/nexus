@@ -2,7 +2,7 @@
 type: guide
 project: "[[Homelab UI]]"
 tags: [guide, homelab-ui]
-updated: 2026-11-08
+updated: 2026-11-12
 ---
 
 # Homelab UI - Release a version
@@ -19,7 +19,7 @@ The server runs homelab-ui as a Helm release: the chart `oci://ghcr.io/s-toufik/
    git tag v1.4.0
    git push origin v1.4.0
    ```
-3. GitHub Actions: PUBLISH (image `1.4.0`) and CHART (chart `1.4.0`) are green.
+3. GitHub Actions: RELEASE TARGET says `release`, PUBLISH (image `1.4.0`) and CHART (chart `1.4.0`) are green.
 4. In homelab-infra: `apps.homelabUi: 1.4.0` in `environments/versions.yaml`; on the server `make apply R=homelab-ui` ([[Homelab - Release an app]]).
 5. Open `https://<server>/status` and reload.
 
