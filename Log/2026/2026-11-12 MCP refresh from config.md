@@ -25,7 +25,7 @@ tags: [log]
 
 - agent-runtime sizes every model call to the window: room for the answer and the tool definitions, tool results of the turn cut oldest first; fixes a `400` from llama.cpp (45,621 tokens for 32,768) — [[LLM fundamentals]].
 
-- Cut the fixed part of every model call, measured on the 55 real tools: one line per tool in the prompt, a plan step binds only the plan's tools, `python_executor` lists functions in two lines each. Direct answer 13.7k → 2.5k tokens, plan step 42.5k → 4–10k.
+- Cut the fixed part of every model call, measured on the 55 real tools: one line per tool in the prompt, a plan step binds only the plan's tools, `python_executor` lists functions in two lines each. Direct answer 13.7k → 2.5k tokens, plan step 42.5k → 4–10k. The planner keeps typed inputs and outputs per tool to choose well (plan prompt 13.8k → 4.2k).
 
 ## What I learned
 - One loop for several dependencies shares one failure count: one server down made the healthy ones be re-read at its back-off pace.
