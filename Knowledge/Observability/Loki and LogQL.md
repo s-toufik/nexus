@@ -27,7 +27,11 @@ Full-text log indexes (Elasticsearch) are powerful but heavy. Loki's "labels lik
 
 ## Check yourself
 1. Why is `{service_name="agent-runtime"} |= "timeout"` cheap but `{namespace="homelab"} |~ ".*"` over 30 days expensive?
+> [!success]- Answer
+> Loki indexes only labels. The first picks one service's streams through the index, then greps only those lines for `timeout`. The second selects every stream in the namespace and matches every line, so it reads and decompresses 30 days of every service's logs.
 2. Why not make `user_id` a Loki label?
+> [!success]- Answer
+> Each distinct label value makes a new stream. Thousands of users means thousands of tiny streams, a huge index and slow queries. Keep it in the line (or structured metadata) and filter with `| json | user_id="…"`.
 
 ## Go further
 - [Loki docs](https://grafana.com/docs/loki/latest/), [LogQL](https://grafana.com/docs/loki/latest/query/).

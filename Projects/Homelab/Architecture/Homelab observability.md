@@ -71,9 +71,17 @@ Its stdout logs are collected anyway by Alloy. Pods annotated `homelab.io/logs: 
 
 ## Check yourself
 1. Your API is slow since 10:00. Which signal do you open first, and how do you get to a log line of one slow request?
+> [!success]- Answer
+> Metrics first: the API's latency panel shows when and how much. Click an exemplar on the spike to open a slow request's trace in Tempo; from a span, follow the link to Loki's logs for that service and time (or the trace's `trace_id`), and read the line.
 2. Why does Loki index labels but not the log text? What does that cost you when searching?
+> [!success]- Answer
+> Indexing only a few labels keeps the index small and storage cheap. The cost: searching text means scanning every line of the streams you selected, so a search is fast only once labels and a short time range narrow it down.
 3. Why do apps send to the OTel Collector instead of straight to Tempo/Prometheus/Loki?
+> [!success]- Answer
+> They speak one protocol to one address. The collector batches, protects itself with `memory_limiter`, adds `deployment.environment=homelab` and fans out to the three stores. Changing a backend, or adding one, is a collector config change; no app is touched.
 4. You add `user_id` as a label on a request counter. What happens after a month?
+> [!success]- Answer
+> Every user creates new series, multiplied by the other labels' values, and they're kept for 30 days. After a month Prometheus holds far more series: memory and disk grow, queries slow down, and it can run out of memory. Put `user_id` in logs or traces instead.
 
 ## Go further
 - [OpenTelemetry: observability primer](https://opentelemetry.io/docs/concepts/observability-primer/).

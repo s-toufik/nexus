@@ -46,7 +46,11 @@ Direct calls and calls from sandboxed code go through the same `InvokeToolUseCas
 
 ## Check yourself
 1. What changes in a tool when it becomes callable from the sandbox?
+> [!success]- Answer
+> Nothing: `SandboxToolBridge` calls the same `InvokeToolUseCase` with the same tool, so it validates, logs and fails the same way. The contract test `test_tool_parity.py` proves both doors return the same thing.
 2. Why do tool field descriptions matter as much as code?
+> [!success]- Answer
+> They become the JSON schema in `tools/list`, which is all the model sees: it chooses a tool and fills its arguments from them. A vague description means a wrong tool or wrong arguments, however correct the code is.
 
 ## Go further
 - [MCP: tools](https://modelcontextprotocol.io/docs/concepts/tools).

@@ -23,8 +23,9 @@ updated: {{date}}
 -
 
 ## Check yourself
-1.
-2.
+1. A question that needs understanding, not recall?
+> [!success]- Answer
+> The answer, with the why.
 
 ## Go further
 - [Official docs](https://) — what to read there.

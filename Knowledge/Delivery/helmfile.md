@@ -32,7 +32,11 @@ Helm installs one release. A platform has thirty, with dependencies (the databas
 
 ## Check yourself
 1. What's the difference between `helmfile apply` and `helmfile sync`?
+> [!success]- Answer
+> `apply` runs a diff first and upgrades only the releases that changed. `sync` upgrades every selected release, changed or not (useful to re-run hooks or repair drift).
 2. How does the `homelab` template find each release's values file?
+> [!success]- Answer
+> From labels: each release has a `group` label, and the template builds the path `<group>/<release>/values.yaml.gotmpl` from that label and the release's name, alongside the shared `environments/global.yaml.gotmpl`.
 
 ## Go further
 - [helmfile documentation](https://helmfile.readthedocs.io/).

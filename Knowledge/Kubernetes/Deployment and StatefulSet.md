@@ -37,7 +37,11 @@ You never create pods directly — a controller does, and recreates them when th
 
 ## Check yourself
 1. Why can't a pod with `hostPort: 443` roll with zero downtime on one node?
+> [!success]- Answer
+> A rolling update starts the new pod before stopping the old one, but the old one holds port 443 on the only node, so the new pod can't be scheduled. Hence `Recreate`: stop, then start, with a short gap.
 2. What makes MongoDB a StatefulSet rather than a Deployment?
+> [!success]- Answer
+> It needs a stable identity and its own volume: `mongodb-0` keeps its name and its claim across restarts, and its data follows it. Deployment pods are interchangeable and would share a claim or have none.
 
 ## Go further
 - [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/).

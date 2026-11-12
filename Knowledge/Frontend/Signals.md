@@ -29,7 +29,11 @@ effect(() => storage.write({ model: modelName() }));   // re-runs when modelName
 
 ## Check yourself
 1. Why must a `computed` be pure?
+> [!success]- Answer
+> It's lazy and memoised: Angular decides when, and how often, to run it. A side effect inside would run at unpredictable times, or not at all if nobody reads it, and could write a signal during a read, causing loops.
 2. When is an `effect` the wrong tool?
+> [!success]- Answer
+> When it derives state from other state, like setting one signal when another changes: that's a `computed`. An `effect` is for syncing to the outside (storage, logging, a non-Angular library).
 
 ## Go further
 - [Angular: signals](https://angular.dev/guide/signals).

@@ -34,7 +34,11 @@ Fast, reliable tests are what let you change code with confidence. Tests that ca
 
 ## Check yourself
 1. Fake vs mock: when would you use each?
+> [!success]- Answer
+> A fake when the test checks the outcome, the state: an in-memory repository you query after the act. A mock when the call itself is the behaviour to check: that an email was sent once, with this address.
 2. Why can't scripted models replace [[Agent runtime evaluation]]?
+> [!success]- Answer
+> Scripted models return the outputs you wrote, so they test the code's routes, not whether a real model plans, chooses tools or answers well. Evaluation runs the real model on realistic cases, several times, to measure that.
 
 ## Go further
 - [Martin Fowler: Mocks aren't stubs](https://martinfowler.com/articles/mocksArentStubs.html), [the practical test pyramid](https://martinfowler.com/articles/practical-test-pyramid.html).

@@ -31,7 +31,11 @@ Services are reachable inside the cluster only. To let your devices in, somethin
 
 ## Check yourself
 1. What would happen if `hostIP` were left out for MongoDB's 27017?
+> [!success]- Answer
+> The hostPort would bind every address of the node, so MongoDB would also be published on the home network's address, not just the tailnet. That's why the chart refuses to render a hostPort without `hostIP`.
 2. Why does Alloy need `hostNetwork`, and what did we do to keep it off the LAN?
+> [!success]- Answer
+> To see the server's own network interfaces and traffic, which only the host network namespace shows. To keep it off the LAN it listens only on the node address `10.250.0.1:12346`, not `0.0.0.0`.
 
 ## Go further
 - [Configuration good practices](https://kubernetes.io/blog/2025/11/25/configuration-good-practices/) — including why to avoid hostPort when you can.

@@ -32,7 +32,11 @@ Reaching a home server from outside usually means port forwarding — exposing i
 
 ## Check yourself
 1. Why is `100.64.0.0/10` a safe range for a private overlay network?
+> [!success]- Answer
+> It's reserved for carrier-grade NAT and never routed on the public internet, and home networks rarely use it, so it won't clash with your LAN's `192.168.x.x` or a company's `10.x.x.x`.
 2. What does Tailscale replace that a classic home-server setup would need?
+> [!success]- Answer
+> Port forwarding on the router (the server exposed to the whole internet), a dynamic DNS name, and a public certificate setup. Only your signed-in devices can reach it at all.
 
 ## Go further
 - [How Tailscale works](https://tailscale.com/blog/how-tailscale-works).

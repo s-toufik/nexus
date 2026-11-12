@@ -50,7 +50,11 @@ Workflows and favourite blocks go to `/api/tasker/` → PostgREST → PostgreSQL
 
 ## Check yourself
 1. Why is `executeGraph` breadth-first, and what happens downstream of a failed block?
+> [!success]- Answer
+> It runs the graph in waves from the triggers: a block runs after the block feeding it, with one simple queue, and `visited` stops cycles. A failed block records its error and queues nothing, so the blocks downstream of it never run in that run.
 2. What does the `CanvasEngine` interface buy you, concretely?
+> [!success]- Answer
+> The page and the domain never import Rete.js: the page owns the state and calls `sync`, the engine only draws and reports. So swapping the canvas library touches one folder (`infrastructure/canvas-engine/`), and the page's logic is testable without a real canvas.
 
 ## Go further
 - [Rete.js](https://retejs.org/docs).

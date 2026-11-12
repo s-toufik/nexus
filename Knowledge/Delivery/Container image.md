@@ -33,7 +33,11 @@ updated: 2026-11-12
 
 ## Check yourself
 1. What's the difference between a tag and a digest, and which one would you pin for full reproducibility?
+> [!success]- Answer
+> A tag is a name that can be moved to other content; a digest (`sha256:…`) is the content's fingerprint and never changes. For full reproducibility pin the digest (`image@sha256:…`).
 2. Why does `IfNotPresent` make mutable tags dangerous?
+> [!success]- Answer
+> `IfNotPresent` only checks that the tag is on the node. If the tag now points to new content, a node that already has it keeps running the old image, so two nodes or two restarts can run different code under the same name.
 
 ## Go further
 - [Docker: what is an image?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/)

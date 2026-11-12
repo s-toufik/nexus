@@ -22,7 +22,11 @@ Every Python project (agent-runtime, agent-toolbox, pycraftcore, web_framework, 
 
 ## Check yourself
 1. Extras vs dependency groups: which ends up in a published package?
+> [!success]- Answer
+> Extras: they're part of the package's metadata, installed with `pkg[extra]`. Dependency groups are for the project's own development (pytest, ruff) and aren't published.
 2. Why commit `uv.lock` for a service?
+> [!success]- Answer
+> So every install, on your machine, in CI and in the image, gets exactly the same versions. Without it a new release of a dependency could change what runs between two builds of the same commit.
 
 ## Go further
 - [uv docs](https://docs.astral.sh/uv/), [pyproject.toml spec](https://packaging.python.org/en/latest/specifications/pyproject-toml/).

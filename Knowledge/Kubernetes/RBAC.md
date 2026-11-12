@@ -29,7 +29,11 @@ Every call to the Kubernetes API is authorised by RBAC. A pod with too many righ
 
 ## Check yourself
 1. What's the difference between a Role and a ClusterRole, and when do you need the latter?
+> [!success]- Answer
+> A Role grants rights in one namespace; a ClusterRole is cluster-wide. You need a ClusterRole for resources that aren't in a namespace (nodes, namespaces, CRDs), or for rights across every namespace, like Alloy reading nodes.
 2. Why does the chart default to no service-account token?
+> [!success]- Answer
+> Most pods never call the Kubernetes API. A mounted token would only help an attacker who breaks into the pod talk to the API with its rights. So a release gets one only when it declares `rbac.rules`.
 
 ## Go further
 - [Using RBAC authorization](https://kubernetes.io/docs/reference/access-authn-authz/rbac/).

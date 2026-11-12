@@ -52,8 +52,14 @@ An `AbortController` cancels the request when you start a new conversation. The 
 
 ## Check yourself
 1. Why does the assistant drawer show the same conversation as the Agent page?
+> [!success]- Answer
+> `AgentStore` is `providedIn: 'root'`: one instance for the whole app. The Agent page and the drawer inject the same store, so they read the same signals.
 2. Why can't `EventSource` be used here, and what replaces it?
+> [!success]- Answer
+> `EventSource` only makes GET requests, without a body or custom headers, and the agent needs `POST /api/agent/v1/stream` with a JSON body and `X-Homelab-Request`. `AgentApiService.stream()` uses `fetch`, reads `response.body` with a reader, and parses the frames in an async generator.
 3. What would break if `GatewayApi` didn't add `X-Homelab-Request`?
+> [!success]- Answer
+> Caddy's `no_cross_site_writes` would refuse every write with 403: sending a message to the agent, saving a Tasker workflow, unloading a model, every POST, PUT or DELETE. Reads would still work.
 
 ## Go further
 - [Angular signals](https://angular.dev/guide/signals).

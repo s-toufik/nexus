@@ -31,7 +31,11 @@ Not everything is a server. Migrations, realm sync, backups, user creation are *
 
 ## Check yourself
 1. Why is the Keycloak realm sync a Job and not a script you run by hand?
+> [!success]- Answer
+> As a hook Job it runs on every deploy, automatically, inside the cluster with the same Secrets and network as Keycloak, and its failure fails the deploy with logs to read. A script you run by hand gets forgotten or run from the wrong place, and the realm drifts from the code.
 2. What does "idempotent" mean, and why must every hook Job be?
+> [!success]- Answer
+> Running it twice gives the same result as running it once. Hooks run on every deploy, and a failed one is retried, so each must check before it creates (as `sync.sh` does) or skip what's done (as dbmate does).
 
 ## Go further
 - [Jobs](https://kubernetes.io/docs/concepts/workloads/controllers/job/), [CronJobs](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/).

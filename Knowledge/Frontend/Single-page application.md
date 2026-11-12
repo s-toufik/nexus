@@ -24,7 +24,11 @@ SPAs feel like apps and can be served as static files from any web server or CDN
 
 ## Check yourself
 1. Why must nginx serve `index.html` for unknown paths?
+> [!success]- Answer
+> Routes like `/status` exist only in the browser's router, not as files. On a refresh or a shared link, the browser asks the server for `/status`; nginx must answer with `index.html` so the app starts and its router shows that page.
 2. Why are hashed asset names safe to cache forever?
+> [!success]- Answer
+> The name contains a hash of the content: a new build changes the content, so the name, and `index.html` points to the new name. An old name always means the same bytes, so a cached copy is never wrong.
 
 ## Go further
 - [MDN: SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA).

@@ -55,8 +55,14 @@ Clients must ignore unknown events and fields, and treat an unknown outcome like
 
 ## Check yourself
 1. Why is a plan stored apart from the chat history?
+> [!success]- Answer
+> Summarizing compacts the history when it passes half the context; a plan inside it could be shortened or lost. Stored apart, the plan with its steps and last 20 tool calls survives any summary, and resuming always has it whole.
 2. What happens to a plan when the browser is closed mid-run, and why might "continue" repeat a tool call?
+> [!success]- Answer
+> The turn is interrupted, so the plan stays as it was before the run. The tool calls made during that run weren't recorded against it, so "continue" starts from the same point and may call them again.
 3. Why should a client treat an unknown `outcome` like `answered`?
+> [!success]- Answer
+> So the API can grow without breaking clients: a new outcome added later must not make an old homelab-ui fail. Showing the reply as a normal answer is the safe default.
 
 ## Go further
 - [Plan-and-execute agents](https://blog.langchain.com/planning-agents/) (LangChain blog).

@@ -64,8 +64,14 @@ MongoDB `:27017` (its own password), Kafka `:9094` and OTLP `:4317/4318` (no aut
 
 ## Check yourself
 1. Pick three threats from the table and name every layer that stands in each one's way.
+> [!success]- Answer
+> For example. A malicious web page: Session (`SameSite=Lax`), Request (`X-Homelab-Request`, allow-listed paths, `read_only`), Authorisation (the `admin` role for anything powerful). Code the agent writes: Network inside (the toolbox's NetworkPolicy), Pod (hardened, no API token), Data (read-only MCP roles, RLS), Secrets (none in its pod). Someone on the home network: Network (ports bound to the Tailscale address only, nftables dropping Kubernetes' ports), then Identity and Session if they ever got onto the tailnet.
 2. Why is `X-Homelab-Request: 1` enough against CSRF, when any site can put any header in `fetch()`?
+> [!success]- Answer
+> A cross-site page can only send a custom header after a CORS preflight that the server approves, and Caddy never approves it, so the browser refuses to send the request. Only homelab-ui's own page, on the same origin, can add the header.
 3. What would you add first: off-site backups, MFA, or Tailscale ACLs? Argue it.
+> [!success]- Answer
+> A defensible answer: off-site backups first. A dead SSD loses the data and its backups together, and that loss is permanent; MFA and ACLs reduce risks that other layers already cover (access only from the tailnet, lockout after 5 failures). MFA would come next, since one password protects admin powers.
 
 ## Go further
 - [OWASP Top 10](https://owasp.org/projects/top-ten) — the common web risks.

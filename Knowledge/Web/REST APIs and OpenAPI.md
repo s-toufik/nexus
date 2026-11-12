@@ -29,7 +29,11 @@ APIs are contracts between teams and programs. A clear, versioned, documented co
 
 ## Check yourself
 1. Why must a client ignore fields it doesn't know?
+> [!success]- Answer
+> So the server can add fields, events or outcomes without breaking it. Adding is the safe way to evolve an API only if clients don't fail on what they don't know.
 2. Is `POST /v1/stream` RESTful? Does it matter?
+> [!success]- Answer
+> Not strictly: it's an RPC-style action ("run this turn and stream the result"), not a resource changed with a verb. It doesn't matter much: what matters is a clear, documented, versioned contract. Forcing a stream into REST resources would only make it harder to use.
 
 ## Go further
 - [Microsoft REST API guidelines](https://github.com/microsoft/api-guidelines), [OpenAPI specification](https://spec.openapis.org/oas/latest.html).

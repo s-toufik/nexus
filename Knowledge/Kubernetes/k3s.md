@@ -29,7 +29,11 @@ Full Kubernetes (kubeadm) needs several components to install, upgrade and secur
 
 ## Check yourself
 1. Which bundled k3s components did we disable, and what replaces each?
+> [!success]- Answer
+> Traefik, the ingress controller: Caddy is the gateway instead. ServiceLB, which gives LoadBalancer Services an address on the node: ports are published as hostPorts on the Tailscale address instead.
 2. Why must `node-ip` be stable?
+> [!success]- Answer
+> Kubernetes records the node's IP in its certificates and its database, and pods reach the node through it. If it changed, when the laptop moves from Ethernet to Wi-Fi, k3s would break. The dummy interface `k3s0` gives `10.250.0.1`, which never changes.
 
 ## Go further
 - [k3s docs](https://docs.k3s.io/) — start with [Architecture](https://docs.k3s.io/architecture).

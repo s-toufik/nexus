@@ -59,9 +59,17 @@ So it can't reach PostgreSQL, MongoDB, Kafka, the LLM, your home network, the cl
 
 ## Check yourself
 1. A request names `qwen3-14b` while `ministral` is loaded. What does llama-swap do, and how long does the user wait?
+> [!success]- Answer
+> Both are in the `on-demand` group, which swaps: llama-swap stops `ministral` and starts `qwen3-14b` (`qwen3-8b`, always on, stays). The user waits for the unload and the model's load into memory, from several seconds to a minute or more, plus a multi-GB download if it was never downloaded.
 2. Why is the agent-toolbox denied `192.168.0.0/16` and `169.254.0.0/16` specifically?
+> [!success]- Answer
+> `192.168.0.0/16` is the home network: the code must not reach your other devices or the router. `169.254.0.0/16` holds link-local addresses, including the cloud metadata address `169.254.169.254`, a classic target for stealing credentials.
 3. With `mcp.postgres.write: true`, can the agent `DROP TABLE`? Read another account's Tasker workflows?
+> [!success]- Answer
+> No `DROP TABLE`: `pg_write_all_data` gives `INSERT`, `UPDATE` and `DELETE` but no DDL, and `mcp` owns no table. Nor another account's workflows: Tasker's tables force RLS with a policy only for `tasker_web`, so `mcp` sees no rows there.
 4. What is the *lethal trifecta*, and which leg does the fence cut?
+> [!success]- Answer
+> Private data, untrusted content and a way to send data out, all held by one agent. The fence cuts direct access to the private data: no database, home network or metadata address, so data comes only through the MCP servers' read-only accounts. The internet stays open, so the way out remains; plan approval and the screen step guard that leg.
 
 ## Go further
 - [Model Context Protocol](https://modelcontextprotocol.io/) — the spec and concepts.

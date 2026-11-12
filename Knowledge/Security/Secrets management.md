@@ -34,7 +34,11 @@ Leaked secrets are one of the most common causes of breaches, usually by acciden
 
 ## Check yourself
 1. Trace a password from `make secrets` to the PostgREST process. Where is it encrypted, where is it plain?
+> [!success]- Answer
+> `make secrets` generates it in `secrets.sh`'s memory and creates Secret `pg-role-postgrest` through the API. k3s stores it encrypted at rest. The API server decrypts it to hand it to the kubelet over TLS, which sets it as `POSTGREST_PASSWORD` in the PostgREST container's environment: plain there, in that process's memory. PostgREST connects to `postgres-rw` with it over TLS (`sslmode=require`). CloudNativePG reads the same Secret and sets the role's password, which PostgreSQL stores as a SCRAM hash.
 2. When would you move to SOPS or External Secrets?
+> [!success]- Answer
+> When secrets must be rebuilt from git with the rest (a reproducible server, or more than one), when they need review and history, or when several people or clusters share them. SOPS or Sealed Secrets put them in git encrypted; External Secrets syncs them from a vault or a cloud manager.
 
 ## Go further
 - [OWASP secrets management cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html).

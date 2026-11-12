@@ -33,7 +33,11 @@ The client is a plain `httpx.AsyncClient`, so any library that accepts one (Lang
 
 ## Check yourself
 1. Why must retries have a cap and a growing delay?
+> [!success]- Answer
+> Without a cap, a backend that stays down keeps every call waiting forever. Without a growing delay, every client retries at once and hammers a service trying to recover. The cap bounds the cost of a call; the growing delay spreads the load.
 2. Why should a 404 not count towards opening the breaker?
+> [!success]- Answer
+> A 404 is the backend working correctly ("no such item"), not failing. Counting it would open the breaker on a healthy backend and block every call, including the ones that would succeed.
 
 ## Go further
 - [Martin Fowler: CircuitBreaker](https://martinfowler.com/bliki/CircuitBreaker.html).

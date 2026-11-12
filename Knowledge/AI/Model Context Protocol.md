@@ -30,7 +30,11 @@ Without a standard, every agent integrates every tool its own way. MCP is to age
 
 ## Check yourself
 1. What does `tools/list` return, and how does the model use the descriptions?
+> [!success]- Answer
+> The server's tools, each with its name, a description and the JSON schema of its arguments. The client passes them to the model as tool definitions; the model chooses which tool to call, and with which arguments, from the descriptions alone. So a vague description means a wrong or missed tool.
 2. Why does an MCP server care about the `Host` header?
+> [!success]- Answer
+> Without it, a web page you visit could use DNS rebinding: its domain resolves to the server's address, so your browser sends requests to a server it can reach and the attacker can't. Checking that `Host` is a name the server expects refuses those requests.
 
 ## Go further
 - [modelcontextprotocol.io](https://modelcontextprotocol.io/) — introduction, [specification](https://modelcontextprotocol.io/specification).

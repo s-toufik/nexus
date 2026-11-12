@@ -25,7 +25,11 @@ Groups `always-on` (`qwen3-8b`) and `on-demand` (the rest, `ttl: 300`, one at a 
 
 ## Check yourself
 1. What happens when two users ask for two different on-demand models at the same time?
+> [!success]- Answer
+> The on-demand group swaps, so only one runs at a time. They take turns: one request waits while llama-swap stops the other model and loads its own, and each swap costs a full model load.
 2. Why would a scrape keep a model loaded?
+> [!success]- Answer
+> Every scrape of `/upstream/<model>/metrics` is a request for that model: llama-swap starts it if needed and resets its idle timer, so it would never reach its `ttl`. That's why llm-sd lists on-demand models only during their first `ttl`.
 
 ## Go further
 - [llama-swap](https://github.com/mostlygeek/llama-swap) and its [configuration example](https://github.com/mostlygeek/llama-swap/blob/main/config.example.yaml).

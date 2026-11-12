@@ -29,7 +29,11 @@ The schema is code. Changing it by hand on the server means nobody knows what's 
 
 ## Check yourself
 1. Why must you never edit `003_create_auth_functions.sql` now that it ran?
+> [!success]- Answer
+> It already ran on the server and is recorded in `schema_migrations`, so dbmate will never run it again: your edit never reaches that database, yet a fresh one would get it. The two would differ silently. Write a new migration instead.
 2. Describe expand → migrate → contract for renaming a column used by a running app.
+> [!success]- Answer
+> Expand: add the new column and fill it, keeping the old one in step (both written, or a trigger). Migrate: deploy the app reading and writing the new column. Contract: once nothing uses the old column, drop it in a later migration. At every step, the running code works with the schema in place.
 
 ## Go further
 - [dbmate](https://github.com/amacneil/dbmate).

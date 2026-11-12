@@ -27,7 +27,11 @@ In a system of several services, "it's slow" has no single log to read. A trace 
 
 ## Check yourself
 1. How does service B know which trace a request from service A belongs to?
+> [!success]- Answer
+> From the `traceparent` header A sends with the request (over MCP, from `_meta` in the JSON-RPC request): it carries the trace ID and A's current span ID. B's tracing library reads it and makes its spans children of that span, in the same trace.
 2. What do span metrics give you that hand-written metrics don't?
+> [!success]- Answer
+> Rate, errors and duration for every service and operation, with no code to write: they're computed from spans the apps already send, with consistent labels, a service graph of who calls whom, and exemplars linking a point to an example trace.
 
 ## Go further
 - [OpenTelemetry: traces](https://opentelemetry.io/docs/concepts/signals/traces/), [W3C Trace Context](https://www.w3.org/TR/trace-context/).

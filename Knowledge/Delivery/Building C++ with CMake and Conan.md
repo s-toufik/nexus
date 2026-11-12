@@ -23,6 +23,8 @@ updated: 2026-11-08
 
 ## Check yourself
 1. What does Conan's toolchain file give CMake?
+> [!success]- Answer
+> Where each dependency is (include paths, libraries, CMake config files) plus the compiler and settings of the Conan profile, so `find_package(…)` finds the packages Conan installed and the build matches them.
 
 ## Go further
 - [CMake tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/index.html), [Conan 2 docs](https://docs.conan.io/2/), [Ninja](https://ninja-build.org/).

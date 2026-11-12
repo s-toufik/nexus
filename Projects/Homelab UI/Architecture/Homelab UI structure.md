@@ -63,8 +63,14 @@ Path aliases `@shell/*`, `@features/*`, `@shared/*` make cross-zone imports visi
 
 ## Check yourself
 1. Why does the shell inject an array of features instead of importing them?
+> [!success]- Answer
+> So the shell depends on the contract (`HOMELAB_FEATURES`), never on a feature: a feature can be added or removed without touching the shell, and the shell can't reach into a feature's code. That's dependency inversion.
 2. You add a Grafana-like page for a new tool. Which files change outside its feature folder?
+> [!success]- Answer
+> `app.routes.ts` (its lazy route) and `app.config.ts` (`provideXxxFeature()`). If its backend sits behind the gateway, homelab-infra's Caddyfile also needs its `/api/<tool>/` route and health check.
 3. Why do most tool pages fail under `npm start`?
+> [!success]- Answer
+> In `npm start` mode calls go directly to `http://<your-server>:<port>/`, but most tools' APIs are only reachable through the gateway (Caddy's `/api/<tool>/` routes, behind the sign-in). Only the ports open on the tailnet, like agent-runtime's `:8000`, answer.
 
 ## Go further
 - [Angular: dependency injection](https://angular.dev/guide/di), [multi providers / InjectionToken](https://angular.dev/api/core/InjectionToken).

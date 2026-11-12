@@ -29,7 +29,11 @@ Cookie-based sessions are sent automatically. Without a defence, any web page yo
 
 ## Check yourself
 1. Why is a custom header a CSRF defence even though anyone can write `fetch(url, {headers: …})`?
+> [!success]- Answer
+> A page on another site can only send a custom header cross-site after a CORS preflight that the target allows. Ours never allows it, so the browser refuses to send the request at all. Only our own page, on the same origin, can add `X-Homelab-Request: 1`.
 2. Why must `GET` never change state?
+> [!success]- Answer
+> Browsers and other sites send GETs freely: links, images, prefetching, crawlers, a cross-site navigation that carries the `SameSite=Lax` cookie. A GET that changes state can be triggered by any of them, and none of the write defences apply.
 
 ## Go further
 - [OWASP: CSRF](https://community.owasp.org/attacks/csrf), [CSRF prevention cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html).

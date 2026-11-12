@@ -46,8 +46,14 @@ This is [[Hexagonal architecture]]: the core states *what it needs* as ports (in
 
 ## Check yourself
 1. Why must the domain not import LangGraph, even though LangGraph runs the steps?
+> [!success]- Answer
+> LangGraph is one way to run the steps, an adapter. If the domain imported it, the rules couldn't be tested without it, and swapping the engine would mean rewriting the rules. Today the same steps run on a plain loop in tests, which proves the domain doesn't need it.
 2. Where would you add a new model provider, and what else changes?
+> [!success]- Answer
+> In one LangChain model adapter under `adapter/outbound/`, plus its settings in config (`operation/llm.yml`, the URL and key in env). `AgentDI` picks it from config. Nothing in the application or the domain changes, since nothing else knows LangChain exists.
 3. What's a composition root, and which file is it here?
+> [!success]- Answer
+> The one place where concrete classes are chosen and connected at start-up. Here it's `AgentDI` (wiring only), used by `create_agent_application`, which builds the container and the Litestar app.
 
 ## Go further
 - [Alistair Cockburn: Hexagonal architecture](https://alistair.cockburn.us/hexagonal-architecture/).

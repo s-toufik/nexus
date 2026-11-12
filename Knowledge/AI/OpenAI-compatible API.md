@@ -33,7 +33,11 @@ POST /v1/chat/completions
 
 ## Check yourself
 1. What changes in a client to move from a hosted provider to `llm`?
+> [!success]- Answer
+> Only the base URL, the API key and the model's name. The request and response shapes, streaming and tool calls stay the same; in agent-runtime only `llmBaseUrl` changes.
 2. Walk through one tool call round trip.
+> [!success]- Answer
+> 1. The client sends the messages plus `tools` (name, description, JSON schema). 2. The model answers with `tool_calls`: a name and JSON arguments, no text. 3. The client runs that tool. 4. It appends the assistant message and a `tool` message with the result and that call's id. 5. It calls the model again, which answers or asks for another tool.
 
 ## Go further
 - [OpenAI API reference: chat](https://platform.openai.com/docs/api-reference/chat).

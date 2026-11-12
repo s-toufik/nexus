@@ -38,7 +38,11 @@ A container's own file system is thrown away when it restarts. Databases, Promet
 
 ## Check yourself
 1. Where on the server is MongoDB's data, and what happens to it on `make destroy`?
+> [!success]- Answer
+> In a folder under `/var/lib/rancher/k3s/storage/`, created by local-path for its claim. `make destroy` uninstalls the release but Helm keeps the claim, so the folder and the data stay, and a reinstall finds them (old passwords included).
 2. Why is `hostPath` considered dangerous in shared clusters?
+> [!success]- Answer
+> A pod with `hostPath` reads and writes the node's own files: `/etc`, the container runtime's socket, other pods' data. In a shared cluster any team allowed to use it could take over the node.
 
 ## Go further
 - [Volumes](https://kubernetes.io/docs/concepts/storage/volumes/), [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).

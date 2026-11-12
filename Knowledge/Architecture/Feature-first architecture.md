@@ -32,7 +32,11 @@ shared/   what several features use
 
 ## Check yourself
 1. What would make two features need each other, and where should that code go instead?
+> [!success]- Answer
+> Something both use: a type, a client, a component, a helper. It goes in `shared/` (or, if it's a real capability of its own, its own feature), so neither feature imports the other.
 2. How does the shell show a menu entry for a feature it doesn't import?
+> [!success]- Answer
+> The feature registers an entry (title, route, icon) under the registration contract, the `HOMELAB_FEATURES` token in `app.config.ts`. The shell reads that list and draws the menu from it.
 
 ## Go further
 - [Angular style guide: organise by feature](https://angular.dev/style-guide#organize-your-project-by-feature-areas).

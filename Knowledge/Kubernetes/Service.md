@@ -30,7 +30,11 @@ Pods get new IPs every time they're replaced. A Service gives clients one fixed 
 
 ## Check yourself
 1. Why does a pod that's Running but not Ready get no traffic?
+> [!success]- Answer
+> The Service only lists Ready pods in its EndpointSlices. Not Ready means it said it can't serve yet (starting, or a dependency missing), so traffic goes to other pods or nowhere.
 2. What does `postgres-rw` resolve to, and why not use a pod's name?
+> [!success]- Answer
+> The Service IP of CloudNativePG's `postgres-rw`, which always points to the current primary. A pod name changes on failover or replacement, and might be a replica that refuses writes.
 
 ## Go further
 - [Service](https://kubernetes.io/docs/concepts/services-networking/service/).

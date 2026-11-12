@@ -46,8 +46,14 @@ Anything destructive or secret-related is sent **without** auto-approve: the wor
 
 ## Check yourself
 1. Why can't unit tests with scripted models replace this?
+> [!success]- Answer
+> Scripted models return the outputs written for them, so unit tests prove the code follows its rules on every route. They say nothing about whether the real model, with the real prompts and tools, plans, chooses tools, refuses injections and answers well. Only running the deployed agent shows that.
 2. Why prefer code checks over the judge where possible?
+> [!success]- Answer
+> A code check is exact, free and gives the same verdict every time. A judge costs a model call, can be biased or wrong, and adds its own randomness, so you'd be measuring the judge too. Keep the judge for what only judgement can check.
 3. What does "flaky" tell you about an agent behaviour?
+> [!success]- Answer
+> The agent doesn't behave reliably on that case: the same conversation sometimes passes and sometimes fails, so a prompt, a tool description or the model's sampling leaves room for two paths. Read a failing run to see where they split.
 
 ## Go further
 - [Anthropic: create strong empirical evaluations](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests).

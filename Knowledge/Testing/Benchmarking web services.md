@@ -26,7 +26,11 @@ Performance opinions are cheap and often wrong. A careful benchmark answers a sp
 
 ## Check yourself
 1. Why can a framework win throughput and lose p99 at a fixed rate?
+> [!success]- Answer
+> Maximum throughput rewards whatever does the most work per second when saturated. At a fixed rate the question is how evenly requests are served: pauses (garbage collection, an event-loop stall, unfair scheduling) barely change throughput but make a slow tail, which p99 shows.
 2. What is coordinated omission?
+> [!success]- Answer
+> A closed-loop load tool waits for each response before sending the next request, so when the server stalls it sends less and records only the few slow requests, not the many that would have queued behind them. Latency looks far better than real users would see. Fixed-rate tools send on schedule and correct for it.
 
 ## Go further
 - [Gil Tene: How NOT to measure latency](https://www.youtube.com/watch?v=lJ8ydIuPFeU).

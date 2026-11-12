@@ -29,7 +29,11 @@ Every `values.yaml.gotmpl` in homelab-infra; `config/` in every Python service.
 
 ## Check yourself
 1. Why quote `"0640"` in a k3s config?
+> [!success]- Answer
+> Unquoted, YAML reads `0640` as a number, and some parsers read a leading zero as octal (416) or as decimal 640. Quoted, it stays the text `"0640"`, the file mode you meant.
 2. What does `nindent 8` do, and when do you need it?
+> [!success]- Answer
+> It starts a new line and indents every line of the value by 8 spaces. You need it when you insert a multi-line block (a file, a list of env vars) inside YAML at some depth, so the block lands at the right indentation.
 
 ## Go further
 - [Helm: chart template guide](https://helm.sh/docs/chart_template_guide/), [YAML: the Norway problem](https://hitchdev.com/strictyaml/why/implicit-typing-removed/).

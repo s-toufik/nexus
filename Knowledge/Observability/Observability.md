@@ -29,7 +29,11 @@ Prometheus (metrics), Loki (logs), Tempo (traces), fed by the OTel Collector and
 
 ## Check yourself
 1. Give one question each signal answers best.
+> [!success]- Answer
+> Metrics: is the error rate rising, and since when? Logs: what exactly did this failing request say? Traces: where did this slow request spend its time, across the services it crossed?
 2. What are the RED metrics of agent-runtime, and where would you find them?
+> [!success]- Answer
+> Rate (requests per second), errors (failed requests) and duration (latency) of its HTTP routes. Tempo's metrics generator computes them from its spans, as `traces_spanmetrics_calls_total` and `traces_spanmetrics_latency_bucket` in Prometheus for `service="agent-runtime"`; query them in Grafana or homelab-ui's Metrics page.
 
 ## Go further
 - [OpenTelemetry: observability primer](https://opentelemetry.io/docs/concepts/observability-primer/).

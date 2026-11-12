@@ -32,7 +32,11 @@ Every service in the homelab runs in one. Knowing they're "just processes with w
 
 ## Check yourself
 1. Why can a container use 26 GiB on a 32 GiB host only if its limit allows it?
+> [!success]- Answer
+> The container sees the host's memory, but its cgroup caps what it may use. Its memory limit decides, not the host's total: above the limit the kernel's OOM killer kills it (`OOMKilled`). With a 26 GiB limit it can use 26 GiB; with 3 GiB, it dies at 3.
 2. What does `hostNetwork: true` give up?
+> [!success]- Answer
+> The network namespace: the pod uses the node's interfaces and addresses directly. It gets no IP of its own, and anything it listens on `0.0.0.0` is reachable on every network the node is on.
 
 ## Go further
 - [Julia Evans: How containers work (zine)](https://wizardzines.com/zines/containers/).

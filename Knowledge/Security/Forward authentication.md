@@ -34,7 +34,11 @@ client ─► proxy ── subrequest with the client's headers/cookie ──►
 
 ## Check yourself
 1. What happens if the proxy forgets to strip `Remote-User`?
+> [!success]- Answer
+> A client could send `Remote-User: admin` itself, and the backend would believe it: anyone could act as anyone. Stripping it guarantees the only `Remote-User` a backend sees is the one Caddy set from the session.
 2. Why does `/api/*` answer 401 instead of redirecting?
+> [!success]- Answer
+> Its callers are scripts and the app's own `fetch`, not a person on a page: a redirect to the sign-in page would come back as HTML they can't use. A 401 says clearly "not signed in", and the page can react by sending the user to sign in.
 
 ## Go further
 - [Caddy forward_auth](https://caddyserver.com/docs/caddyfile/directives/forward_auth).

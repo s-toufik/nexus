@@ -27,7 +27,11 @@ Local models mean privacy, no per-token cost and no dependency on a provider —
 
 ## Check yourself
 1. Roughly how much memory do an 8B model's weights take at Q4_K_M? At Q8_0?
+> [!success]- Answer
+> At Q4_K_M, about 4.5 bits a weight: 8 billion × 4.5 / 8 ≈ 4.5 GB. At Q8_0, about 8.5 bits: ≈ 8.5 GB. Add the KV cache on top.
 2. Why does doubling the context size increase memory even with the same model?
+> [!success]- Answer
+> The KV cache stores the keys and values of every token in the context, for every layer. Its size grows with the number of tokens, so twice the context means about twice the cache, while the weights stay the same.
 
 ## Go further
 - [llama.cpp](https://github.com/ggml-org/llama.cpp), [GGUF on Hugging Face](https://huggingface.co/docs/hub/gguf).

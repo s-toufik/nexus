@@ -32,7 +32,11 @@ It starts with `table … ; delete table …` so reloading replaces only *our* t
 
 ## Check yourself
 1. Why accept by interface first, then drop by port?
+> [!success]- Answer
+> The first verdict that matches wins. Accepting the trusted interfaces first (loopback, Tailscale, k3s' own) keeps everything working there, including Kubernetes' ports. The drop then catches the same ports from whatever is left, which is the LAN, without naming the LAN interface, which differs between Ethernet and Wi-Fi.
 2. Why does reloading our file not touch k3s' rules?
+> [!success]- Answer
+> Our rules live in their own table, and the file starts by declaring then deleting that table only. k3s' and Tailscale's rules are in their own tables, which reloading never touches.
 
 ## Go further
 - [nftables wiki](https://wiki.nftables.org/wiki-nftables/index.php/Main_Page), [quick reference](https://wiki.nftables.org/wiki-nftables/index.php/Quick_reference-nftables_in_10_minutes).

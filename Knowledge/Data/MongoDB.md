@@ -30,7 +30,11 @@ Some data is naturally a document — a conversation with its messages, a config
 
 ## Check yourself
 1. Why is a conversation a good fit for a document? What would you lose versus PostgreSQL?
+> [!success]- Answer
+> A conversation is read and written as a whole, its messages belong to it alone, and their fields vary (tool calls, metadata): one document holds it all in one read. Against PostgreSQL you'd lose a fixed schema enforced by the database, joins and constraints across tables, and transactional reports across conversations in plain SQL.
 2. What does `authSource=admin` mean in a connection string?
+> [!success]- Answer
+> The database where the user is defined and checked: the `mcp` and `root` users are created in `admin`, so connecting needs `authSource=admin` even when you then work in another database.
 
 ## Go further
 - [MongoDB manual](https://www.mongodb.com/docs/manual/), [authorization](https://www.mongodb.com/docs/manual/core/authorization/).

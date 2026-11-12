@@ -46,8 +46,14 @@ Profiles: **throughput** (as fast as N connections allow → requests/s) and **f
 
 ## Check yourself
 1. Why do fake APIs answer with a fixed latency and a formula?
+> [!success]- Answer
+> So every framework does exactly the same work, and runs are repeatable: no network noise, no real service to slow down or change, and the answers can be checked byte for byte.
 2. Why can throughput rank frameworks very differently from p99 at a fixed rate?
+> [!success]- Answer
+> Throughput measures how much work a saturated server gets through; p99 at a fixed rate measures how evenly it serves requests at a normal load. Pauses (garbage collection, event-loop stalls, unfair scheduling) barely change the first and dominate the second.
 3. The load generator runs on the same machine. What does that mean for the numbers?
+> [!success]- Answer
+> oha competes with the server for the same CPU and memory, so absolute numbers are lower than on separate machines, and a framework that needs more CPU feels it more. The comparison stays fair because every framework shares that handicap, which is why only the ranking and large differences mean something.
 
 ## Go further
 - [oha](https://github.com/hatoo/oha) · [Granian](https://github.com/emmett-framework/granian).

@@ -32,7 +32,11 @@ Everything on the host that isn't a pod — k3s itself, Tailscale, the LAN guard
 
 ## Check yourself
 1. What's the difference between `disable` and `mask`?
+> [!success]- Answer
+> `disable` only removes the unit from boot: it can still be started by hand or by another unit. `mask` links it to `/dev/null`, so nothing can start it at all; that's why the sleep targets are masked.
 2. How would you see why the server rebooted last night?
+> [!success]- Answer
+> `journalctl -b -1` shows the previous boot's journal (kept, since it's persistent): read its last lines (`-e`) for the cause, such as a watchdog, an out-of-memory or a power loss. `last -x reboot` lists reboot times.
 
 ## Go further
 - [systemd.service](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html), [systemd.timer](https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html), [journalctl](https://www.freedesktop.org/software/systemd/man/latest/journalctl.html).

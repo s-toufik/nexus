@@ -67,7 +67,11 @@ Full steps: [[Homelab - Add an app]].
 
 ## Check yourself
 1. You want Loki to keep logs 60 days instead of 30. Find the file, and say which command applies it.
+> [!success]- Answer
+> `observability/loki/config.yml`: `retention_period: 720h` → `1440h`. Then `make diff R=loki` and `make apply R=loki`; the config's checksum restarts Loki.
 2. Your new API needs a PostgreSQL account. List every file you touch.
+> [!success]- Answer
+> `scripts/secrets.sh` (its Secret in `SPECS`, and in `ROTATABLE`), `repository/postgres/values.yaml.gotmpl` (the role under `roles:`), a new migration in `repository/db-migrate/migrations/` (its schema and grants), and the app's `devops/helm/values.yml` (`env` and `secretEnv` pointing at `postgres-rw` and the Secret), or `apps/<app>/values.yaml.gotmpl` if it's for this server only.
 
 ## Go further
 - [Google SRE book: managing change](https://sre.google/sre-book/release-engineering/) — release engineering.

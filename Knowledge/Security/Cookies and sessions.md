@@ -37,7 +37,11 @@ Cookies carry your identity, so their attributes decide who can steal or misuse 
 
 ## Check yourself
 1. Why does the `__Host-` prefix matter, and what does it forbid?
+> [!success]- Answer
+> The browser enforces it: the cookie must be `Secure`, have `Path=/` and no `Domain`, so it's pinned to this exact host. A sibling subdomain or a page over plain HTTP can't set or overwrite it with a cookie of the same name.
 2. How does rotating a secret sign everyone out without touching their browsers?
+> [!success]- Answer
+> oauth2-proxy's session lives in the cookie itself, encrypted and signed with `cookie-secret`. With a new secret, oauth2-proxy can't read any existing cookie, so every one counts as no session and everyone signs in again.
 
 ## Go further
 - [MDN: using HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies), [Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie).

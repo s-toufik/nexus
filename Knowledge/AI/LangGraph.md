@@ -21,7 +21,11 @@ agent-runtime runs its steps as a LangGraph graph **generated from `TurnPolicy`*
 
 ## Check yourself
 1. What does the checkpointer give a chat agent?
+> [!success]- Answer
+> Memory between calls: the state is saved after each step under the thread id, so the next message continues the same conversation, a paused plan can be resumed after approval, even after a restart, and past states can be inspected when debugging.
 2. Why keep routing rules out of graph code?
+> [!success]- Answer
+> So the rules stay in the domain, testable without LangGraph: agent-runtime keeps them in `TurnPolicy` and generates the graph from it. The same steps run on a plain loop in tests, and swapping the library touches only the adapter.
 
 ## Go further
 - [LangGraph concepts](https://langchain-ai.github.io/langgraph/concepts/low_level/), [persistence](https://langchain-ai.github.io/langgraph/concepts/persistence/).

@@ -27,7 +27,11 @@ Agents turn text into actions. A single malicious instruction hidden in a web pa
 
 ## Check yourself
 1. Name the three legs of the lethal trifecta in our agent. Which one is weakest?
+> [!success]- Answer
+> Private data: the databases and Grafana, read through the MCP servers. Untrusted content: tool results such as logs, rows and files, written by people or programs the agent doesn't control. A way out: the toolbox pod may reach the public internet. That last leg is the weakest: only plan approval and the screen step stand between a hijacked plan and a request carrying your data out.
 2. Why are read-only database accounts a sandbox measure, not just a permission detail?
+> [!success]- Answer
+> A sandbox limits what a fooled model can do, not what it intends. With a read-only account, the worst an injected instruction can do to the data is read it: it can't delete, change or encrypt it, whatever the model decides. The limit is enforced by the database, outside the model's reach.
 
 ## Go further
 - [Anthropic: building effective agents](https://www.anthropic.com/research/building-effective-agents).

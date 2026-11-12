@@ -36,7 +36,11 @@ Previous: [[pycraftcore modules]] · Next: [[pycraftcore web toolkits]]
 
 ## Check yourself
 1. What's the difference between a connector and an operation?
+> [!success]- Answer
+> A connector says where something is and how to reach it (base URL, timeout, retry, auth). An operation says what you do with it (a method and path, parameters) and points at a connector; many operations can share one.
 2. Why does an empty `WEB_DOCS` break a service that has a default for it?
+> [!success]- Answer
+> An env variable that's set, even to an empty string, wins over the YAML default. `${oc.env:WEB_DOCS,false}` then yields `""`, which isn't a valid boolean, so validation fails at start. Don't pass optional variables at all when they have no value.
 
 ## Go further
 - [OmegaConf: variable interpolation and resolvers](https://omegaconf.readthedocs.io/en/latest/usage.html#variable-interpolation).

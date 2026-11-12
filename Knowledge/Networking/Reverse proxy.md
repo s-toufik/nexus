@@ -35,7 +35,11 @@ Its config is `gateway/caddy/Caddyfile`, checked by `caddy validate` in `make va
 
 ## Check yourself
 1. Why put authentication in the proxy rather than in each app? What's the risk?
+> [!success]- Answer
+> It's written, reviewed and fixed once, the same for every app, including apps that have no sign-in of their own (Prometheus, Loki). The risk: an app reached without going through the proxy is unprotected, and an app trusting identity headers can be fooled by a forged one. Hence the proxy strips them, and backends check the gateway secret or listen only inside the cluster.
 2. What does `handle_path` do that `handle` doesn't?
+> [!success]- Answer
+> It strips the matched prefix before forwarding: `/api/loki/loki/api/v1/query` reaches Loki as `/loki/api/v1/query`. `handle` only routes; the backend gets the full path.
 
 ## Go further
 - [Cloudflare: what is a reverse proxy?](https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/)

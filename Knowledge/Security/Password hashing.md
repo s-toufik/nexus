@@ -28,7 +28,11 @@ Keycloak hashes with Argon2id; the realm's policy (`sync.sh`): at least 12 chara
 
 ## Check yourself
 1. What does a salt defend against, and what does it *not*?
+> [!success]- Answer
+> Precomputed tables (rainbow tables) and cracking many hashes at once: the same password gives different hashes, so each must be attacked on its own. It doesn't make one weak password harder to guess: a dictionary attack on a single hash still works, only slowness slows it.
 2. Why is SHA-256 a bad password hash even though it's a good hash?
+> [!success]- Answer
+> It's designed to be fast: a GPU computes billions a second, so guessing is cheap. A password hash must be slow and memory-hard (Argon2id), so each guess costs real time and memory.
 
 ## Go further
 - [OWASP password storage cheat sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html).

@@ -70,8 +70,14 @@ With the guardrail, plan → screen → (act | finish).
 
 ## Check yourself
 1. A user sends "shorter" after an answer. Trace the steps.
+> [!success]- Answer
+> understand classifies it as a rework of the last answer (no plan, not ambiguous) → act rewrites the answer shorter → review checks it against the request, since a rework isn't a plain direct answer → if rejected and retries are left, feedback → act → review again → finish → summarize (only if the history passed half the context).
 2. Why generate the graph from `TurnPolicy` instead of drawing it in LangGraph?
+> [!success]- Answer
+> The rules then live in the domain as data: readable in one screen, testable without a model or LangGraph, and the same for any engine. Hand-drawn edges would put the rules inside an adapter and let the two drift; a test checks the generated graph matches the table.
 3. What does running the scenarios on two runners prove?
+> [!success]- Answer
+> That the behaviour comes from the domain's steps and `TurnPolicy`, not from LangGraph: both runners give identical answers, events and stored conversations. So LangGraph is a replaceable adapter, and a bug in how it's wired shows up as a difference.
 
 ## Go further
 - [LangGraph concepts](https://langchain-ai.github.io/langgraph/concepts/low_level/) — state, nodes, edges, checkpointers.

@@ -21,6 +21,8 @@ Every repository has `.pre-commit-config.yaml` (Python: ruff, ty, pytest; homela
 
 ## Check yourself
 1. Why still run the same checks in CI?
+> [!success]- Answer
+> Hooks run on your machine only if they're installed, and they can be skipped (`--no-verify`) or be at another version. CI runs from the repository alone, the same way for every push: that's the guarantee, hooks are a convenience that catches problems sooner.
 
 ## Go further
 - [pre-commit.com](https://pre-commit.com/).

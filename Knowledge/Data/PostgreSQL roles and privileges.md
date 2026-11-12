@@ -32,8 +32,14 @@ updated: 2026-11-08
 
 ## Check yourself
 1. What does `NOINHERIT` change for `postgrest`?
+> [!success]- Answer
+> Being a member of `tasker_web` gives `postgrest` nothing by itself: it logs in with almost no rights, and only has `tasker_web`'s privileges after `SET ROLE tasker_web` for a request. A leaked `postgrest` password alone opens nothing.
 2. Why revoke `CREATE` on schema `public` from `PUBLIC`?
+> [!success]- Answer
+> By default every role may create objects in `public`. Revoking it means no app can add tables or functions there, including a function another role might call by mistake (a classic search-path attack).
 3. Can `mcp` with `pg_write_all_data` add a column?
+> [!success]- Answer
+> No. `pg_write_all_data` gives `INSERT`, `UPDATE` and `DELETE` on all tables, but not DDL: `ALTER TABLE … ADD COLUMN` needs ownership of the table.
 
 ## Go further
 - [Database roles](https://www.postgresql.org/docs/current/user-manag.html), [Privileges](https://www.postgresql.org/docs/current/ddl-priv.html), [Predefined roles](https://www.postgresql.org/docs/current/predefined-roles.html).

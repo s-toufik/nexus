@@ -31,7 +31,11 @@ Without TLS anyone on the path reads passwords and cookies. Without a *valid* ce
 
 ## Check yourself
 1. What exactly does a browser check before trusting a certificate?
+> [!success]- Answer
+> That the certificate chain is signed, link by link, up to a root CA it trusts; that the name it asked for (SNI) is in the certificate's SAN; that today is within its validity dates; and, during the handshake, that the server holds the private key matching the certificate.
 2. Where is TLS terminated for `https://<domain>:3000`, and is Grafana's traffic encrypted after that?
+> [!success]- Answer
+> At Caddy: it holds the certificate and decrypts. From Caddy to Grafana the traffic is plain HTTP between pods, inside the cluster.
 
 ## Go further
 - [Cloudflare: what is TLS?](https://www.cloudflare.com/learning/ssl/what-is-tls/)

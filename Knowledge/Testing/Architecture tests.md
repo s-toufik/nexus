@@ -23,7 +23,11 @@ Layers erode one convenient import at a time; reviews miss it. A test makes the 
 
 ## Check yourself
 1. Write the rule that keeps the domain free of frameworks as a sentence a test could check.
+> [!success]- Answer
+> "No module under `domain` imports anything outside the standard library and `domain` itself." The test parses each domain module's imports and fails on any other top-level package.
 2. Why is this better than a code-review checklist?
+> [!success]- Answer
+> It runs on every commit and never gets tired: a forbidden import fails the build at once, with the module's name. A checklist relies on a reviewer noticing one convenient import among hundreds of lines.
 
 ## Go further
 - [import-linter: contract types](https://import-linter.readthedocs.io/en/stable/).

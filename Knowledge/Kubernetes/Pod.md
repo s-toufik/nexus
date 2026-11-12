@@ -30,7 +30,11 @@ Each Homelab release normally runs one pod. `make status` lists them; `make sh R
 
 ## Check yourself
 1. Why shouldn't you connect to a pod by its IP?
+> [!success]- Answer
+> Pods are disposable: a replacement gets a new IP, so the address you saved points to nothing, or later to another pod. A Service gives a name and address that stay.
 2. What's the difference between a memory request and a memory limit?
+> [!success]- Answer
+> The request is what the scheduler reserves on a node to place the pod. The limit is the ceiling: above it the container is `OOMKilled`.
 
 ## Go further
 - [Pods](https://kubernetes.io/docs/concepts/workloads/pods/) and [pod lifecycle](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/).

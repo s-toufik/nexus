@@ -53,8 +53,14 @@ Content-Type: text/event-stream
 
 ## Check yourself
 1. What's the difference between 401 and 403?
+> [!success]- Answer
+> 401: you aren't authenticated (not signed in, or the credentials are missing or invalid); signing in may help. 403: you are known but not allowed; signing in again won't change it.
 2. Why is PUT idempotent but POST not, and why does that matter for retries ([[Retry and backoff]])?
+> [!success]- Answer
+> PUT says "the resource is now this": sending it twice leaves the same state. POST says "do this": twice may create two orders. So a retry is safe for PUT, and for POST only with an idempotency key.
 3. Which header tells Caddy which site you want when several share one IP?
+> [!success]- Answer
+> `Host` (and SNI during the TLS handshake for HTTPS).
 
 ## Go further
 - [MDN: an overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview), [HTTP status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status).

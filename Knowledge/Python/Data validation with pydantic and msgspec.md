@@ -28,7 +28,11 @@ class Order(msgspec.Struct):              # msgspec
 
 ## Check yourself
 1. Why validate at the boundary and not everywhere?
+> [!success]- Answer
+> The boundary is where untrusted data arrives (HTTP, config, tool arguments, model output). Once it's checked and typed there, the code inside can trust the types; checking again everywhere only costs time and clutters the code.
 2. How does a field description end up in front of the LLM?
+> [!success]- Answer
+> The description is part of the pydantic model's JSON schema; the toolbox publishes that schema as the MCP tool's input schema; agent-runtime passes it to the model as the tool definition, which the model reads to fill the arguments.
 
 ## Go further
 - [pydantic](https://pydantic.dev/docs/), [msgspec](https://github.com/jcrist/msgspec).

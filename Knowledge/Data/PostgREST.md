@@ -26,7 +26,11 @@ Tasker's API: schema `tasker`, anonymous role `tasker_web`, pre-request `tasker.
 
 ## Check yourself
 1. What would happen if `PGRST_DB_PRE_REQUEST` were removed?
+> [!success]- Answer
+> Nothing would check that a request came through Caddy. Anyone reaching PostgREST directly could set `Remote-User` to someone else's name, and RLS would show them that person's rows, since the policies trust that header.
 2. Where does PostgREST get the identity it passes to SQL?
+> [!success]- Answer
+> From the request's headers, which PostgREST exposes as `request.headers`: `Remote-User`, set by Caddy from your signed-in session. `current_username()` reads it, after `check_request()` has proved, with `X-Gateway-Secret`, that Caddy set it.
 
 ## Go further
 - [PostgREST docs](https://docs.postgrest.org/), especially [authentication](https://docs.postgrest.org/en/stable/references/auth.html) and [API](https://docs.postgrest.org/en/stable/references/api.html).

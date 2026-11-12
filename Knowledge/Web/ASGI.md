@@ -25,7 +25,11 @@ Granian serves every Python service (agent-runtime, agent-toolbox, the benchmark
 
 ## Check yourself
 1. What do `receive` and `send` carry for a streaming response?
+> [!success]- Answer
+> `receive` brings the request body chunks, then an `http.disconnect` message if the client leaves. `send` first sends `http.response.start` (status and headers), then one `http.response.body` per chunk with `more_body: True`, and a last one with `more_body: False`.
 2. Why does `GRANIAN_WORKERS=2` double memory?
+> [!success]- Answer
+> Each worker is a separate process with its own copy of the app: imports, caches, connection pools and loaded tools. Two workers, about twice the memory.
 
 ## Go further
 - [ASGI specification](https://asgi.readthedocs.io/en/latest/specs/main.html).

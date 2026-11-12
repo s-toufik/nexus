@@ -29,7 +29,11 @@ The same image should run anywhere; only its configuration changes ([12-factor c
 
 ## Check yourself
 1. Is a Kubernetes Secret encrypted? Where, and against whom?
+> [!success]- Answer
+> Not by default: base64 is an encoding, not encryption. With k3s' `secrets-encryption` it's encrypted at rest in the datastore, which protects against someone reading the database or its backups. Anyone allowed by RBAC to read Secrets through the API still gets the values in clear.
 2. You change a ConfigMap read as env variables. When does the app see the new value?
+> [!success]- Answer
+> Only when the pod restarts: env variables are read once at start. Here the chart's checksum annotation (or Reloader) restarts the pod for you after a deploy.
 
 ## Go further
 - [ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/), [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/).

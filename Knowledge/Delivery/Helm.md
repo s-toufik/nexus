@@ -34,7 +34,11 @@ Raw YAML doesn't scale: the same 200 lines repeated per service, with a few valu
 
 ## Check yourself
 1. What's the difference between a chart's `version` and `appVersion`?
+> [!success]- Answer
+> `version` is the chart's own version: it changes when the templates or defaults change. `appVersion` is the version of the application the chart deploys, usually the image tag. They move independently.
 2. Where does Helm keep a release's history, and what does `rollback` actually re-apply?
+> [!success]- Answer
+> In the release's namespace, as one Secret per revision (`sh.helm.release.v1.<name>.v<N>`), holding the rendered manifests and values. `rollback` re-applies that old revision's manifests as a new revision; it doesn't touch data in volumes or databases.
 
 ## Go further
 - [Using Helm](https://helm.sh/docs/intro/using_helm/), [Charts](https://helm.sh/docs/topics/charts/), [Chart template guide](https://helm.sh/docs/chart_template_guide/).

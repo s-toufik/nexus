@@ -37,7 +37,11 @@ Replacing `__import__` and `open` inside Python is **not** a hard security bound
 
 ## Check yourself
 1. Why `realpath` before checking the working directory?
+> [!success]- Answer
+> `realpath` resolves `..`, `.` and symlinks to the real path first. Checking the raw string, `work/../../etc/passwd` or a symlink inside the working directory pointing outside would look as if it stayed under it.
 2. Why a token on a loopback-only socket?
+> [!success]- Answer
+> Any process on the machine can connect to a loopback port, including other code in the same pod. The token, a fresh secret per server known only to the sandbox it started, makes the bridge refuse calls from anything else.
 
 ## Go further
 - [Python `resource` module](https://docs.python.org/3/library/resource.html).

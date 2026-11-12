@@ -31,8 +31,14 @@ Containers, Kubernetes security contexts, the `k3s-admin` group, root-only backu
 
 ## Check yourself
 1. Read `drwx------ root root backups`: who can list it?
+> [!success]- Answer
+> Only root, the owner (`rwx`). The group and others have no rights (`---`), so they can't list, read or enter it.
 2. Why is a password in a command's arguments a leak?
+> [!success]- Answer
+> Any user on the machine can read every process's arguments with `ps` or `/proc/<pid>/cmdline`, and they often land in shell history and logs. stdin is read by the process alone.
 3. What does exit code 1 from `make validate` tell a script?
+> [!success]- Answer
+> That validation failed. With `set -e`, or in a `make` recipe, the script stops there instead of going on to apply a broken change.
 
 ## Go further
 - [The Linux command line (William Shotts, free book)](https://linuxcommand.org/tlcl.php).

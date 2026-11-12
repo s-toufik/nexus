@@ -40,8 +40,14 @@ The authorization code flow with PKCE:
 
 ## Check yourself
 1. Why does the code go through the browser but the token exchange not?
+> [!success]- Answer
+> The browser is the only way to bring the user back to the client after signing in, but anything in the browser can leak (history, logs, extensions). So only a one-time code goes through it; the tokens come from a server-to-server call that needs the client secret and the PKCE verifier, which never touch the browser.
 2. What does PKCE protect against?
+> [!success]- Answer
+> A stolen authorization code: without the verifier, which never left the client that started the flow, nobody else can exchange it for tokens.
 3. ID token vs access token: who is each for?
+> [!success]- Answer
+> The ID token is for the client: it tells the app who signed in, when, and for which client. The access token is for APIs: the client sends it to a resource server to act for the user, which checks it.
 
 ## Go further
 - [OAuth 2.0 simplified](https://www.oauth.com/) (Aaron Parecki) — the clearest introduction.

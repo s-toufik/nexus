@@ -38,7 +38,11 @@ On failure, the result keeps what the code printed before failing and a tracebac
 
 ## Check yourself
 1. Why is "data never transits the model" a cost *and* a privacy win?
+> [!success]- Answer
+> Cost: thousands of rows are handled in the sandbox and only the small result goes back, so the model reads a few tokens instead of the whole data set. Privacy: rows the model never sees can't leak through its answer or the provider's logs (NVIDIA's API by default).
 2. Name two ways sandboxed code could still cause harm, and which layer stops each.
+> [!success]- Answer
+> Any two of: sending data out to the internet with a tool or an allowed module (only plan approval and the screen step stop it, since the fence allows the internet); exhausting resources with a huge loop or allocation (the 256 MB limit, the timeout and the 8-run cap); writing or deleting files in the working directory (only that directory is reachable); changing data through the MCP tools (their read-only accounts); escaping Python's allowlist through its dynamism (the separate process, the hardened pod with no Kubernetes token, and the NetworkPolicy).
 
 ## Go further
 - [[pycraftcore runtime sandbox]] — how the runner is built.

@@ -34,13 +34,14 @@ agent-runtime, agent-toolbox, homelab-ui, pycraftcore and the pricelab libraries
 
 ## Check yourself
 1. Why is the server never given `dev` or `latest`?
+> [!success]- Answer
+> They move with every new tag, so the server couldn't say which code it runs, and k3s keeps an image it already has, so it wouldn't even pick up the newer one. A version tag never moves.
 2. Git flow vs trunk-based: what does each optimise for?
+> [!success]- Answer
+> Git flow: a stable `main` and a deliberate release step. Trunk-based: small changes merged fast, which needs strong CI and feature flags.
 3. You tag `v1.3.0` on a `develop` commit by mistake. What does CI do, and why is that the right call?
-
-> [!success]- Answers
-> 1. They move with every new tag, so the server couldn't say which code it runs, and k3s keeps an image it already has, so it wouldn't even pick up the newer one. A version tag never moves.
-> 2. Git flow: a stable `main` and a deliberate release step. Trunk-based: small changes merged fast, which needs strong CI and feature flags.
-> 3. RELEASE TARGET stops it: a final version only on `develop` is refused and nothing is published. Otherwise `1.3.0` would be burnt as a trial and the real release would need another number.
+> [!success]- Answer
+> RELEASE TARGET stops it: a final version only on `develop` is refused and nothing is published. Otherwise `1.3.0` would be burnt as a trial and the real release would need another number.
 
 ## Go further
 - [Vincent Driessen: a successful Git branching model](https://nvie.com/posts/a-successful-git-branching-model/) (and its 2020 note).

@@ -33,8 +33,14 @@ It's the de-facto standard for metrics in the Kubernetes world: every serious co
 
 ## Check yourself
 1. Why `rate()` on a counter rather than the raw value?
+> [!success]- Answer
+> A counter only goes up, so its raw value is a total since the process started, and drops to 0 on a restart. `rate()` gives the per-second speed over a window and handles those resets.
 2. Write the query: memory per container in namespace `homelab`.
+> [!success]- Answer
+> `sum by (pod, container) (container_memory_working_set_bytes{namespace="homelab", container!=""})` (the `container!=""` drops the pod-level total series).
 3. What makes a label "high cardinality"?
+> [!success]- Answer
+> A label whose values are unbounded or very many: user ids, request ids, full URLs, timestamps. Each distinct value creates a new series, so memory and query time explode.
 
 ## Go further
 - [Prometheus overview](https://prometheus.io/docs/introduction/overview/), [querying basics](https://prometheus.io/docs/prometheus/latest/querying/basics/), [metric naming](https://prometheus.io/docs/practices/naming/).

@@ -26,7 +26,11 @@ It's an opinionated, batteries-included framework used for large apps; knowing i
 
 ## Check yourself
 1. What does "zoneless" remove, and what replaces it?
+> [!success]- Answer
+> zone.js, which patches every async API (timers, events, HTTP) and triggers change detection over the whole tree after each. Signals replace it: Angular updates only the views that read a signal that changed.
 2. Why `loadComponent` for every page?
+> [!success]- Answer
+> Each page becomes its own bundle, downloaded on the first visit to it. The first load only fetches the shell and the page you open, so it's faster, and pages you never visit cost nothing.
 
 ## Go further
 - [angular.dev](https://angular.dev/) — start with the tutorial, then [components](https://angular.dev/guide/components) and [signals](https://angular.dev/guide/signals).

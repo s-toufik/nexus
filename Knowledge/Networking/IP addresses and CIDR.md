@@ -33,7 +33,11 @@ The agent-toolbox fence allows `0.0.0.0/0` except `10/8`, `172.16/12`, `192.168/
 
 ## Check yourself
 1. How many addresses in `100.64.0.0/10`? Is `100.127.255.1` inside it?
+> [!success]- Answer
+> 2^(32−10) = 4,194,304 addresses, from `100.64.0.0` to `100.127.255.255`. So yes, `100.127.255.1` is inside.
 2. Why exclude `169.254.0.0/16` from an agent's internet access?
+> [!success]- Answer
+> It holds link-local services, including cloud metadata servers (`169.254.169.254`), which hand out credentials to whoever asks from the machine. An agent fooled into calling it could leak them.
 
 ## Go further
 - [CIDR on Wikipedia](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing).

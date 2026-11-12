@@ -25,7 +25,11 @@ Before OTel, each backend had its own agent and library; switching meant re-inst
 
 ## Check yourself
 1. Why put `memory_limiter` first in every pipeline?
+> [!success]- Answer
+> So the collector refuses data before it runs out of memory: when it's above its limit (400 MiB here), it drops or refuses new data at the door, before batching or exporting builds up more. Later in the pipeline it would be too late.
 2. What changes in your app if you move from Tempo to another tracing backend?
+> [!success]- Answer
+> Nothing in the app: it still sends OTLP to the collector. Only the collector's exporter changes in its config.
 
 ## Go further
 - [OpenTelemetry docs](https://opentelemetry.io/docs/), [Collector](https://opentelemetry.io/docs/collector/), [semantic conventions](https://opentelemetry.io/docs/specs/semconv/).

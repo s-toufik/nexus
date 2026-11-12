@@ -32,7 +32,11 @@ Most agent design is managing four scarce things: context (what the model sees),
 
 ## Check yourself
 1. Why does a long tool result make the model worse at following instructions?
+> [!success]- Answer
+> Everything competes for the same context window and the model's attention: a big result pushes the system prompt and the instructions far back, or out of the window, and buries them under text the model must also attend to. Instructions near the end and short results are followed better.
 2. Why use temperature 0 for an agent's planner?
+> [!success]- Answer
+> The planner should give the same plan for the same request: temperature 0 picks the most likely token each time, so plans are repeatable, easier to test and to evaluate, and less likely to drift into odd steps.
 
 ## Go further
 - [Andrej Karpathy: Intro to Large Language Models (video)](https://www.youtube.com/watch?v=zjkBMFhNj_g), [Let's build the GPT tokenizer](https://www.youtube.com/watch?v=zduSFxRajkE).

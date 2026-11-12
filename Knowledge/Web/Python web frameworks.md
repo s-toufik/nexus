@@ -26,6 +26,8 @@ updated: 2026-11-08
 
 ## Check yourself
 1. If all three are equal at a realistic load, what should decide the choice?
+> [!success]- Answer
+> What matters for the team and the code: the validation library and its speed, the DI style, the docs and ecosystem, maturity and community, and what the team knows. Raw speed only matters if you'll run near saturation.
 
 ## Go further
 - [FastAPI](https://fastapi.tiangolo.com/), [Litestar](https://docs.litestar.dev/), [BlackSheep](https://www.neoteroi.dev/blacksheep/).

@@ -111,9 +111,17 @@ Pushes publish nothing; a tag `vX.Y.Z-rc.N` on `develop` publishes the image `X.
 
 ## Check yourself
 1. You change one line in `observability/prometheus/prometheus.yml`. Which releases does `make apply` touch, and why does the Prometheus pod restart?
+> [!success]- Answer
+> Only `prometheus`: the file is one of its `configFiles`, so only its rendered ConfigMap changes in the diff. The pod restarts because the ConfigMap's checksum is an annotation on the pod template: a changed template means a rollout.
 2. Why is `local.yaml` git-ignored while `versions.yaml` is committed?
+> [!success]- Answer
+> `local.yaml` identifies your server (its Tailscale name and address), which must never be in a public repository, and differs per server. `versions.yaml` is the release train: what should run, which must be reviewed and versioned.
 3. A deploy of `keycloak` fails. What happens to `oauth2-proxy` and `grafana` in that same `make apply`?
+> [!success]- Answer
+> The train stops at the failure: releases after it in `needs:` order, `oauth2-proxy` and `grafana`, aren't deployed in that run and keep their previous version. Fix, commit, `make apply` again.
 4. Where would you set an env variable for agent-runtime that only this server needs? And one every install of it needs?
+> [!success]- Answer
+> Only this server: `apps/agent-runtime/values.yaml.gotmpl` in homelab-infra, then `make apply R=agent-runtime`. Every install: agent-runtime's own `devops/helm/values.yml`, released with a new tag, then the version bumped in `versions.yaml`.
 
 ## Go further
 - [helmfile docs](https://helmfile.readthedocs.io/) — environments, `needs`, hooks, templates.

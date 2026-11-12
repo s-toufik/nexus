@@ -73,9 +73,17 @@ Nobody clicks in Keycloak's console. `gateway/keycloak/sync.sh` runs as a [[Jobs
 
 ## Check yourself
 1. Draw the 10 steps from memory. Which steps happen in your browser, which inside the cluster?
+> [!success]- Answer
+> In your browser and device: 1 (MagicDNS), 2 (TCP and TLS to Caddy), 5 (following the redirect to sign-in), 6 (following the redirect to Keycloak), 7 (the sign-in page; Keycloak checks the password on its side), 9 (receiving the cookie and the redirect back). Inside the cluster: 3 (Caddy strips headers), 4 and 10 (Caddy asks oauth2-proxy), 8 (oauth2-proxy exchanges the code with Keycloak, through the CoreDNS rewrite).
 2. Why must Caddy strip `Remote-User` from incoming requests? What would an attacker on your tailnet do without it?
+> [!success]- Answer
+> Backends trust `Remote-User` as the signed-in account. Without stripping, anyone on the tailnet could send `Remote-User: admin` (or another person's name) and act as them to every backend that trusts the header. Caddy deletes it and sets it only from oauth2-proxy's answer.
 3. Why does `/api/*` use `signed_in_api` (401) instead of `signed_in_page` (redirect)?
+> [!success]- Answer
+> `/api/*` is called by `fetch()` in the page, not opened by a person: a redirect would hand the script the sign-in page's HTML, which it can't use. A 401 is clear, and the page can send the user to sign in itself.
 4. You add a new web tool on port 7000. List the three places you edit.
+> [!success]- Answer
+> The tool's own release (in `helmfile.yaml.gotmpl` and its `<group>/<release>/values.yaml.gotmpl`); a site block for `:7000` in `gateway/caddy/Caddyfile`, with `strip_identity`, `signed_in_page` and `reverse_proxy`; and `7000` in `ports:` of Caddy's values file, so it's published as a hostPort on the Tailscale address. If the tool has a NetworkPolicy, it must also let Caddy in.
 
 ## Go further
 - [Caddy: forward_auth](https://caddyserver.com/docs/caddyfile/directives/forward_auth) — the exact mechanism.

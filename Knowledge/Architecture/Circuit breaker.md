@@ -28,7 +28,11 @@ pycraftcore `circuit_breaker` (aiobreaker), used by `resilient_http` with `failu
 
 ## Check yourself
 1. What's half-open for?
+> [!success]- Answer
+> Finding out whether the dependency has recovered, safely: after the pause, one trial call goes through. If it succeeds, the breaker closes; if it fails, it opens again, without a flood of calls hitting a service that is still down.
 2. Why shouldn't a 404 count as a failure?
+> [!success]- Answer
+> A 404 can be a correct answer ("that item doesn't exist"), not a sign the dependency is broken. Counting it would open the breaker on a healthy service and block every call. That's why `resilient_http` passes `is_excluded=is_business_error`.
 
 ## Go further
 - [Martin Fowler: CircuitBreaker](https://martinfowler.com/bliki/CircuitBreaker.html).

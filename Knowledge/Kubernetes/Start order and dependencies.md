@@ -39,15 +39,17 @@ Start order is a promise you can't keep. A first install can be ordered, but a s
 
 ## Check yourself
 1. helmfile already orders agent-toolbox after the MCP servers. Why isn't that enough?
+> [!success]- Answer
+> `needs:` orders `make apply` only. After a reboot or a restart, pods start in any order, and nothing re-runs that ordering.
 2. grafana-mcp is down. Should the toolbox's readiness probe fail? Why?
+> [!success]- Answer
+> No: the toolbox would be removed from its Service and the agent would lose every tool — files and Python included — for a server that only adds some. Report it in health instead.
 3. Why retry after 5 s, then 10, 20, 40, 60 — and not every second?
+> [!success]- Answer
+> A server that just restarted usually answers within seconds, so try soon; one that stays down shouldn't be hit every second by every client. Doubling to a ceiling balances the two.
 4. The toolbox once had one loop for all its MCP servers. What went wrong when only grafana-mcp was down?
-
-> [!success]- Answers
-> 1. `needs:` orders `make apply` only. After a reboot or a restart, pods start in any order, and nothing re-runs that ordering.
-> 2. No: the toolbox would be removed from its Service and the agent would lose every tool — files and Python included — for a server that only adds some. Report it in health instead.
-> 3. A server that just restarted usually answers within seconds, so try soon; one that stays down shouldn't be hit every second by every client. Doubling to a ceiling balances the two.
-> 4. The shared failure count made every pass a retry, so mongodb-mcp and postgres-mcp were re-read on grafana's back-off (5, 10, 20 s…) instead of once a minute. One loop each keeps each server's pace its own.
+> [!success]- Answer
+> The shared failure count made every pass a retry, so mongodb-mcp and postgres-mcp were re-read on grafana's back-off (5, 10, 20 s…) instead of once a minute. One loop each keeps each server's pace its own.
 
 ## Go further
 - [Kubernetes: controllers and the reconcile loop](https://kubernetes.io/docs/concepts/architecture/controller/).

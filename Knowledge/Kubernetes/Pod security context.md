@@ -37,7 +37,11 @@ Kubernetes' **Pod Security Standards** (`privileged`, `baseline`, `restricted`) 
 
 ## Check yourself
 1. Why does Caddy need `NET_BIND_SERVICE`, and why is adding one capability better than running privileged?
+> [!success]- Answer
+> Listening on a port below 1024, like 443, is a privileged operation, and the chart drops all capabilities. Adding back only `NET_BIND_SERVICE` gives Caddy exactly that power; `privileged` would give it every capability and the node's devices, so a bug in Caddy would be one step from the node.
 2. What does `readOnlyRootFilesystem` protect against?
+> [!success]- Answer
+> Changes to the image's files: an attacker or a bug can't replace binaries, drop tools or alter config inside the container. Only the paths you mount as writable can change.
 
 ## Go further
 - [Configure a security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/).

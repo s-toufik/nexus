@@ -29,7 +29,11 @@ Kubernetes knows how to keep pods running, not how to fail over a database, rota
 
 ## Check yourself
 1. What's a CRD, and what's the difference between installing one and running an operator?
+> [!success]- Answer
+> A CRD adds a new object type to the API, so you can store objects like `Cluster`. On its own nothing happens to them. The operator is the controller that watches them and creates and maintains the real resources.
 2. Name three things CloudNativePG does that a plain StatefulSet wouldn't.
+> [!success]- Answer
+> Any three of: creating and updating the PostgreSQL roles and their passwords from Secrets (and re-applying them when a `cnpg.io/reload` Secret changes); failover and switchover between instances; issuing TLS certificates; creating the `-rw` Service that always points to the primary; creating databases; backups and WAL archiving; a metrics exporter.
 
 ## Go further
 - [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/), [Custom resources](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/).

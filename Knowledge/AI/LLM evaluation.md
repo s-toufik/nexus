@@ -22,7 +22,11 @@ updated: 2026-11-08
 
 ## Check yourself
 1. Why prefer a code check to the judge when both could work?
+> [!success]- Answer
+> A code check is exact, free, fast and gives the same verdict every time. A judge costs a model call, can be biased (length, position, its own style) and can itself be wrong, so you'd be testing the judge as much as the agent.
 2. What does a flaky case tell you?
+> [!success]- Answer
+> The behaviour isn't reliable: the agent passes sometimes and fails sometimes on the same input, so the prompt, the tools' descriptions or the model's sampling leaves room for two different paths. Look at a failing run to see where they split.
 
 ## Go further
 - [Anthropic: develop tests](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests).

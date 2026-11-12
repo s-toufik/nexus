@@ -25,7 +25,11 @@ updated: 2026-11-08
 
 ## Check yourself
 1. Why does a CPU-bound loop inside an `async` route hurt every other request?
+> [!success]- Answer
+> There's one thread and the event loop only switches tasks at an `await`. A loop that never awaits holds the thread, so every other request waits until it ends. Run CPU work in a process or a thread instead.
 2. How does a request id reach every log line of that request?
+> [!success]- Answer
+> Through a context variable: middleware sets `request_id_context` when the request arrives, and it follows the request's task across every `await`. The logging setup reads it and adds it to every line.
 
 ## Go further
 - [asyncio docs](https://docs.python.org/3/library/asyncio.html), [contextvars](https://docs.python.org/3/library/contextvars.html).

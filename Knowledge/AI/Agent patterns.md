@@ -25,7 +25,11 @@ agent-runtime combines all five: understand (routing) → plan → user approval
 
 ## Check yourself
 1. Why does plan-and-execute make an agent safer than a free ReAct loop?
+> [!success]- Answer
+> The intent is written down before anything runs: you (and the screen step) can read the steps, refuse a bad one, and audit what happened against what was planned. A free ReAct loop decides each action on the fly, so a misstep or an injected instruction acts before anyone sees it.
 2. What stops reflection from looping forever?
+> [!success]- Answer
+> A retry cap: agent-runtime's `max_reflection_retries` bounds how many times review can send the work back, and `max_iterations` bounds the whole turn. When the cap is reached, the turn ends with the best answer it has.
 
 ## Go further
 - [Anthropic: building effective agents](https://www.anthropic.com/research/building-effective-agents).

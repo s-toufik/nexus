@@ -37,7 +37,11 @@ FROM nginxinc/nginx-unprivileged:1.27-alpine                # the runtime: no No
 
 ## Check yourself
 1. Why does the final image contain no Node.js?
+> [!success]- Answer
+> Node is only needed to build: the result is static files that nginx serves. Multi-stage builds keep Node in the builder stage, so the runtime image is smaller, has fewer packages to patch, and gives an attacker no Node to run.
 2. What does `$BUILDPLATFORM` change for an image built on a Mac?
+> [!success]- Answer
+> The builder stage runs on the Mac's own CPU (arm64) natively, once, instead of under emulation per target. Its static files are then copied into an `amd64` and an `arm64` nginx, so the image runs on the x86 server instead of failing with `exec format error`.
 
 ## Go further
 - [Docker: multi-platform builds](https://docs.docker.com/build/building/multi-platform/).

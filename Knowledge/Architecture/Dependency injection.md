@@ -27,7 +27,11 @@ If `HandleMessage` creates its own LangChain model, you can't test it without a 
 
 ## Check yourself
 1. What's a composition root, and why only one?
+> [!success]- Answer
+> The one place, at start-up, that builds the concrete objects and hands them to whoever needs them (`AgentDI`, `ToolboxDI`, Angular's `app.config.ts`). Only one, so the wiring is easy to find, each choice is made once, and nothing else in the code knows which concrete class it got.
 2. How does an Angular multi provider let the shell list features it never imports?
+> [!success]- Answer
+> Each feature registers itself under the `HOMELAB_FEATURES` injection token, a multi provider, in `app.config.ts`. The shell injects the token and gets the list of every registered feature: it knows the contract, never a feature's code.
 
 ## Go further
 - [Martin Fowler: Inversion of control containers and the DI pattern](https://martinfowler.com/articles/injection.html).

@@ -29,7 +29,11 @@ Data you can't see is useless. Grafana is the common window in most companies; k
 
 ## Check yourself
 1. Why provision dashboards from git instead of saving them in Grafana's database?
+> [!success]- Answer
+> Git keeps them versioned, reviewed and reproducible: a rebuilt Grafana gets them back, a change can be undone, and the server's state matches the repository. Saved only in its database, a dashboard is lost with the volume and changes without a trace.
 2. From a latency panel, how do you reach the slow request's logs?
+> [!success]- Answer
+> Through an exemplar: click a point on the panel, which links to an example trace in Tempo. From the trace, `tracesToLogs` opens Loki filtered on that trace's service and time (and `trace_id`).
 
 ## Go further
 - [Grafana docs](https://grafana.com/docs/grafana/latest/), [provisioning](https://grafana.com/docs/grafana/latest/administration/provisioning/), [exemplars](https://grafana.com/docs/grafana/latest/fundamentals/exemplars/).

@@ -29,7 +29,11 @@ A build on your laptop depends on your laptop. CI builds from the repository alo
 
 ## Check yourself
 1. What does a reusable workflow give you over copying the same YAML into three repositories?
+> [!success]- Answer
+> One copy to fix and improve: a change lands in every repository at once, they can't drift apart, and each app's workflow stays a few lines that pass only what differs.
 2. Where would you look to know which commit an image `1.1.3` was built from?
+> [!success]- Answer
+> The git tag `v1.1.3`: `git rev-list -n 1 v1.1.3` gives the commit, and the Actions run that tag triggered shows the same commit and its build log.
 
 ## Go further
 - [GitHub Actions docs](https://docs.github.com/en/actions).

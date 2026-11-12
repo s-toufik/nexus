@@ -42,8 +42,14 @@ Objects live in **namespaces** (folders for objects); **labels** (`app.kubernete
 
 ## Check yourself
 1. Explain the reconciliation loop with the example of a pod that crashes.
+> [!success]- Answer
+> The pod's container crashes; the kubelet restarts it and reports the status. If the pod is gone (deleted, node lost), the Deployment's ReplicaSet controller observes 0 pods running against 1 wanted, creates a new pod, the scheduler places it, and the kubelet starts it. Observe, compare, act, repeat.
 2. What's the difference between `kubectl create` and `kubectl apply`?
+> [!success]- Answer
+> `create` makes a new object and fails if it exists. `apply` sends the desired state: it creates the object, or updates it to match the file if it exists, so you can re-run it after every change.
 3. How does a Service know which pods to send traffic to?
+> [!success]- Answer
+> By labels: its `selector` matches pod labels, and Kubernetes keeps the list of matching Ready pods' addresses (EndpointSlices) up to date.
 
 ## Go further
 - [Kubernetes overview](https://kubernetes.io/docs/concepts/overview/) and [components](https://kubernetes.io/docs/concepts/overview/components/).

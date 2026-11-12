@@ -32,8 +32,25 @@ By default every pod can reach every other pod. If one is compromised, it can re
 
 ## Check yourself
 1. Write a policy that lets only pods labelled `app: web` reach `postgres` on 5432.
+> [!success]- Answer
+> ```yaml
+> apiVersion: networking.k8s.io/v1
+> kind: NetworkPolicy
+> metadata: { name: postgres-from-web }
+> spec:
+>   podSelector: { matchLabels: { app: postgres } }
+>   policyTypes: [Ingress]
+>   ingress:
+>     - from: [{ podSelector: { matchLabels: { app: web } } }]
+>       ports: [{ protocol: TCP, port: 5432 }]
+> ```
+> Once `postgres` is selected for Ingress, everything else is denied.
 2. Why does an egress policy without a DNS rule break *everything*?
+> [!success]- Answer
+> Every connection starts with a name lookup. With egress restricted and no rule to `kube-dns` on port 53, lookups time out, so nothing can be reached by name, even destinations the policy allows.
 3. Why use `except` for private ranges instead of listing allowed internet hosts?
+> [!success]- Answer
+> The internet is too big and changes too often to list what the agent may need. What must be protected is known: the cluster and the home network. Allowing the internet except private ranges fences those off without breaking ordinary fetches.
 
 ## Go further
 - [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/).

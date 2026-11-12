@@ -28,7 +28,11 @@ Every connection between services starts with a DNS lookup. When DNS is wrong, e
 
 ## Check yourself
 1. Trace what happens when oauth2-proxy resolves `<domain>`, with and without the rewrite.
+> [!success]- Answer
+> oauth2-proxy asks CoreDNS for `<domain>` (after trying the search domains). Without the rewrite, CoreDNS forwards it to the router, which answers the server's Tailscale address: the pod would leave the cluster, maybe fail to reach that address, or get there by another path. With the rewrite, CoreDNS answers with `caddy.homelab.svc.cluster.local`'s Service IP: the pod reaches Caddy directly, which presents the certificate for `<domain>` and proxies to Keycloak.
 2. Why did two network interfaces cause a DNS warning in Kubernetes?
+> [!success]- Answer
+> With both interfaces up, the host's resolv.conf listed the router twice plus other servers, more than glibc's limit of 3. kubelet builds pods' resolv.conf from it, drops the extra ones and warns (`DNSConfigForming`) every minute. A dedicated one-line file for k3s fixed it.
 
 ## Go further
 - [Customizing DNS service](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/).

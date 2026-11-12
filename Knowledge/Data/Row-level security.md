@@ -36,7 +36,11 @@ CREATE POLICY owner_only ON t FOR ALL TO app_role
 
 ## Check yourself
 1. Why `FORCE ROW LEVEL SECURITY`?
+> [!success]- Answer
+> The table's owner skips RLS by default. `FORCE` applies the policies to the owner too, so a connection as the owner, a migration or a mistake, can't read every row silently.
 2. What does a role see on a table with RLS enabled and no policy for it?
+> [!success]- Answer
+> Nothing: no row is visible and no write is allowed. RLS fails closed.
 
 ## Go further
 - [Row security policies](https://www.postgresql.org/docs/current/ddl-rowsecurity.html), [CREATE POLICY](https://www.postgresql.org/docs/current/sql-createpolicy.html).

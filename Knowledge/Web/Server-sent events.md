@@ -41,7 +41,11 @@ data: {"content":"…","metadata":{"outcome":"answered"}}
 
 ## Check yourself
 1. Why not `EventSource` for the agent?
+> [!success]- Answer
+> `EventSource` only sends GET requests, with no body and no custom headers. The agent's `POST /v1/stream` needs a JSON body, and Caddy wants `X-Homelab-Request` on writes, so homelab-ui reads `fetch()`'s body stream and parses the frames itself.
 2. What breaks if a proxy buffers the response?
+> [!success]- Answer
+> The client gets nothing until the buffer fills or the response ends: tokens arrive all at once at the end, the progress events are useless, and an idle-looking connection may be closed by a timeout.
 
 ## Go further
 - [MDN: using server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events).

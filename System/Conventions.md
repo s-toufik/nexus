@@ -49,6 +49,7 @@ Every note starts with properties from its template in `System/Templates`: at le
 - Link the first mention of a concept, project or source: `[[NetworkPolicy]]`.
 - A concept note links to where our projects use it; a project note links to the concepts it uses. Backlinks do the rest.
 - A source's key ideas link to the concept notes they feed.
+- Concept and architecture notes end with **Check yourself**: numbered questions that need understanding, each followed at once by its answer in a collapsed `> [!success]- Answer` callout, with the why.
 - External pages (official docs, articles to look something up) are plain links in a note's *Go further*. A source gets its own note in `Sources/` when it's worth reading in full: a book, a course, a long article.
 - Don't repeat: link to the note that already says it.
 

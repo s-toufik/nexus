@@ -34,7 +34,11 @@ Three DNS worlds meet:
 
 ## Check yourself
 1. Why does a pod get a different answer than your Mac for the server's name — and why is that what we want?
+> [!success]- Answer
+> Your Mac asks Tailscale's MagicDNS, which answers the server's Tailscale IP. A pod asks CoreDNS, whose rewrite answers Caddy's Service IP. That's split horizon on purpose: pods reach Caddy inside the cluster, under the same name and certificate as your browser, without leaving the cluster.
 2. What's a TTL, and why does it matter when you move a service?
+> [!success]- Answer
+> Time to live: how long a resolver may cache an answer. When you move a service to a new address, clients keep the old one until their cached copy expires, so lower the TTL before a move.
 
 ## Go further
 - [How DNS works (comic)](https://howdns.works/).

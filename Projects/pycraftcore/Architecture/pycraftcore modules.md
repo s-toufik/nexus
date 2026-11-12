@@ -38,7 +38,11 @@ Rule for services: list every module you import, even if another extra brings it
 
 ## Check yourself
 1. Why must a service never construct an httpx client itself?
+> [!success]- Answer
+> Then the service would be tied to httpx and would lose what pycraftcore's adapter adds: timeouts, retries, the circuit breaker, spans and the request id. Receiving the client through a port also lets tests pass a fake.
 2. What does CI's "each extra alone" matrix catch?
+> [!success]- Answer
+> A module that imports a package it doesn't declare, which only worked because another extra installed it. Installed alone, each extra must import cleanly, or CI fails.
 
 ## Go further
 - [PEP 621 optional dependencies](https://packaging.python.org/en/latest/specifications/pyproject-toml/#dependencies-optional-dependencies).

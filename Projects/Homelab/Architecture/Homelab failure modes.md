@@ -72,8 +72,14 @@ Go from the outside in, and let Kubernetes tell you:
 
 ## Check yourself
 1. A pod is `Running 0/1` for 10 minutes. What are the two possible culprits, and which command tells them apart?
+> [!success]- Answer
+> The app really isn't ready (still starting, or a dependency it needs is down), or the probe itself is wrong (wrong port or path). `kubectl -n homelab describe pod <pod>` tells them apart: its Events show what the readiness probe got. `connection refused` or a 404 points at the probe; a 503 is the app saying it isn't ready, and `make logs R=<release>` says why.
 2. Why does a one-node cluster force `Recreate` for pods with hostPorts?
+> [!success]- Answer
+> A rolling update starts the new pod before stopping the old one. On one node, the old pod holds `hostIP:port`, so the new one can never be scheduled and stays `Pending`. `Recreate` stops the old pod first, at the price of a few seconds of downtime.
 3. Explain the `DNSConfigForming` warning to a colleague in three sentences.
+> [!success]- Answer
+> With Ethernet and Wi-Fi both up, the server's resolv.conf lists the router once per network, plus any other server. Linux uses at most three nameservers, so when kubelet builds each pod's DNS config it drops the extras and warns every minute. Giving k3s its own one-line resolv.conf with the router once removes the warning.
 
 ## Go further
 - [Kubernetes: debug pods](https://kubernetes.io/docs/tasks/debug/debug-application/debug-pods/).

@@ -80,9 +80,17 @@ Restore: `make restore-postgres FILE=…`, `make restore-mongo FILE=…` (they *
 
 ## Check yourself
 1. Why does PostgREST connect as `postgrest` and then become `tasker_web`, instead of logging in as `tasker_web`?
+> [!success]- Answer
+> So the login alone opens nothing: `postgrest` is `NOINHERIT` and has almost no rights until it switches to `tasker_web` for a request. A leaked `postgrest` password, or a request that skips the switch, gets nothing. PostgREST is built to connect once and switch per request.
 2. Someone on your tailnet calls PostgREST's pod IP directly with `Remote-User: alice`. What stops them?
+> [!success]- Answer
+> `tasker.check_request()`: the request has no `X-Gateway-Secret`, or the wrong one, so PostgREST answers 403 before any query runs. Only Caddy knows the secret.
 3. What's the difference between `pg_dump --format=custom` and a copy of the volume folder?
+> [!success]- Answer
+> `pg_dump --format=custom` is a logical, consistent export of one database: portable to another PostgreSQL version or server, restorable selectively with `pg_restore`. A copy of the volume is the raw files of the whole instance: tied to that major version, and consistent only if PostgreSQL was stopped or the copy is a proper physical backup.
 4. Why is MongoDB pinned to 7.0 here, and how would you know it's safe to move to 8?
+> [!success]- Answer
+> MongoDB 8 refuses to start on Linux kernels 6.19 to 7.0.13, and the server runs 7.0.0. It's safe to move when `uname -r` shows a kernel outside that range (7.0.14 or later), or MongoDB's release notes say the check is gone; then try it on a copy with a restored backup first.
 
 ## Go further
 - [CloudNativePG documentation](https://cloudnative-pg.io/documentation/current/) — clusters, roles, backups.

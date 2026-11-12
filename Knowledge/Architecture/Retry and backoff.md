@@ -28,7 +28,11 @@ Networks blip; a single retry hides most transient failures. But naive retries t
 
 ## Check yourself
 1. Why is retrying a 400 pointless, and retrying a POST risky?
+> [!success]- Answer
+> A 400 means the request itself is wrong: sending it again gives the same 400. A POST may have reached the server even when the answer was lost, so a retry can do it twice (two orders, two payments) unless it carries an idempotency key.
 2. What does jitter prevent?
+> [!success]- Answer
+> Many clients that failed at the same moment retrying at the same moments, in waves that knock the recovering service down again. Random delays spread them out.
 
 ## Go further
 - [AWS Builders' Library: timeouts, retries and backoff with jitter](https://builder.aws.com/content/3EumjoZascWd1oZiEgL8ORlv3qE/timeouts-retries-and-backoff-with-jitter).

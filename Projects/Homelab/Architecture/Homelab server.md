@@ -59,8 +59,14 @@ Kubernetes remembers the node's IP address in certificates and in its database. 
 
 ## Check yourself
 1. Why does Kubernetes need a node IP that never changes, and how does the dummy interface give it one?
+> [!success]- Answer
+> Kubernetes records the node's IP in its certificates and its database; if the laptop moves from Ethernet to Wi-Fi, a normal k3s breaks. The dummy interface `k3s0` exists only inside the machine and always has `10.250.0.1/32`, whatever real network is up, and k3s is told that's the node IP (`node-ip`).
 2. What would happen to the homelab if someone at home ran `curl https://<laptop-lan-ip>:6443`? And `:443`?
+> [!success]- Answer
+> `:6443` is the Kubernetes API: the LAN guard drops it, so the connection times out. `:443`: nothing listens on the LAN address, since Caddy's hostPort is bound to the Tailscale address only, so the connection fails (refused).
 3. Which of the server's protections would bring it back if the kernel froze at 3 a.m.? If Tailscale crashed?
+> [!success]- Answer
+> Kernel freeze: a kernel panic reboots after 10 s, and the hardware watchdog reboots the machine if systemd stops answering; then k3s starts at boot, pods restart and PostgreSQL recovers from its WAL. Tailscale crash: the watchdog timer restarts `tailscaled` after about 4 minutes and reboots after about 16; meanwhile the heartbeat stops, so you're notified.
 
 ## Go further
 - [k3s configuration options](https://docs.k3s.io/installation/configuration) — `node-ip`, `resolv-conf`, disabling components.

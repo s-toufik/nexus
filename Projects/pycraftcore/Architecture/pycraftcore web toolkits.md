@@ -38,7 +38,11 @@ Previous: [[pycraftcore configuration]] · Next: [[pycraftcore resilience]]
 
 ## Check yourself
 1. Why put SSE heartbeats and disconnect handling in `web` rather than in each toolkit?
+> [!success]- Answer
+> They're the same logic for every framework: written once in `web`, every toolkit behaves identically and is tested the same way, and a fix lands everywhere. Each toolkit only translates it to its framework's types.
 2. What would a fourth framework need to pass?
+> [!success]- Answer
+> The four functions (`create_app`, `actuator_router`, `event_stream`, `detail_handler`) in its own types, the same orders app written its way in `tests/web/apps/`, and every shared test in `EVERY_TOOLKIT`: routes, request id, statuses, errors, streams and disconnect, CORS, base path, docs, actuator and lifespan.
 
 ## Go further
 - [Litestar](https://docs.litestar.dev/), [FastAPI](https://fastapi.tiangolo.com/), [BlackSheep](https://www.neoteroi.dev/blacksheep/).

@@ -29,7 +29,11 @@ A version is how you say *exactly* what runs, roll back to a known state, and de
 
 ## Check yourself
 1. You add an optional field to an API response. Which part do you bump? You rename an endpoint?
+> [!success]- Answer
+> An optional field is a backwards-compatible addition: MINOR. Renaming an endpoint breaks every client that calls the old name: MAJOR (or keep the old name working too, and it's MINOR).
 2. Why must a published tag never move?
+> [!success]- Answer
+> Everyone who used it believes it names one commit and one image. Moved, caches and servers keep the old content under the same name, nobody can tell which code runs, and rolling back to it no longer means going back to what was there.
 
 ## Go further
 - [semver.org](https://semver.org/).

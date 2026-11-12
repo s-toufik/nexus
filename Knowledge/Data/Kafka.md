@@ -33,7 +33,11 @@ Kafka decouples systems: the producer doesn't know who reads, readers can replay
 
 ## Check yourself
 1. Why can't a consumer group with 5 consumers go faster than one with 3 on a 3-partition topic?
+> [!success]- Answer
+> Each partition is read by one consumer of the group at a time. Three partitions keep three consumers busy, and the other two sit idle. More parallelism needs more partitions.
 2. Explain listeners vs advertised listeners with our two addresses.
+> [!success]- Answer
+> A listener is the address the broker binds to; the advertised address is what it tells clients to connect to next. Inside the cluster, clients reach it as `kafka:9092`. A tailnet device can't resolve `kafka`, so the `EXTERNAL` listener on 9094 advertises `<domain>:9094`, which that device can reach.
 
 ## Go further
 - [Kafka introduction](https://kafka.apache.org/intro), [documentation](https://kafka.apache.org/documentation/).

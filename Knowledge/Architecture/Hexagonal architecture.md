@@ -45,15 +45,17 @@ Frameworks, databases and AI libraries change faster than business rules. When r
 
 ## Check yourself
 1. Who owns a port: the application or the adapter? Why does that matter?
+> [!success]- Answer
+> The application: it says what it needs in its own words, so adapters depend on it and not the other way round; swapping a technology then never touches the rules.
 2. Name an inbound and an outbound adapter in agent-runtime.
+> [!success]- Answer
+> Inbound: `StreamAgentController` (HTTP and SSE). Outbound: the LangChain model adapters, or `Toolbox` with its MCP calls.
 3. When is a port not worth it?
+> [!success]- Answer
+> When it has one adapter that will never change and is quick to test as it is: then it's only indirection.
 4. `CatalogChange` holds `Tool` objects, and `Tool` is a port. Can `CatalogChange` be domain?
-
-> [!success]- Answers
-> 1. The application: it says what it needs in its own words, so adapters depend on it and not the other way round; swapping a technology then never touches the rules.
-> 2. Inbound: `StreamAgentController` (HTTP and SSE). Outbound: the LangChain model adapters, or `Toolbox` with its MCP calls.
-> 3. When it has one adapter that will never change and is quick to test as it is: then it's only indirection.
-> 4. No: the domain may not depend on a port. It goes with the `ToolPublisher` port it crosses; the agent's `RegistryChange` holds only names, so that one is domain.
+> [!success]- Answer
+> No: the domain may not depend on a port. It goes with the `ToolPublisher` port it crosses; the agent's `RegistryChange` holds only names, so that one is domain.
 
 ## Go further
 - [Alistair Cockburn: Hexagonal architecture](https://alistair.cockburn.us/hexagonal-architecture/).
