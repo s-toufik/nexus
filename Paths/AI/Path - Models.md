@@ -16,7 +16,7 @@ updated: 2026-11-12
 ## Principles → projects
 | Principle | Where it lives in our projects |
 |---|---|
-| Tokens and context windows | agent-runtime's `max_context_tokens`, summarize at half the context, last 20 tool calls |
+| Tokens and context windows | agent-runtime's `max_context_tokens`: room kept for the answer and the tool definitions, tool results cut oldest first, summarize at half the context, last 20 tool calls |
 | Sampling | `temperature: 0.0` by default; llama.cpp `--temp 0.7 --top-p 0.8 --top-k 20` for local models |
 | One API, many providers | agent-runtime's two providers, `HOMELAB_LLM_BASE_URL` (the homelab `llm`) and `NVIDIA_LLM_BASE_URL`, one per model |
 | Quantization and memory | GGUF `Q8_0`, `Q4_K_M` in `llm/llm/config.yml`; 26 GiB limit |

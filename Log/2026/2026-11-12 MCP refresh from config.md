@@ -23,11 +23,15 @@ tags: [log]
 
 - agent-runtime calls each model on its own provider: the homelab's llama-swap (`HOMELAB_LLM_BASE_URL`) and NVIDIA (`NVIDIA_LLM_BASE_URL`), each with its own client and circuit breaker; fixes the `404` on local models found on [[Homelab UI page - Agent]].
 
+- agent-runtime sizes every model call to the window: room for the answer and the tool definitions, tool results of the turn cut oldest first; fixes a `400` from llama.cpp (45,621 tokens for 32,768) — [[LLM fundamentals]].
+
 ## What I learned
 - One loop for several dependencies shares one failure count: one server down made the healthy ones be re-read at its back-off pace.
 - A data class that crosses a port belongs to the port; one that only holds plain values can be domain.
 
 - A tag doesn't belong to a branch; `git merge-base --is-ancestor` is how CI tells which branch a tagged commit is on.
+
+- Trimming the history isn't enough: what the current turn adds (tool results, tool definitions) must fit too.
 
 ## Next
 - [ ] Tag `v5.1.0` on `main` to release pycraftcore, then `uv lock --upgrade-package pycraftcore` in both services.

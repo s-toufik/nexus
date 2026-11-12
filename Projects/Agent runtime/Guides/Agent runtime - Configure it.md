@@ -54,7 +54,7 @@ updated: 2026-11-12
 | `model`                  | The name the model server knows, and the `model_name` requests use                                       | the entry's `name` |
 | `temperature`            | Sampling temperature                                                                                     | `0.0`              |
 | `max_output_tokens`      | Longest reply                                                                                            | `8000`             |
-| `max_context_tokens`     | The model's context window                                                                               | `8000`             |
+| `max_context_tokens`     | The model's context window; never more than the server's own (`--ctx-size` for llama.cpp)                | `8000`             |
 | `max_iterations`         | Step budget per message                                                                                  | `10`               |
 | `max_reflection_retries` | How many times a rejected answer is rewritten                                                            | `2`                |
 | `reasoning_effort`       | `null`: no thinking. `low` / `medium` / `high`: think first (slower, needs a larger `max_output_tokens`) | `null`             |

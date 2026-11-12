@@ -3,7 +3,7 @@ type: concept
 domain: AI
 level: beginner
 tags: [concept, ai, llm]
-updated: 2026-11-10
+updated: 2026-11-12
 ---
 
 # LLM fundamentals
@@ -26,6 +26,7 @@ Most agent design is managing four scarce things: context (what the model sees),
 ## In our projects
 - Model parameters per model: `temperature`, `max_output_tokens`, `max_context_tokens`, `reasoning_effort` ([[Agent runtime - Configure it]]).
 - Summarize when the history passes half the context; paused plans keep only their last 20 tool calls ([[Agent runtime plans and outcomes]]).
+- **Every call is sized to the window**, not just the history. agent-runtime keeps room for the answer and the tool definitions, counts 85 % of the rest (its count is an estimate), cuts this turn's tool results oldest first with a note asking the model to fetch less, then fills what is left with history. Before that fix, one big tool result made a request of 45,621 tokens for a 32,768-token model, and llama.cpp refused it with a `400`.
 - Local models, quantized to fit memory ([[Running LLMs locally]]).
 
 ## Check yourself
