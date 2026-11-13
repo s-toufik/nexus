@@ -35,7 +35,7 @@ The harness around the model, and what it holds: models, memory, protocols. How 
 ## How it's built
 | Part | Technology | Note |
 |---|---|---|
-| API | Litestar through `pycraftcore.web_litestar`, served by Granian | [[Python web frameworks]], [[ASGI]] |
+| API | FastAPI through `pycraftcore.web_fastapi`, served by Granian; A2A through the official `a2a-sdk` | [[Python web frameworks]], [[ASGI]], [[Agent2Agent protocol]] |
 | Steps and routing | Plain Python: `HandleMessage`, step handlers, `TurnPolicy` | [[Agent runtime turn]] |
 | Workflow engine | LangGraph, generated from `TurnPolicy`; a checkpointer stores conversations in MongoDB (SQLite fallback) | [[LangGraph]] |
 | Models | LangChain chat models, one adapter per role, any OpenAI-compatible server | [[OpenAI-compatible API]] |

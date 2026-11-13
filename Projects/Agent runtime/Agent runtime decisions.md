@@ -33,10 +33,15 @@ Newest first.
 - **Why:** the user sees progress and the first words at once; the outcome lets clients render plans, questions and errors differently.
 - **Alternatives:** WebSockets (two-way, heavier through proxies); one JSON response (long silent wait).
 
-## A2A as a second inbound adapter
-- **Decision:** `POST /a2a` speaks [[Agent2Agent protocol|A2A]] 1.0 over JSON-RPC, hand-written in `adapter/inbound/a2a/` (pydantic, no SDK), calling the same `HandleMessage`. `contextId` is the conversation; outcomes map to task states; tasks kept in memory (the last 1,000); streaming and cancel, no push notifications. Inside the adapter, `JsonRpcHandler` is the binding (reads the call, writes the reply, the SSE frames and the error codes) and `A2aController` the task operations (send, stream, get, cancel), like `StreamAgentController` for `/v1/stream`.
-- **Why:** other agents can delegate to this one with a standard protocol, while the rules stay protocol-free. A small adapter is easier to follow than an SDK that brings its own web framework.
-- **Alternatives:** the `a2a-sdk` package (Starlette or FastAPI apps, task stores; more than we need); A2A tasks stored in MongoDB (survive restarts, but the conversation already is); a `domain/a2a` package (the domain would know how it's called: A2A's task states are a translation of `Outcome`, done in the presenter, and the boundary test keeps pydantic out of the domain).
+## FastAPI instead of Litestar
+- **Decision:** the API is FastAPI, built with `pycraftcore.web_fastapi`: pydantic schemas, routers built from providers, the OpenTelemetry FastAPI instrumentation. Invalid bodies now get FastAPI's 422 (Litestar answered 400).
+- **Why:** the official A2A SDK mounts its routes on FastAPI, so `/a2a` can use it without a second framework. The [[Web framework benchmark]] showed the speed difference doesn't matter here.
+- **Alternatives:** stay on Litestar and mount the SDK's Starlette app inside it (two frameworks, two error and tracing stacks); stay on Litestar with a hand-written A2A server (what we had: spec guesses to maintain).
+
+## A2A with the SDK, rules in `domain/a2a`
+- **Decision:** `POST /a2a` speaks [[Agent2Agent protocol|A2A]] 1.0 through the official `a2a-sdk` (`DefaultRequestHandler`, in-memory task store, JSON-RPC routes, 0.3 compatibility). Our code is split by layer: `domain/a2a/` (task states and the rule from an `Outcome`, `TaskUpdate`, `A2aTaskRequest`, `AgentProfile`), `RunA2aTask` in the application (runs `HandleMessage`, reports `TaskUpdate`s), and in `adapter/inbound/a2a/` the SDK's `AgentExecutor`, a presenter and the card. `contextId` is the conversation.
+- **Why:** minimal maintenance: the SDK follows the spec and does the protocol work; we keep only the rules, which stay plain Python and testable without the SDK. A boundary test keeps the SDK and protobuf out of the domain and the application.
+- **Alternatives:** the hand-written JSON-RPC server it replaced (its stream format was a guess); the SDK with no domain package (the outcome-to-state rule would live in an adapter); A2A tasks stored in a database (survive restarts; the SDK's `DatabaseTaskStore` needs SQLAlchemy, and the conversation is already stored).
 
 ## Evaluation as a separate program over HTTP
 - **Decision:** `agent_evaluation` tests a running agent from outside, with code checks first and a judge model second, several runs per case.

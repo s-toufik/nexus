@@ -23,7 +23,7 @@ class Order(msgspec.Struct):              # msgspec
 
 ## In our projects
 - agent-toolbox: tool inputs/outputs as pydantic → MCP schemas ([[Agent toolbox layers]]).
-- agent-runtime and the benchmark (Litestar): msgspec request/response schemas; FastAPI/BlackSheep: pydantic.
+- The benchmark's Litestar app: msgspec request/response schemas; agent-runtime (FastAPI) and the benchmark's FastAPI/BlackSheep apps: pydantic.
 - pycraftcore: every settings object is pydantic ([[pycraftcore configuration]]).
 
 ## Check yourself

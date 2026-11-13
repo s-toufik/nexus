@@ -10,7 +10,7 @@ updated: 2026-11-08
 
 # agent-runtime
 
-> The agent service: a Litestar API over a hexagonal core, LangGraph and LangChain behind ports, plus its own evaluation program.
+> The agent service: a FastAPI API over a hexagonal core, LangGraph and LangChain behind ports, plus its own evaluation program.
 
 ## Layout
 | Path | What it holds |
@@ -18,12 +18,13 @@ updated: 2026-11-08
 | `src/agent_runtime/domain/` | `Conversation`, `Turn`, value objects, `TurnPolicy` |
 | `src/agent_runtime/application/` | `HandleMessage`, step handlers `*_step.py`, ports |
 | `src/agent_runtime/adapter/inbound/web/` | `StreamAgentController`, `SsePresenter` |
-| `src/agent_runtime/adapter/inbound/a2a/` | `A2aController` (task operations), `A2aPresenter`, `A2aTaskStore`, `AgentCard`; `json_rpc/JsonRpcHandler` (the binding) |
+| `src/agent_runtime/domain/a2a/` | `TaskState`, `TaskUpdate`, `A2aTaskRequest`, `AgentProfile` (no SDK) |
+| `src/agent_runtime/adapter/inbound/a2a/` | `A2aAgentExecutor` (the a2a-sdk's `AgentExecutor`), `A2aTaskPresenter`, `agent_card` |
 | `src/agent_runtime/adapter/inbound/exception/`, `turn_status.py` | Shared by the inbound adapters: `ServerAtCapacityException`, step labels |
 | `src/agent_runtime/adapter/outbound/llm/` | LangChain adapters per role, prompts, `ModelCatalog` |
 | `src/agent_runtime/adapter/outbound/tool/` | MCP discovery and calls (`Toolbox`) |
 | `src/agent_runtime/adapter/outbound/langgraph/` | Graph nodes, edges from `TurnPolicy`, state codec, checkpointer |
-| `src/bootstrap/` | Settings, `AgentDI`, container, `create_agent_application`, the Litestar API (`router/`, `schema/` in msgspec) |
+| `src/bootstrap/` | Settings, `AgentDI`, container, `create_agent_application`, the FastAPI API (`router/`, `schema/` in pydantic) |
 | `src/agent_evaluation/` | The evaluation program |
 | `config/` | `root.yml`, `<env>/connector/`, `operation/`, `server/` |
 | `tests/` | Unit, scenario (two runners), architecture, evaluation tests |

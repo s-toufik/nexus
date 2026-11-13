@@ -109,11 +109,13 @@ New events, fields and outcomes may be added: ignore the ones you don't know, an
 | `TASK_STATE_INPUT_REQUIRED` | `awaiting_approval`, `clarification`, `budget_exhausted` with a paused plan |
 | `TASK_STATE_REJECTED` | `refused` |
 | `TASK_STATE_FAILED` | an `error` |
-| `TASK_STATE_CANCELED` | `CancelTask`, or the stream was closed |
+| `TASK_STATE_CANCELED` | `CancelTask` |
 
 - `message.metadata.model` picks the model (else `A2A_MODEL`, else the first listed); `message.metadata.autoApprove: true` runs plans without waiting.
-- `GetTask` and `CancelTask` work on the last 1,000 tasks; `configuration.returnImmediately: true` answers at once with a working task to poll.
-- Not supported: `SubscribeToTask`, `ListTasks`, push notifications. Only text parts are read.
+- `GetTask`, `CancelTask`, `ListTasks` and `SubscribeToTask` work on this process's tasks (in memory); `configuration.returnImmediately: true` answers at once with the task to follow.
+- Closing a stream doesn't stop the task; `CancelTask` does.
+- Send `A2A-Version: 1.0`: without it the call is read as A2A 0.3.
+- Not supported: push notifications. Only text parts are read: a message without text is `TASK_STATE_REJECTED`.
 
 ## Why it works
 - [[Agent runtime plans and outcomes]] — why a message gets an outcome.

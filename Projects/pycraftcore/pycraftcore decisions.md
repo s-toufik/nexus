@@ -18,7 +18,7 @@ updated: 2026-11-08
 
 ## Three web frameworks behind one toolkit contract
 - **Decision:** `web_litestar`, `web_fastapi`, `web_blacksheep` with the same four functions, shared tests.
-- **Why:** services pick the framework that fits (Litestar for agent-runtime) while keeping identical conventions; makes [[Web framework benchmark]] fair.
+- **Why:** services pick the framework that fits (FastAPI for agent-runtime, all three in the benchmark) while keeping identical conventions; makes [[Web framework benchmark]] fair.
 - **Consequences:** every web feature is built three times — the shared tests keep them equal.
 
 ## Configuration as connectors, operations and servers

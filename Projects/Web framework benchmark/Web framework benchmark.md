@@ -27,7 +27,7 @@ updated: 2026-11-08
 - **Under maximum load**, BlackSheep is fastest everywhere; FastAPI is 20–35 % behind on most endpoints.
 - **At a fixed, realistic rate**, all three are within a few percent on p99 latency: the framework barely matters once the server isn't saturated — the database and API calls dominate.
 - Every framework returned the same bytes for every endpoint: the comparison is fair.
-Lesson: pick a framework for its developer experience and ecosystem unless you're CPU-bound at the edge. agent-runtime uses Litestar (msgspec, DI, speed close to the top).
+Lesson: pick a framework for its developer experience and ecosystem unless you're CPU-bound at the edge. agent-runtime used Litestar (msgspec, DI, speed close to the top), then moved to FastAPI in November 2026 for the official A2A SDK, which mounts on it.
 
 ## Read it
 1. [[Web framework benchmark design]] — the shop, the benchmark, and what keeps it fair.

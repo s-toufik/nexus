@@ -21,7 +21,7 @@ updated: 2026-11-08
 | At a realistic rate | ≈ the same | ≈ the same | ≈ the same |
 
 ## In our projects
-- agent-runtime uses **Litestar** (msgspec schemas, DI, speed) ([[Agent runtime]]).
+- agent-runtime uses **FastAPI** (pydantic schemas; the official A2A SDK mounts its routes on it). It used Litestar until November 2026 ([[Agent runtime]]).
 - pycraftcore gives all three the same toolkit ([[pycraftcore web toolkits]]); [[Web framework benchmark]] measured them.
 
 ## Check yourself

@@ -37,7 +37,7 @@
 			"y": -270,
 			"width": 860,
 			"height": 90,
-			"text": "### bootstrap \u2014 AgentDI, settings, Litestar API (pycraftcore.web_litestar), Granian\n[[Dependency injection]] \u00b7 [[ASGI]]"
+			"text": "### bootstrap \u2014 AgentDI, settings, FastAPI API (pycraftcore.web_fastapi) + a2a-sdk routes, Granian\n[[Dependency injection]] \u00b7 [[ASGI]]"
 		},
 		{
 			"id": "in",
@@ -46,7 +46,7 @@
 			"y": -160,
 			"width": 260,
 			"height": 140,
-			"text": "### adapter/inbound\nStreamAgentController\nSsePresenter"
+			"text": "### adapter/inbound\nStreamAgentController\nSsePresenter\nA2aAgentExecutor (a2a-sdk)"
 		},
 		{
 			"id": "app",
@@ -64,7 +64,7 @@
 			"y": -160,
 			"width": 260,
 			"height": 140,
-			"text": "### domain\nConversation \u00b7 Turn \u00b7 Plan \u00b7 TurnPolicy (the routing table)"
+			"text": "### domain\nConversation \u00b7 Turn \u00b7 Plan \u00b7 TurnPolicy (the routing table) \u00b7 a2a (TaskState, AgentProfile)"
 		},
 		{
 			"id": "out",

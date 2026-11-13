@@ -36,7 +36,7 @@ The agent's requests are traces of **one span** each (`agent-runtime-service htt
 **Why.** `http.request` is not the request the agent *received*: it's the agent's call *to the model*, traced by pycraftcore's resilient HTTP client. agent-runtime opened no span of its own — none for the request, none per step. The MCP SDK does carry the trace into tool calls (in the JSON-RPC request's `_meta`), but with no span open in the agent there was no trace worth carrying: each call started its own. And each MCP session's `notifications/initialized` made a one-span trace in the toolbox.
 
 ### Fixed since (in the repositories; live after the next deploy)
-- agent-runtime: a server span per request (Litestar's OpenTelemetry plugin, `litestar_api.py`), which continues a caller's `traceparent`; one span per step (`AgentNode.__call__` in `adapter/outbound/langgraph/node/agent_node.py`). Health checks aren't traced, and the stream's thousands of `send` events aren't spans.
+- agent-runtime: a server span per request (the OpenTelemetry FastAPI instrumentation, `fastapi_api.py`), which continues a caller's `traceparent`; one span per step (`AgentNode.__call__` in `adapter/outbound/langgraph/node/agent_node.py`). Health checks aren't traced, and the stream's thousands of `send` events aren't spans.
 - agent-toolbox: notifications get no span (`RequestSpans` in `adapter/inbound/mcp/request_spans.py`).
 
 One message is now one trace:
