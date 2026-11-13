@@ -18,6 +18,8 @@ updated: 2026-11-08
 | `src/agent_runtime/domain/` | `Conversation`, `Turn`, value objects, `TurnPolicy` |
 | `src/agent_runtime/application/` | `HandleMessage`, step handlers `*_step.py`, ports |
 | `src/agent_runtime/adapter/inbound/web/` | `StreamAgentController`, `SsePresenter` |
+| `src/agent_runtime/adapter/inbound/a2a/` | `A2aController` (task operations), `A2aPresenter`, `A2aTaskStore`, `AgentCard`; `json_rpc/JsonRpcHandler` (the binding) |
+| `src/agent_runtime/adapter/inbound/exception/`, `turn_status.py` | Shared by the inbound adapters: `ServerAtCapacityException`, step labels |
 | `src/agent_runtime/adapter/outbound/llm/` | LangChain adapters per role, prompts, `ModelCatalog` |
 | `src/agent_runtime/adapter/outbound/tool/` | MCP discovery and calls (`Toolbox`) |
 | `src/agent_runtime/adapter/outbound/langgraph/` | Graph nodes, edges from `TurnPolicy`, state codec, checkpointer |

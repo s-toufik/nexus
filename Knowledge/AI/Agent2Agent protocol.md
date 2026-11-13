@@ -23,7 +23,7 @@ Agents built by different teams or vendors need a common way to find each other,
 - **Errors** are JSON-RPC errors with A2A codes: `-32001` task not found, `-32002` not cancelable, `-32003` push not supported, `-32004` unsupported operation, `-32005` content type not supported, `-32009` version not supported.
 
 ## In our projects
-- **agent-runtime is an A2A server**: `POST /a2a` (JSON-RPC) and its card at `/.well-known/agent-card.json`, beside `/v1/stream`. It's a second inbound adapter (`adapter/inbound/a2a/`) calling the same `HandleMessage` port, so the agent's rules don't know A2A exists ([[Agent runtime layers]], [[Hexagonal architecture]]).
+- **agent-runtime is an A2A server**: `POST /a2a` (JSON-RPC) and its card at `/.well-known/agent-card.json`, beside `/v1/stream`. It's a second inbound adapter (`adapter/inbound/a2a/`) calling the same `HandleMessage` port, so the agent's rules don't know A2A exists ([[Agent runtime layers]], [[Hexagonal architecture]]). Inside it, `JsonRpcHandler` is the binding and `A2aController` the task operations, so a gRPC binding would reuse the controller.
 - `contextId` is the conversation (`request_id`); each message is a task.
 - The agent's outcomes map onto task states: a plan waiting for approval, a question, or a paused plan → `INPUT_REQUIRED` (reply **yes**, an answer or **continue** in the same task); a refused plan → `REJECTED`; an answer → `COMPLETED` with an `answer` artifact ([[Agent runtime plans and outcomes]]).
 - Tasks live in memory (the last 1,000); streaming and cancel work, push notifications and `SubscribeToTask` don't.
@@ -43,6 +43,9 @@ Agents built by different teams or vendors need a common way to find each other,
 3. Why is A2A a new inbound adapter and not a change to `HandleMessage`?
 > [!success]- Answer
 > A2A is only another way to deliver the same request and present the same events. Keeping it in an adapter means the use case and the domain stay protocol-free, `/v1/stream` and `/a2a` behave the same, and a third protocol would again touch only the edge.
+4. Why is there no `domain/a2a`, when tasks and their states look like business concepts?
+> [!success]- Answer
+> They're A2A's words for what the domain already says: a task waiting for input is `Outcome.AWAITING_APPROVAL` or `CLARIFICATION`, a completed task is an `Answer`. Mapping one onto the other is translation, done at the edge (the presenter). A `domain/a2a` would make the domain know how it's called, and the next protocol would need `domain/grpc`. The domain would grow only for a protocol-free idea, such as delegating work to other agents, and A2A would then be an outbound adapter behind a port.
 
 ## Go further
 - [A2A specification](https://a2a-protocol.org/latest/specification/) — the data model (§4), the JSON-RPC binding (§9) and the error codes (§5.4).

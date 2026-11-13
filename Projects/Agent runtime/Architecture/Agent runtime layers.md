@@ -17,7 +17,7 @@ Back: [[Agent runtime]] · Next: [[Agent runtime turn]]
 ## The rings
 ```text
 bootstrap      settings, AgentDI (wiring only), container, create_agent_application (Granian's target), Litestar API
- └ adapter     inbound:  StreamAgentController, SsePresenter (/v1/stream); A2aController, A2aPresenter (/a2a)
+ └ adapter     inbound:  StreamAgentController, SsePresenter (/v1/stream); JsonRpcHandler → A2aController, A2aPresenter (/a2a)
                outbound: LangChain model adapters + prompts, Toolbox (MCP), LangGraph runtime, checkpointer
     └ application   HandleMessage, one handler per step (*_step.py), ports: Actor, Planner, ToolExecutor, WorkflowRunner…
        └ domain     Conversation, Turn, Plan, Answer, TurnPolicy — no framework
@@ -37,7 +37,7 @@ This is [[Hexagonal architecture]]: the core states *what it needs* as ports (in
 `AgentDI` only builds and connects objects — models per role from `operation/llm.yml` and `operation/agent.yml`, MCP tools from `connector/mcp.yml`, the checkpointer from `connector/database.yml`, the step handlers. `create_agent_application` builds the container and the app; routes get services through Litestar's dependency injection. That's the **composition root** of [[Dependency injection]]: one place where concrete classes are chosen.
 
 ## Boundaries, enforced
-`tests/architecture/test_boundaries.py` imports every module and fails if, for example, the domain imports LangChain, or the application imports a web framework ([[Architecture tests]]). Without that test, layers erode one "quick" import at a time.
+`tests/architecture/test_boundaries.py` imports every module and fails if, for example, the domain imports LangChain, or the application imports a web framework, or one inbound adapter imports another (they share only `adapter/inbound/exception/` and `turn_status.py`) ([[Architecture tests]]). Without that test, layers erode one "quick" import at a time.
 
 ## Boot
 1. Settings from `config/<APP_ENV>/` and env ([[pycraftcore configuration]]).
