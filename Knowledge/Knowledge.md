@@ -20,7 +20,7 @@ What things are and how they work, in your words. One note per idea, from the *C
 | **Web** | [[HTTP]] · [[REST APIs and OpenAPI]] · [[Server-sent events]] · [[ASGI]] · [[Python web frameworks]] |
 | **Frontend** | [[Angular]] · [[Signals]] · [[Single-page application]] |
 | **Python** | [[uv and pyproject]] · [[Python packaging]] · [[Data validation with pydantic and msgspec]] · [[asyncio]] |
-| **AI** | [[LLM fundamentals]] · [[Running LLMs locally]] · [[llama-swap]] · [[OpenAI-compatible API]] · [[Model Context Protocol]] · [[AI agents and sandboxing]] · [[Agent patterns]] · [[LangGraph]] · [[LLM evaluation]] · [[Guardrails and prompt injection]] |
+| **AI** | [[LLM fundamentals]] · [[Running LLMs locally]] · [[llama-swap]] · [[OpenAI-compatible API]] · [[Model Context Protocol]] · [[Agent2Agent protocol]] · [[AI agents and sandboxing]] · [[Agent patterns]] · [[LangGraph]] · [[LLM evaluation]] · [[Guardrails and prompt injection]] |
 | **Linux** | [[Linux processes and permissions]] · [[Containers]] · [[systemd]] |
 
 Not sure where to start? Follow a path in [[Paths]].

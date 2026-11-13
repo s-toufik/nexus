@@ -3,7 +3,7 @@ type: architecture
 project: "[[Agent runtime]]"
 order: 1
 tags: [agent-runtime, architecture]
-updated: 2026-11-08
+updated: 2026-11-13
 ---
 
 # Agent runtime layers
@@ -17,7 +17,7 @@ Back: [[Agent runtime]] · Next: [[Agent runtime turn]]
 ## The rings
 ```text
 bootstrap      settings, AgentDI (wiring only), container, create_agent_application (Granian's target), Litestar API
- └ adapter     inbound:  StreamAgentController, SsePresenter
+ └ adapter     inbound:  StreamAgentController, SsePresenter (/v1/stream); A2aController, A2aPresenter (/a2a)
                outbound: LangChain model adapters + prompts, Toolbox (MCP), LangGraph runtime, checkpointer
     └ application   HandleMessage, one handler per step (*_step.py), ports: Actor, Planner, ToolExecutor, WorkflowRunner…
        └ domain     Conversation, Turn, Plan, Answer, TurnPolicy — no framework
@@ -31,6 +31,7 @@ This is [[Hexagonal architecture]]: the core states *what it needs* as ports (in
 | Use another model provider | One LangChain adapter; nothing else knows LangChain exists |
 | Serve over another framework | `bootstrap/application/<framework>/`; the controller and presenter don't depend on Litestar |
 | Change a business rule | The domain or a step handler, testable without a model |
+| Speak another protocol | One inbound adapter calling `HandleMessage`: [[Agent2Agent protocol\|A2A]] lives in `adapter/inbound/a2a/`, beside the SSE stream |
 
 ## Wiring: `AgentDI`
 `AgentDI` only builds and connects objects — models per role from `operation/llm.yml` and `operation/agent.yml`, MCP tools from `connector/mcp.yml`, the checkpointer from `connector/database.yml`, the step handlers. `create_agent_application` builds the container and the app; routes get services through Litestar's dependency injection. That's the **composition root** of [[Dependency injection]]: one place where concrete classes are chosen.

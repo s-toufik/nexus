@@ -4,7 +4,7 @@ status: active
 started: 2026-09
 repos: [agent-runtime]
 tags: [project, agent-runtime, ai]
-updated: 2026-11-12
+updated: 2026-11-13
 ---
 
 # Agent runtime
@@ -28,6 +28,7 @@ The harness around the model, and what it holds: models, memory, protocols. How 
 |---|---|
 | `POST /v1/stream` | A conversation turn, as SSE: `status`, `token`, `final` (with `outcome` and metadata), `error`, `complete` |
 | `GET /v1/models` | The models a request may name, and the steps pinned to one model |
+| `POST /a2a`, `GET /.well-known/agent-card.json` | The same agent for other agents, over [[Agent2Agent protocol\|A2A]] 1.0 (JSON-RPC): each message is a task |
 | `/actuator/health`, `/health/liveness`, `/health/readiness`, `/actuator/info` | Health and version |
 | `/docs` | Swagger UI, with `WEB_DOCS=true` |
 

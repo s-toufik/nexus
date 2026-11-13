@@ -2,7 +2,7 @@
 type: decisions
 project: "[[Agent runtime]]"
 tags: [agent-runtime, decisions]
-updated: 2026-11-08
+updated: 2026-11-13
 ---
 
 # Agent runtime decisions
@@ -32,6 +32,11 @@ Newest first.
 - **Decision:** `POST /v1/stream` answers SSE with `status`, `token`, `final` (+ metadata, outcome), `error`, `complete`; heartbeats every 15 s.
 - **Why:** the user sees progress and the first words at once; the outcome lets clients render plans, questions and errors differently.
 - **Alternatives:** WebSockets (two-way, heavier through proxies); one JSON response (long silent wait).
+
+## A2A as a second inbound adapter
+- **Decision:** `POST /a2a` speaks [[Agent2Agent protocol|A2A]] 1.0 over JSON-RPC, hand-written in `adapter/inbound/a2a/` (pydantic, no SDK), calling the same `HandleMessage`. `contextId` is the conversation; outcomes map to task states; tasks kept in memory (the last 1,000); streaming and cancel, no push notifications.
+- **Why:** other agents can delegate to this one with a standard protocol, while the rules stay protocol-free. A small adapter is easier to follow than an SDK that brings its own web framework.
+- **Alternatives:** the `a2a-sdk` package (Starlette or FastAPI apps, task stores; more than we need); A2A tasks stored in MongoDB (survive restarts, but the conversation already is).
 
 ## Evaluation as a separate program over HTTP
 - **Decision:** `agent_evaluation` tests a running agent from outside, with code checks first and a judge model second, several runs per case.

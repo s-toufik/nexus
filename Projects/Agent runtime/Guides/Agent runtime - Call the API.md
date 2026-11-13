@@ -2,12 +2,12 @@
 type: guide
 project: "[[Agent runtime]]"
 tags: [guide, agent-runtime]
-updated: 2026-11-08
+updated: 2026-11-13
 ---
 
 # Agent runtime - Call the API
 
-> List the models, send a message, and read the streamed reply and its outcome — what a client like homelab-ui does.
+> List the models, send a message, and read the streamed reply and its outcome — what a client like homelab-ui does. Other agents use A2A instead.
 
 **Where:** from any machine that reaches the agent (tailnet: `http://<HOMELAB_DOMAIN>:8000`) · **All guides:** [[Agent runtime guides]]
 
@@ -75,6 +75,46 @@ During a long model call, the stream sends a `: heartbeat` comment every 15 seco
 
 New events, fields and outcomes may be added: ignore the ones you don't know, and treat an unknown `outcome` like `answered`. Why a message gets a given outcome: see [[Agent runtime plans and outcomes]].
 
+## Talk to it as an A2A agent
+
+1. Read the agent card: what it does and where to call it.
+   ```bash
+   curl http://<host>:<port>/.well-known/agent-card.json
+   ```
+   It gives `supportedInterfaces[0].url` (`…/a2a`, binding `JSONRPC`, version `1.0`) and one skill.
+2. Send a message; the reply is a task.
+   ```bash
+   curl http://<host>:<port>/a2a \
+     -H 'Content-Type: application/json' -H 'A2A-Version: 1.0' \
+     -d '{"jsonrpc": "2.0", "id": 1, "method": "SendMessage", "params": {"message": {
+           "messageId": "m1", "role": "ROLE_USER", "parts": [{"text": "how many users signed up today?"}]}}}'
+   ```
+   It gives `result.task` with `id`, `contextId` and `status.state`.
+3. If the state is `TASK_STATE_INPUT_REQUIRED` (a plan, a question, a paused plan), read `status.message` and reply in the same task.
+   ```bash
+   curl http://<host>:<port>/a2a \
+     -H 'Content-Type: application/json' -H 'A2A-Version: 1.0' \
+     -d '{"jsonrpc": "2.0", "id": 2, "method": "SendMessage", "params": {"message": {
+           "messageId": "m2", "role": "ROLE_USER", "taskId": "<task id>", "parts": [{"text": "yes"}]}}}'
+   ```
+   It gives the same task, `TASK_STATE_COMPLETED`, with the answer in `artifacts[0].parts[0].text`.
+4. To follow the work live, call `SendStreamingMessage` instead, with `curl -N`.
+   It gives server-sent events: the task, a `statusUpdate` per step, the `answer` `artifactUpdate`, the last `statusUpdate`.
+5. To continue the conversation later, send a new message with the task's `contextId` (no `taskId`).
+   It gives a new task in the same conversation.
+
+| Task state | The agent's `outcome` |
+|---|---|
+| `TASK_STATE_COMPLETED` | `answered`, `best_effort`, `budget_exhausted` without a paused plan |
+| `TASK_STATE_INPUT_REQUIRED` | `awaiting_approval`, `clarification`, `budget_exhausted` with a paused plan |
+| `TASK_STATE_REJECTED` | `refused` |
+| `TASK_STATE_FAILED` | an `error` |
+| `TASK_STATE_CANCELED` | `CancelTask`, or the stream was closed |
+
+- `message.metadata.model` picks the model (else `A2A_MODEL`, else the first listed); `message.metadata.autoApprove: true` runs plans without waiting.
+- `GetTask` and `CancelTask` work on the last 1,000 tasks; `configuration.returnImmediately: true` answers at once with a working task to poll.
+- Not supported: `SubscribeToTask`, `ListTasks`, push notifications. Only text parts are read.
+
 ## Why it works
 - [[Agent runtime plans and outcomes]] — why a message gets an outcome.
-- [[Server-sent events]] · [[Homelab UI state and streaming]]
+- [[Server-sent events]] · [[Homelab UI state and streaming]] · [[Agent2Agent protocol]]
