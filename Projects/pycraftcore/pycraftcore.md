@@ -23,7 +23,7 @@ Every service needs the same plumbing: read config, log with a request id, trace
 | Set up | `application_configuration`, `logger`, `telemetry`, `context`, `authentication` |
 | Talk out | `http`, `resilient_http` (with `retry`, `circuit_breaker`) |
 | Serve | `web` + `web_litestar`, `web_fastapi`, `web_blacksheep` |
-| Store | `repository` (SQLite, PostgreSQL, MongoDB) |
+| Store | `repository` (SQLite, PostgreSQL, MongoDB, SQLAlchemy) |
 | Run safely | `query_language` (read-only SQL), `runtime` (Python sandbox) |
 | Utilities | `file_handler`, `serializer`, `computation_engine`, `profiler` |
 
