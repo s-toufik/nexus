@@ -5,7 +5,7 @@ repo: https://github.com/s-toufik/agent-runtime
 language: Python 3.14
 status: active
 tags: [repository, agent-runtime]
-updated: 2026-11-08
+updated: 2026-11-14
 ---
 
 # agent-runtime
@@ -24,7 +24,7 @@ updated: 2026-11-08
 | `src/agent_runtime/adapter/outbound/llm/` | LangChain adapters per role, prompts, `ModelCatalog` |
 | `src/agent_runtime/adapter/outbound/tool/` | MCP discovery and calls (`Toolbox`) |
 | `src/agent_runtime/adapter/outbound/langgraph/` | Graph nodes, edges from `TurnPolicy`, state codec, checkpointer |
-| `src/bootstrap/` | Settings, `AgentDI`, container, `create_agent_application`, the FastAPI API (`router/`, `schema/` in pydantic) |
+| `src/bootstrap/` | Settings, `di/` (`ToolsDI`, `ModelsDI`, `StorageDI`, `WorkflowDI`, `A2aDI`, composed by `AgentDI`), container, `create_agent_application`, the FastAPI API (`router/`, `schema/` in pydantic) |
 | `src/agent_evaluation/` | The evaluation program |
 | `config/` | `root.yml`, `<env>/connector/`, `operation/`, `server/` |
 | `tests/` | Unit, scenario (two runners), architecture, evaluation tests |

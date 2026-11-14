@@ -2,7 +2,7 @@
 type: decisions
 project: "[[Agent runtime]]"
 tags: [agent-runtime, decisions]
-updated: 2026-11-13
+updated: 2026-11-14
 ---
 
 # Agent runtime decisions
@@ -39,10 +39,15 @@ Newest first.
 - **Alternatives:** stay on Litestar and mount the SDK's Starlette app inside it (two frameworks, two error and tracing stacks); stay on Litestar with a hand-written A2A server (what we had: spec guesses to maintain).
 
 ## A2A with the SDK, rules in `domain/a2a`
-- **Decision:** `POST /a2a` speaks [[Agent2Agent protocol|A2A]] 1.0 through the official `a2a-sdk` (`DefaultRequestHandler`, in-memory task store, JSON-RPC routes, 0.3 compatibility). Our code is split by layer: `domain/a2a/` (task states and the rule from an `Outcome`, `TaskUpdate`, `A2aTaskRequest`, `AgentProfile`), `RunA2aTask` in the application (runs `HandleMessage`, reports `TaskUpdate`s), and in `adapter/inbound/a2a/` the SDK's `AgentExecutor`, a presenter and the card. `contextId` is the conversation.
+- **Decision:** `POST /a2a` speaks [[Agent2Agent protocol|A2A]] 1.0 through the official `a2a-sdk` (`DefaultRequestHandler`, its database task store, JSON-RPC routes, 0.3 compatibility). Our code is split by layer: `domain/a2a/` (task states and the rule from an `Outcome`, `TaskUpdate`, `A2aTaskRequest`, `AgentProfile`), `RunA2aTask` in the application (runs `HandleMessage`, reports `TaskUpdate`s), and in `adapter/inbound/a2a/` the SDK's `AgentExecutor`, a presenter and the card. `contextId` is the conversation.
 - **Why:** minimal maintenance: the SDK follows the spec and does the protocol work; we keep only the rules, which stay plain Python and testable without the SDK. A boundary test keeps the SDK and protobuf out of the domain and the application.
-- **Task limit:** the SDK's in-memory store keeps every task, so `BoundedTaskStore` keeps the last `A2A_MAX_TASKS` (1,000), dropping finished tasks first, then waiting ones, never running ones. Not announced in the agent card: it has no field for it, and a client meets the limit as `TaskNotFoundError`.
-- **Alternatives:** the hand-written JSON-RPC server it replaced (its stream format was a guess); the SDK with no domain package (the outcome-to-state rule would live in an adapter); A2A tasks stored in a database (survive restarts; the SDK's `DatabaseTaskStore` needs SQLAlchemy, and the conversation is already stored).
+- **Task storage:** the SDK's `DatabaseTaskStore` on a SQLAlchemy engine from [[pycraftcore]]: PostgreSQL when reachable at boot, else SQLite next to the conversation checkpoint. Tasks survive a restart; `TaskRetention` deletes those not updated for `A2A_TASK_TTL` (a week, like the conversations). The handler is built before boot, so it reaches the chosen store through `DelegatingTaskStore`. The TTL isn't announced in the agent card: it has no field for it, and a client meets it as `TaskNotFoundError`.
+- **Alternatives:** the hand-written JSON-RPC server it replaced (its stream format was a guess); the SDK with no domain package (the outcome-to-state rule would live in an adapter); tasks in memory, capped by count (what we had: lost on restart); tasks in MongoDB (the SDK has no MongoDB store, so we'd maintain one).
+
+## Wiring split by kind
+- **Decision:** `bootstrap/di/` has one wiring class per kind (`ToolsDI`, `ModelsDI`, `StorageDI`, `WorkflowDI`, `A2aDI`), each taking its dependencies in its constructor; `AgentDI` only composes them and builds the use cases.
+- **Why:** one 370-line class mixed tools, models, storage and the graph; each part can now be read and tested alone, and its dependencies are visible in its constructor.
+- **Alternatives:** mixins sharing `self` (shorter, but each needs attributes it doesn't declare); one class per adapter (too fine for wiring).
 
 ## Evaluation as a separate program over HTTP
 - **Decision:** `agent_evaluation` tests a running agent from outside, with code checks first and a judge model second, several runs per case.

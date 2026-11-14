@@ -2,7 +2,7 @@
 type: guide
 project: "[[Agent runtime]]"
 tags: [guide, agent-runtime]
-updated: 2026-11-08
+updated: 2026-11-14
 ---
 
 # Agent runtime - Change the agent
@@ -21,7 +21,7 @@ updated: 2026-11-08
 | A new request option | `AgentRequestSchema` (`bootstrap/application/fastapi/schema/`) → `AgentRequest` → `TurnOptions`, read in the domain |
 | A new route | A function in a router of `bootstrap/application/fastapi/router/`, listed in `fastapi_api.py`. A service it needs comes in as a provider (`Callable[[], Service]`) given by the container in `create_agent_application` |
 | Which task state an outcome gives an A2A client | `TaskState.of` in `domain/a2a/task_state.py` |
-| A new step | A `Step` value, a handler in `application/step/`, a node class in `langgraph/node/` listed in `NODE_TYPES`, the handler in `AgentDI._steps`, and its rows in `TurnPolicy` |
+| A new step | A `Step` value, a handler in `application/step/`, a node class in `langgraph/node/` listed in `NODE_TYPES`, the handler in `WorkflowDI.steps`, and its rows in `TurnPolicy` |
 | A new model role | An `AgentRole` value, its entry in `operation/agent.yml` (and `root.yml`), and a LangChain adapter behind the step's port |
 | A new source of tools | A connector in `connector/mcp.yml` (see [[Agent runtime - Configure it]]); a non-MCP source is a new adapter behind the `ToolCatalog` and `ToolExecutor` ports |
 

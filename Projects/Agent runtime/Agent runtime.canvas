@@ -37,7 +37,7 @@
 			"y": -270,
 			"width": 860,
 			"height": 90,
-			"text": "### bootstrap \u2014 AgentDI, settings, FastAPI API (pycraftcore.web_fastapi) + a2a-sdk routes, Granian\n[[Dependency injection]] \u00b7 [[ASGI]]"
+			"text": "### bootstrap \u2014 di/ (ToolsDI, ModelsDI, StorageDI, WorkflowDI, A2aDI), settings, FastAPI API (pycraftcore.web_fastapi) + a2a-sdk routes, Granian\n[[Dependency injection]] \u00b7 [[ASGI]]"
 		},
 		{
 			"id": "in",
