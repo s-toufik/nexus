@@ -25,6 +25,7 @@ updated: 2026-11-14
 - **Decision:** `repository/adapter/sql/sqlalchemy/` with the same shape as the others (schema, settings mapper, factory, repository). Its `connection()` gives an `AsyncEngine` for PostgreSQL or SQLite, built on the psycopg and aiosqlite drivers already in the `repository` extra; `sqlalchemy` joins that extra.
 - **Why:** some libraries only take a SQLAlchemy engine (the A2A SDK's `DatabaseTaskStore` in agent-runtime). Building it from the same connector keeps one way to configure databases, and `connection()` is already how services hand a database to a library (`MongoClient` and aiosqlite to LangGraph).
 - **Alternatives:** a SQLAlchemy engine built inside each service (configuration and pool rules repeated per service); replacing the psycopg and aiosqlite adapters with SQLAlchemy (heavier for services that only run SQL); a separate extra (every other adapter ships in `repository`).
+- **Who prepares SQLite:** `SqliteDatabaseFile` (in the `sqlite` package) is the one place that knows where a SQLite file lives and creates its folder; both SQLite factories use it, so the SQLAlchemy factory only builds and manages its engine. The per-connection PRAGMAs (busy timeout, `synchronous`) stay with whoever opens the connections, because SQLite forgets them when a connection closes; only WAL is saved in the file.
 - **Consequences:** no ORM or models in pycraftcore; tables belong to the code that owns them.
 
 ## Configuration as connectors, operations and servers

@@ -42,7 +42,7 @@ await factory.disconnect()              # disposes the engine
 ```
 
 - Same drivers as the other adapters: psycopg (`postgresql+psycopg`) and aiosqlite (`sqlite+aiosqlite`).
-- PostgreSQL: a pool of `pool.max` connections, checked before use. SQLite: `<host>/<default_name>.db`, with the same PRAGMAs as `SqliteRepositoryFactory`.
+- PostgreSQL: a pool of `pool.max` connections, checked before use. SQLite: `SqliteDatabaseFile` gives the file (`<host>/<default_name>.db`) and creates its folder, as it does for `SqliteRepositoryFactory`; the engine applies the same PRAGMAs to each connection it opens.
 - `connect()` gives an `AsyncRepository` too; its SQL uses the driver's placeholders (`%s` for PostgreSQL, `?` for SQLite), one transaction per call.
 - The factory builds the engine only: the library owns its tables.
 
