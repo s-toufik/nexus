@@ -30,19 +30,25 @@ Every factory has three methods: `connect()` gives the `AsyncRepository`, `conne
 
 ## A SQLAlchemy engine
 
-For a library that asks for a SQLAlchemy engine (the A2A SDK's task store, for example), from a connector with `engine: postgresql` or `engine: sqlite`:
+For a library that asks for a SQLAlchemy engine (the A2A SDK's task store, for example). The factory manages the engine; an injected builder, made from the existing PostgreSQL or SQLite settings, says how to build it:
 
 ```python
-from pycraftcore.repository.adapter import SqlAlchemyRepositoryFactory, SqlAlchemySettingsMapper
+from pycraftcore.repository.adapter import (
+    PostgresEngineBuilder,
+    PostgresSettingsMapper,
+    SqlAlchemyRepositoryFactory,
+)
 
-factory = SqlAlchemyRepositoryFactory(SqlAlchemySettingsMapper(config.connector.database("tasks"))())
-await factory.ping()                    # raises when the database can't be reached
-engine = await factory.connection()     # an AsyncEngine, for the library
-await factory.disconnect()              # disposes the engine
+builder = PostgresEngineBuilder(PostgresSettingsMapper(config.connector.database("tasks"))())
+factory = SqlAlchemyRepositoryFactory(builder)   # SqliteEngineBuilder(...) works the same
+await factory.ping()                             # raises when the database can't be reached
+engine = await factory.connection()              # an AsyncEngine, for the library
+await factory.disconnect()                       # disposes the engine
 ```
 
-- Same drivers as the other adapters: psycopg (`postgresql+psycopg`) and aiosqlite (`sqlite+aiosqlite`).
-- PostgreSQL: a pool of `pool.max` connections, checked before use. SQLite: `SqliteDatabaseFile` gives the file (`<host>/<default_name>.db`) and creates its folder, as it does for `SqliteRepositoryFactory`; the engine applies the same PRAGMAs to each connection it opens.
+- `PostgresEngineBuilder`: psycopg (`postgresql+psycopg`), a pool of `pool.max` connections checked before use.
+- `SqliteEngineBuilder`: aiosqlite (`sqlite+aiosqlite`) on the file `SqliteDatabaseFile` prepares, with the same PRAGMAs as `SqliteRepositoryFactory` on each connection.
+- Another database is another builder (`build() -> AsyncEngine`); the factory doesn't change.
 - `connect()` gives an `AsyncRepository` too; its SQL uses the driver's placeholders (`%s` for PostgreSQL, `?` for SQLite), one transaction per call.
 - The factory builds the engine only: the library owns its tables.
 
