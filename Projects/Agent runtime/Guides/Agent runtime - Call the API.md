@@ -2,7 +2,7 @@
 type: guide
 project: "[[Agent runtime]]"
 tags: [guide, agent-runtime]
-updated: 2026-11-14
+updated: 2026-11-15
 ---
 
 # Agent runtime - Call the API
@@ -116,6 +116,27 @@ New events, fields and outcomes may be added: ignore the ones you don't know, an
 - Closing a stream doesn't stop the task; `CancelTask` does.
 - Send `A2A-Version: 1.0`: without it the call is read as A2A 0.3.
 - Not supported: push notifications. Only text parts are read: a message without text is `TASK_STATE_REJECTED`.
+
+## Try A2A from Postman
+
+The collection `agent-runtime A2A` is in agent-runtime's `postman/` folder: the card, a conversation (send, stream, get, reply, continue, list), a background task (start without waiting, follow, cancel) and the A2A 0.3 form.
+
+1. In Postman, open agent-runtime's folder as a local workspace.
+   It gives the collection `agent-runtime A2A` and the environment `agent-runtime local`.
+2. Pick the environment `agent-runtime local` and set `base_url` (`http://localhost:8000` for `make run`, or `http://<homelab-host>:8000`).
+   It gives the address every request uses.
+3. Optionally, change the collection variables `prompt`, `reply` (`yes`), `follow_up` and `auto_approve`.
+   It gives what the messages say.
+4. Send `Get the agent card`, then the requests of `Conversation` in order.
+   It gives each task's state in the Console; each request saves `task_id` and `context_id` for the next one.
+5. Or run it all from a terminal:
+   ```bash
+   postman collection run "postman/collections/agent-runtime A2A" -e "postman/environments/agent-runtime local.environment.yaml" --env-var base_url=http://<host>:<port>
+   ```
+   It gives every request with its checks, passed or failed.
+
+- A JSON-RPC error still answers HTTP 200, so the checks read the body's `error`.
+- `Reply in the same task` only works when the task waits (`TASK_STATE_INPUT_REQUIRED`); on an ended task it gets "is in terminal state", which the check expects.
 
 ## Why it works
 - [[Agent runtime plans and outcomes]] — why a message gets an outcome.
