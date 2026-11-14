@@ -2,7 +2,7 @@
 type: decisions
 project: "[[pycraftcore]]"
 tags: [pycraftcore, decisions]
-updated: 2026-11-14
+updated: 2026-11-15
 ---
 
 # pycraftcore decisions
@@ -27,6 +27,12 @@ updated: 2026-11-14
 - **Alternatives:** a SQLAlchemy engine built inside each service (configuration and pool rules repeated per service); replacing the psycopg and aiosqlite adapters with SQLAlchemy (heavier for services that only run SQL); a separate extra (every other adapter ships in `repository`); one factory branching on a dialect, with its own settings and mapper (it had to know every database, and repeated the PostgreSQL and SQLite settings).
 - **Who prepares SQLite:** `SqliteDatabaseFile` (in the `sqlite` package) is the one place that knows where a SQLite file lives and creates its folder; both SQLite factories use it, so the SQLite engine builder uses it too. The per-connection PRAGMAs (busy timeout, `synchronous`) stay with whoever opens the connections, because SQLite forgets them when a connection closes; only WAL is saved in the file.
 - **Consequences:** no ORM or models in pycraftcore; tables belong to the code that owns them.
+
+## MongoDB TTL indexes kept in pycraftcore
+- **Decision:** `MongoTtlIndex(field, expire_after_seconds).ensure(collection)` in the MongoDB adapter creates a missing TTL index, changes another expiry in place with `collMod`, and otherwise does nothing; it returns what it did (`TtlIndexChange`).
+- **Why:** MongoDB refuses to create a TTL index again with another expiry. A library that creates its own (LangGraph's `MongoDBSaver`) then stops the service at boot after a retention change: agent-runtime went into a crash loop when its conversation TTL went from an hour to a week. Index management is about the database, not the service, so it belongs with the other MongoDB code and any service can use it.
+- **Alternatives:** a fix inside agent-runtime (MongoDB code in a service); dropping and recreating the index (rebuilds it, and needs no less privilege); dropping the database by hand after each TTL change.
+- **Consequences:** changing an index needs the `collMod` action (`dbAdmin` or root), more than `readWrite`.
 
 ## Configuration as connectors, operations and servers
 - **Decision:** YAML + OmegaConf, env interpolation, pydantic validation; only the loader reads the environment.

@@ -2,12 +2,12 @@
 type: guide
 project: "[[pycraftcore]]"
 tags: [guide, pycraftcore]
-updated: 2026-11-14
+updated: 2026-11-15
 ---
 
 # pycraftcore - Use databases and SQL
 
-> Async repositories for SQLite, PostgreSQL and MongoDB from a connector, a SQLAlchemy engine for libraries that need one, and a check that SQL is read-only.
+> Async repositories for SQLite, PostgreSQL and MongoDB from a connector, MongoDB TTL indexes kept to a set expiry, a SQLAlchemy engine for libraries that need one, and a check that SQL is read-only.
 
 **Where:** in your service's repository · **All guides:** [[pycraftcore guides]]
 
@@ -27,6 +27,23 @@ await factory.disconnect()
 `PostgresRepositoryFactory` / `PostgresSettingsMapper` and `MongoRepositoryFactory` / `MongoSettingsMapper` work the same way, and so will any database added later: a factory, a settings mapper and a repository behind the same `AsyncRepository` port.
 
 Every factory has three methods: `connect()` gives the `AsyncRepository`, `connection()` gives the driver's own client, `disconnect()` closes both. `connection()` is for handing the database to a library with its own code, such as LangGraph's checkpointers in agent-runtime.
+
+## A MongoDB TTL index with a set expiry
+
+MongoDB refuses to create a TTL index again with another expiry, so a changed retention would otherwise stop the service at its next start. `ensure` makes the collection match:
+
+```python
+from pycraftcore.repository.adapter import MongoTtlIndex
+
+client = await factory.connection()                               # a MongoRepositoryFactory
+change = await MongoTtlIndex("created_at", 604800).ensure(client["app"]["events"])
+```
+
+- No index on the field: it's created, and `ensure` returns `TtlIndexChange.CREATED`.
+- Same expiry: nothing is done (`UNCHANGED`).
+- Another expiry, or a plain index: it's changed in place with `collMod`, with no rebuild and no documents lost (`UPDATED`).
+- Run it before a library that creates its own TTL index, such as LangGraph's `MongoDBSaver`: the library then finds the index as it wants it.
+- Changing an index needs `collMod` (`dbAdmin` or root); creating one needs `createIndex` (`readWrite`).
 
 ## A SQLAlchemy engine
 
