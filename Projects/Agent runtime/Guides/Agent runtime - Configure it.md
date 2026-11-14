@@ -2,7 +2,7 @@
 type: guide
 project: "[[Agent runtime]]"
 tags: [guide, agent-runtime]
-updated: 2026-11-14
+updated: 2026-11-15
 ---
 
 # Agent runtime - Configure it
@@ -45,7 +45,7 @@ updated: 2026-11-14
 |---|---|
 | `connector/api.yml` | The model server; `timeout` (seconds one model call may wait) and `retry` (retries after a 5xx, a 429 or a connection failure; a silent model is not retried) |
 | `connector/mcp.yml` | The MCP servers |
-| `connector/database.yml` | MongoDB, SQLite, and how long conversations are kept |
+| `connector/database.yml` | MongoDB, SQLite, PostgreSQL for A2A tasks, and how long conversations are kept (`ttl` of `mongodb_checkpointer`). A changed `ttl` is applied to MongoDB's existing indexes at boot, so it needs no manual step; the MongoDB user needs `collMod` (`dbAdmin` or root) |
 | `connector/telemetry.yml` | The OpenTelemetry collector |
 | `operation/llm.yml` | The models users can pick, and their parameters |
 | `operation/agent.yml` | Which model each step uses |
