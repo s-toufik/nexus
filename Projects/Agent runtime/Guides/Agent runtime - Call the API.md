@@ -112,7 +112,7 @@ New events, fields and outcomes may be added: ignore the ones you don't know, an
 | `TASK_STATE_CANCELED` | `CancelTask` |
 
 - `message.metadata.model` picks the model (else `A2A_MODEL`, else the first listed); `message.metadata.autoApprove: true` runs plans without waiting.
-- `GetTask`, `CancelTask`, `ListTasks` and `SubscribeToTask` work on this process's tasks (in memory); `configuration.returnImmediately: true` answers at once with the task to follow.
+- `GetTask`, `CancelTask`, `ListTasks` and `SubscribeToTask` work on the last `A2A_MAX_TASKS` tasks (in memory; a forgotten one answers `-32001`, but its `contextId` still continues the conversation); `configuration.returnImmediately: true` answers at once with the task to follow.
 - Closing a stream doesn't stop the task; `CancelTask` does.
 - Send `A2A-Version: 1.0`: without it the call is read as A2A 0.3.
 - Not supported: push notifications. Only text parts are read: a message without text is `TASK_STATE_REJECTED`.

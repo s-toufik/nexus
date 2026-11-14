@@ -41,6 +41,7 @@ Newest first.
 ## A2A with the SDK, rules in `domain/a2a`
 - **Decision:** `POST /a2a` speaks [[Agent2Agent protocol|A2A]] 1.0 through the official `a2a-sdk` (`DefaultRequestHandler`, in-memory task store, JSON-RPC routes, 0.3 compatibility). Our code is split by layer: `domain/a2a/` (task states and the rule from an `Outcome`, `TaskUpdate`, `A2aTaskRequest`, `AgentProfile`), `RunA2aTask` in the application (runs `HandleMessage`, reports `TaskUpdate`s), and in `adapter/inbound/a2a/` the SDK's `AgentExecutor`, a presenter and the card. `contextId` is the conversation.
 - **Why:** minimal maintenance: the SDK follows the spec and does the protocol work; we keep only the rules, which stay plain Python and testable without the SDK. A boundary test keeps the SDK and protobuf out of the domain and the application.
+- **Task limit:** the SDK's in-memory store keeps every task, so `BoundedTaskStore` keeps the last `A2A_MAX_TASKS` (1,000), dropping finished tasks first, then waiting ones, never running ones. Not announced in the agent card: it has no field for it, and a client meets the limit as `TaskNotFoundError`.
 - **Alternatives:** the hand-written JSON-RPC server it replaced (its stream format was a guess); the SDK with no domain package (the outcome-to-state rule would live in an adapter); A2A tasks stored in a database (survive restarts; the SDK's `DatabaseTaskStore` needs SQLAlchemy, and the conversation is already stored).
 
 ## Evaluation as a separate program over HTTP

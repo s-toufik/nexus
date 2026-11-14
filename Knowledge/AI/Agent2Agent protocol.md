@@ -29,7 +29,7 @@ Agents built by different teams or vendors need a common way to find each other,
   - `adapter/inbound/a2a/`: the SDK's `AgentExecutor`, a presenter that turns a `TaskUpdate` into `TaskUpdater` calls, and the card. The only code that imports the SDK, and a boundary test checks it.
 - `contextId` is the conversation (`request_id`); each message is a task.
 - The agent's outcomes map onto task states: a plan waiting for approval, a question, or a paused plan → `INPUT_REQUIRED` (reply **yes**, an answer or **continue** in the same task); a refused plan → `REJECTED`; an answer → `COMPLETED` with an `answer` artifact ([[Agent runtime plans and outcomes]]).
-- Tasks live in memory (lost on restart); push notifications aren't offered.
+- Tasks live in memory, at most `A2A_MAX_TASKS` (1,000 by default): past it, the oldest finished tasks go first, then the oldest waiting for input, never a running one. The limit isn't in the card: the card has no field for it, and a client learns it the protocol's way, with `TaskNotFoundError`. Push notifications aren't offered.
 - How to call it: [[Agent runtime - Call the API#Talk to it as an A2A agent]].
 
 ## Pitfalls we met
@@ -37,6 +37,7 @@ Agents built by different teams or vendors need a common way to find each other,
 - **Closing a stream doesn't stop the task.** A2A tasks outlive their connection: the client can come back with `SubscribeToTask` or `GetTask`, and only `CancelTask` stops the work.
 - **No `A2A-Version` header means 0.3** to the SDK. Send `A2A-Version: 1.0`; 0.3 calls (`message/send`, `kind: "text"`) are still understood because compatibility is on.
 - **The task store is updated in the background.** A `GetTask` right after a `returnImmediately` send can still show `SUBMITTED`; poll until the state changes.
+- **The SDK's in-memory task store never forgets.** Each task keeps its history and artifacts, so a long-running server grows without end. `BoundedTaskStore` wraps it and keeps the last `A2A_MAX_TASKS`.
 - **Enums are proto names**, `TASK_STATE_COMPLETED`, not `completed` as in A2A 0.3.
 
 ## Check yourself
