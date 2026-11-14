@@ -2,7 +2,7 @@
 type: guide
 project: "[[Homelab]]"
 tags: [guide, homelab]
-updated: 2026-11-08
+updated: 2026-11-14
 ---
 
 # Homelab - Connect to the databases
@@ -14,7 +14,7 @@ updated: 2026-11-08
 ## From the server: psql and mongosh
 
 - PostgreSQL: `make psql` — raw: `kubectl -n homelab exec -it "$(kubectl -n homelab get pod -l cnpg.io/cluster=postgres,cnpg.io/instanceRole=primary -o name)" -c postgres -- psql -d homelab`
-- Keycloak's database: `\c keycloak` inside psql.
+- Keycloak's database: `\c keycloak` inside psql; agent-runtime's A2A tasks: `\c agent_runtime`, table `tasks`.
 - MongoDB: `make mongosh` — raw: `kubectl -n homelab exec -it mongodb-0 -- sh -c 'mongosh -u "$MONGO_INITDB_ROOT_USERNAME" -p "$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase admin'`
 
 ## pgAdmin 4
@@ -29,7 +29,7 @@ Use `postgres`: it sees every table. PostgreSQL isn't open to the tailnet, so pg
    It prints `10.43.x.x`. It stays the same unless the `postgres` release is removed.
 3. **In pgAdmin 4: Object Explorer → right-click Servers → Register → Server.** General tab: a name, e.g. `homelab`. Then the **SSH Tunnel** tab: Use SSH tunneling on, Tunnel host `<HOMELAB_DOMAIN>`, port `22`, Username your user on the server, Authentication Identity file (your SSH key).
 4. **Connection tab.** Host name the `10.43.x.x` address, Port `5432`, Maintenance database `homelab`, Username `postgres`, Password from step 1, Save password on.
-5. **Save.** pgAdmin lists the databases `homelab` and `keycloak`; the Tasker tables are in homelab → Schemas → tasker → Tables.
+5. **Save.** pgAdmin lists the databases `homelab`, `keycloak` and `agent_runtime`; the Tasker tables are in homelab → Schemas → tasker → Tables.
 
 - `postgres` can change and drop anything: use it to look and for admin work, never in an app.
 - pgAdmin says `connection timed out`: Tailscale isn't on on your Mac, or the address changed (step 2 again).
@@ -77,6 +77,7 @@ Its own: one user per app, which can only touch its own schema and what you gran
 | Each app or API | its own (`myapi`) | `pg-role-myapi` | its schema and what you grant it |
 | PostgREST (Tasker) | `postgrest` | `pg-role-postgrest` | the Tasker tables, only the signed-in user's rows |
 | Keycloak | `keycloak` | `pg-role-keycloak` | the database `keycloak` |
+| agent-runtime | `agent_runtime` | `pg-role-agent-runtime` | the database `agent_runtime` (its A2A tasks) |
 | `homelab` | `homelab` | `postgres-app` | owns the database `homelab`; unused |
 
 ## MongoDB

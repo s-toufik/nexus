@@ -3,12 +3,12 @@ type: architecture
 project: "[[Homelab]]"
 order: 4
 tags: [homelab, architecture, data]
-updated: 2026-11-08
+updated: 2026-11-14
 ---
 
 # Homelab data
 
-> Two databases and a broker: PostgreSQL for relational data (Tasker, Keycloak, your projects), MongoDB for documents (the agent's conversations), Kafka for events. Each app gets its own account with only the rights it needs, and every night everything is dumped outside the cluster.
+> Two databases and a broker: PostgreSQL for relational data (Tasker, Keycloak, the agent's A2A tasks, your projects), MongoDB for documents (the agent's conversations), Kafka for events. Each app gets its own account with only the rights it needs, and every night everything is dumped outside the cluster.
 
 Previous: [[Homelab gateway and sign-in]] · Next: [[Homelab observability]]
 
@@ -31,6 +31,7 @@ Roles declared in `repository/postgres/values.yaml.gotmpl` ([[PostgreSQL roles a
 | `tasker_web` | **no** | only Tasker's tables, through RLS | the role PostgREST *becomes* |
 | `postgrest` | yes | `NOINHERIT`, member of `tasker_web` | PostgREST connects as it, then switches |
 | `mcp` | yes | `pg_read_all_data` (+ `pg_write_all_data` if write is on) | postgres-mcp, the agent's SQL tools |
+| `agent_runtime` | yes | owner of database `agent_runtime` | agent-runtime's A2A tasks (the a2a-sdk creates its `tasks` table) |
 
 **Passwords:** the operator reads each role's password from a Secret of type `basic-auth`; the Secret's label `cnpg.io/reload: "true"` makes it re-apply the password when you rotate it — no restart.
 
@@ -66,7 +67,7 @@ One [[Kafka]] broker in **KRaft** mode (no ZooKeeper), messages kept 7 days or 1
 
 ## Backups
 The `backups` release is two [[Jobs and CronJobs|CronJobs]] at 03:00:
-- `pg_dump --format=custom` of `homelab` and `keycloak`;
+- `pg_dump --format=custom` of `homelab` and `keycloak` (not `agent_runtime`: its A2A tasks are deleted after a week, and the conversations behind them are in MongoDB's dump);
 - `mongodump --archive --gzip`;
 - into `/var/backups/homelab/` on the host (a `hostPath`, root-only), written as `.tmp` then renamed — so a half-written dump never looks complete; dumps older than 14 days deleted.
 
@@ -76,6 +77,7 @@ Restore: `make restore-postgres FILE=…`, `make restore-mongo FILE=…` (they *
 - **Uninstall keeps the volume.** Reinstall PostgreSQL with new Secrets and the old data still has the old passwords. Rotate through the operator, or delete the volume on purpose.
 - **A migration that fails half-way** in a transaction is rolled back; one that can't run in a transaction (e.g. `CREATE INDEX CONCURRENTLY`) can leave partial state — check `make migrate-status`.
 - **Restore = replace.** Practise a restore before you need one: a backup you've never restored is a hope, not a backup.
+- **A database name with `_` needs the chart's help.** kube-charts' `pg-cluster` names each `Database` object `<release>-<name>`, and Kubernetes names allow no `_`; since `pg-cluster` 0.1.1 it turns `_` into `-` (`postgres-agent-runtime`), while PostgreSQL keeps `agent_runtime`.
 - **`mcp` with write on can change rows, not the schema** (`pg_write_all_data` isn't DDL), and RLS still hides Tasker's rows from it (it's not `tasker_web`).
 
 ## Check yourself

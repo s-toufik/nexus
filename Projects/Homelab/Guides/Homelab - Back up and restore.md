@@ -2,7 +2,7 @@
 type: guide
 project: "[[Homelab]]"
 tags: [guide, homelab]
-updated: 2026-11-08
+updated: 2026-11-14
 ---
 
 # Homelab - Back up and restore
@@ -11,7 +11,7 @@ updated: 2026-11-08
 
 **Where:** on the server, in `homelab-infra`, unless a step says otherwise · **All guides:** [[Homelab guides]]
 
-Every night at 03:00 (`backups` in `environments/default.yaml`): PostgreSQL (databases `homelab` and `keycloak`) and MongoDB into `/var/backups/homelab`, kept 14 days.
+Every night at 03:00 (`backups` in `environments/default.yaml`): PostgreSQL (databases `homelab` and `keycloak`; not `agent_runtime`, whose A2A tasks live a week) and MongoDB into `/var/backups/homelab`, kept 14 days.
 
 ## List them
 - `make backups` — raw: `./scripts/backups.sh list`

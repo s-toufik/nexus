@@ -2,7 +2,7 @@
 type: guide
 project: "[[Homelab]]"
 tags: [guide, homelab]
-updated: 2026-11-08
+updated: 2026-11-14
 ---
 
 # Homelab - Manage secrets
@@ -57,7 +57,7 @@ kubectl -n homelab get secret mongodb -o json | jq -r '.data | map_values(@base6
 1. `make secret-rotate SECRET=<secret> KEY=<key>` — raw: `./scripts/secrets.sh rotate <secret> <key>`
 2. The pods using it restart; PostgreSQL applies a new role password by itself.
 3. For `oauth2-proxy/client-secret` or `grafana-oidc/client-secret`: `make sync R=keycloak`.
-- Rotatable: `pg-role-postgrest/password`, `pg-role-keycloak/password`, `oauth2-proxy/client-secret`, `oauth2-proxy/cookie-secret` (signs everyone out), `grafana-oidc/client-secret`, `tasker-gateway/secret`, `llm-gateway/api-key`.
+- Rotatable: `pg-role-postgrest/password`, `pg-role-keycloak/password`, `pg-role-agent-runtime/password`, `oauth2-proxy/client-secret`, `oauth2-proxy/cookie-secret` (signs everyone out), `grafana-oidc/client-secret`, `tasker-gateway/secret`, `llm-gateway/api-key`.
 - Not rotatable (read once, when their data is created): `keycloak-admin`, `grafana-admin`, `mongodb`.
 
 ## Where the passwords are
@@ -89,6 +89,7 @@ Nothing is in git: not the passwords, not `environments/local.yaml` (only the se
 | `agent-runtime` | `llm-api-key` | the agent's LLM provider (typed by you) |
 | `mongodb-mcp` | `username`, `password` | MongoDB's MCP server (user `mcp`) |
 | `pg-role-mcp` | `username`, `password` | PostgreSQL's MCP server (role `mcp`) |
+| `pg-role-agent-runtime` | `username`, `password` | agent-runtime's A2A tasks (role `agent_runtime`) |
 | `grafana-mcp` | `token` | Grafana's MCP server: a Grafana service-account token (typed by you) |
 
 ## Where the usernames are set
@@ -96,7 +97,7 @@ Nothing is in git: not the passwords, not `environments/local.yaml` (only the se
 | User | Set in | Created | Password in |
 |---|---|---|---|
 | MongoDB `root`, Keycloak `admin`, Grafana `admin` | `SPECS` in [`scripts/secrets.sh`](https://github.com/s-toufik/homelab-infra/blob/develop/scripts/secrets.sh) (`username=<name>`) | by the service, at its first start on an empty volume | Secrets `mongodb`, `keycloak-admin`, `grafana-admin` |
-| PostgreSQL roles `postgrest`, `keycloak`, `mcp` | `SPECS` in `scripts/secrets.sh` and `roles:` in [`repository/postgres/values.yaml.gotmpl`](https://github.com/s-toufik/homelab-infra/blob/develop/repository/postgres/values.yaml.gotmpl) (the two names must match) | by the PostgreSQL operator, kept as declared | Secrets `pg-role-postgrest`, `pg-role-keycloak`, `pg-role-mcp` |
+| PostgreSQL roles `postgrest`, `keycloak`, `mcp`, `agent_runtime` | `SPECS` in `scripts/secrets.sh` and `roles:` in [`repository/postgres/values.yaml.gotmpl`](https://github.com/s-toufik/homelab-infra/blob/develop/repository/postgres/values.yaml.gotmpl) (the two names must match) | by the PostgreSQL operator, kept as declared | Secrets `pg-role-postgrest`, `pg-role-keycloak`, `pg-role-mcp`, `pg-role-agent-runtime` |
 | MongoDB user `mcp` (MongoDB's MCP server) | `SPECS` in `scripts/secrets.sh` (`mongodb-mcp`) | by the `mongodb` release's job, at every deploy (its role follows `mcp.mongodb.write`) | Secret `mongodb-mcp` |
 | PostgreSQL `postgres` (superuser) | PostgreSQL itself | at the cluster's first start | Secret `postgres-superuser`, written by the operator |
 | PostgreSQL `homelab` (owner of the `homelab` database) | `owner: homelab` in the pg-cluster chart (`kube-charts/charts/pg-cluster/values.yaml`); `repository/postgres/values.yaml.gotmpl` doesn't override it | at the cluster's first start only | Secret `postgres-app`, written by the operator |

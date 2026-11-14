@@ -3,7 +3,7 @@ type: concept
 domain: Data
 level: intermediate
 tags: [concept, data, postgresql, security]
-updated: 2026-11-08
+updated: 2026-11-14
 ---
 
 # PostgreSQL roles and privileges
@@ -23,7 +23,7 @@ updated: 2026-11-08
 - Attributes: `SUPERUSER`, `CREATEDB`, `CREATEROLE`, `BYPASSRLS` — avoid them for apps.
 
 ## In our projects
-- CloudNativePG creates and maintains the roles declared in `repository/postgres/values.yaml.gotmpl`: `tasker_web` (NOLOGIN), `postgrest` (LOGIN, NOINHERIT, member of `tasker_web`), `keycloak` (owner of its database), `mcp` (`pg_read_all_data`, + `pg_write_all_data` if write is on) ([[Homelab data]]).
+- CloudNativePG creates and maintains the roles declared in `repository/postgres/values.yaml.gotmpl`: `tasker_web` (NOLOGIN), `postgrest` (LOGIN, NOINHERIT, member of `tasker_web`), `keycloak` and `agent_runtime` (each the owner of its database), `mcp` (`pg_read_all_data`, + `pg_write_all_data` if write is on) ([[Homelab data]]).
 - Migration `005_grant_permissions.sql`: `REVOKE ALL ON SCHEMA tasker FROM PUBLIC`, then only `tasker_web` gets `USAGE` and DML on the two tables; `REVOKE CREATE ON SCHEMA public FROM PUBLIC`.
 - Your own apps use `homelab` (owner of database `homelab`) or, better, a role of their own ([[Homelab - Connect to the databases#Give an app its own PostgreSQL user]]).
 

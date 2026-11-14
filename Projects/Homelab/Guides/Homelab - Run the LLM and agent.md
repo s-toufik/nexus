@@ -2,7 +2,7 @@
 type: guide
 project: "[[Homelab]]"
 tags: [guide, homelab]
-updated: 2026-11-12
+updated: 2026-11-14
 ---
 
 # Homelab - Run the LLM and agent
@@ -41,6 +41,15 @@ updated: 2026-11-12
 - Change a model: `llm/llm/config.yml`, then `make apply R=llm`.
 - The API key for scripts: `kubectl -n homelab get secret llm-gateway -o jsonpath='{.data.api-key}' | base64 -d; echo`
 
+## Give agent-runtime its PostgreSQL database (A2A tasks, first time)
+1. kube-charts' `pg-cluster` 0.1.1 is published (**Actions → Charts**: PUBLISH is green).
+2. On the server: `git pull`.
+3. `make secrets` — raw: `./scripts/secrets.sh`. Creates `pg-role-agent-runtime`.
+4. `make apply R=postgres` — raw: `helmfile -l name=postgres apply`. Creates the role and the database `agent_runtime`.
+5. `make apply R=agent-runtime` — raw: `helmfile -l name=agent-runtime apply` (a version that stores A2A tasks in PostgreSQL, `apps.agentRuntime` in `environments/versions.yaml`).
+6. `make logs R=agent-runtime` → `Storing A2A tasks in PostgreSQL`.
+7. `make verify` — raw: `./scripts/verify.sh`. `agent-runtime reaches PostgreSQL` and `agent-runtime keeps its A2A tasks in PostgreSQL` are ✓.
+
 ## Give the toolbox Grafana, MongoDB and PostgreSQL (their MCP servers, first time)
 1. In Grafana (`https://<HOMELAB_DOMAIN>:3000`, as admin): **Administration → Users and access → Service accounts → Add service account**, name `mcp`, role **Viewer** (**Editor** to let it write) → **Add service account token** → copy it.
 2. `make secret-set SECRET=grafana-mcp KEY=token` — raw: `./scripts/secrets.sh set grafana-mcp token`. Paste the token twice.
@@ -62,6 +71,7 @@ updated: 2026-11-12
 
 ## Rotate the MCP passwords
 - `make secret-rotate SECRET=pg-role-mcp KEY=password` (PostgreSQL applies it itself).
+- `make secret-rotate SECRET=pg-role-agent-runtime KEY=password` (PostgreSQL applies it, and agent-runtime restarts with it).
 - `make secret-rotate SECRET=mongodb-mcp KEY=password`, then `make sync R=mongodb` (raw: `helmfile -l name=mongodb sync`): its job sets the new password.
 
 ## Update the MCP Inspector
