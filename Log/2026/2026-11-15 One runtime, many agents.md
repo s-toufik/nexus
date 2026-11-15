@@ -22,6 +22,7 @@ tags: [log, ai, agents]
 - The orchestrator and chat merged into one **supervisor** (`agents/supervisor/`): it answers what needs no data and plans `ask_agents` calls for the rest. Seven agents; `agent-supervisor` takes `:8000` and `/api/agent`. homelab-infra got `make pull` and `S=agents` (helmfile label `scope: agents`).
 - The guardrail moved into each `agent.yml` (`guardrail: true`, the default); `GUARDRAIL_ENABLED` is gone.
 - An agent may fix its model in `agent.yml` (`model:`); kitchen runs on `nvidia/nemotron-3.5-lightning-30b-a3b`.
+- A Postman hub, `~/SandBox/postman_hub`: every agent endpoint, `{{source}}` plus one address per agent, three environments ([[Agent runtime - Call the API]]).
 - Cleanup: names derived from `AGENT` (database, tasks table, peer connectors), no legacy A2A keys, no `role`/`A2A_MODEL`, the guardrail in `TurnShape`, and the evaluation moved to its own repository, [[agent-evaluation]].
 - Tried locally: the toolbox, observation, chat and orchestration as four processes; scopes, cards, `/v1/agents` and a real parallel `ask_agents` call worked (no model server was reachable, so every answer was an error).
 
