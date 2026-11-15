@@ -20,13 +20,14 @@ updated: 2026-11-08
 | `make secret-set SECRET=… KEY=…` | `./scripts/secrets.sh set <secret> <key>` |
 | `make secret-rotate SECRET=… KEY=…` | `./scripts/secrets.sh rotate <secret> <key>` |
 | `make validate` | `./scripts/validate.sh` |
-| `make diff [R=…\|G=…]` | `helmfile [-l name=<release>\|-l group=<group>] diff` |
-| `make apply [R=…\|G=…]` | `helmfile [-l name=<release>\|-l group=<group>] apply` |
-| `make sync [R=…\|G=…]` | `helmfile [-l name=<release>\|-l group=<group>] sync` |
-| `make template [R=…\|G=…]` | `helmfile [-l name=<release>\|-l group=<group>] template` |
+| `make diff [R=…\|G=…\|S=…]` | `helmfile [-l name=<release>\|-l group=<group>\|-l scope=<scope>] diff` |
+| `make apply [R=…\|G=…\|S=…]` | `helmfile [-l name=<release>\|-l group=<group>\|-l scope=<scope>] apply` |
+| `make sync [R=…\|G=…\|S=…]` | `helmfile [-l name=<release>\|-l group=<group>\|-l scope=<scope>] sync` |
+| `make template [R=…\|G=…\|S=…]` | `helmfile [-l name=<release>\|-l group=<group>\|-l scope=<scope>] template` |
 | `make releases` | `helm list -A` |
 | `make rollback R=…` | `helm -n homelab rollback <release>` |
-| `make restart R=…` | `kubectl -n homelab rollout restart deploy/<release>` (or `statefulset/…`), then `kubectl -n homelab rollout status …` |
+| `make pull R=…\|G=…\|S=…` | `./scripts/rollout.sh pull <label>`: `sudo k3s crictl pull <image>` for each image of the releases, once each |
+| `make restart R=…\|G=…\|S=…` | `./scripts/rollout.sh restart <label>`: `kubectl -n homelab rollout restart deploy/<release>` (or `statefulset/…`) for each release, then `kubectl -n homelab rollout status …` |
 | `make status` · `make ps` | `kubectl -n homelab get pods -o wide` |
 | `make logs R=… [TAIL=…]` | `kubectl -n homelab logs -f --tail=200 -l app.kubernetes.io/instance=<release> --all-containers --prefix` |
 | `make events` | `kubectl -n homelab get events --sort-by=.lastTimestamp \| tail -n 40` |

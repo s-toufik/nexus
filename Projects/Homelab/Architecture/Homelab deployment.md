@@ -68,7 +68,7 @@ Each layer overrides the one before:
 4. **Pods restart only when needed:** a config file changed (its checksum is a pod annotation, so the pod template changes) or a Secret it reads changed ([[Secrets management|Reloader]] watches them).
 5. **A failure stops the train:** releases after the failed one don't run. Fix, commit, `make apply` again.
 
-`R=<release>` limits to one release (`helmfile -l name=<release>`), `G=<group>` to a group (`-l group=<group>`).
+`R=<release>` limits to one release (`helmfile -l name=<release>`), `G=<group>` to a group (`-l group=<group>`), `S=<scope>` to a scope across groups (`-l scope=<scope>`; `agents`: every `agent-<name>`).
 
 ## The `needs:` graph
 ```text
@@ -91,7 +91,8 @@ Why order matters: Keycloak can't start without its database; the agent-toolbox 
 | `make template R=…` | Print the rendered manifests | `helmfile template` |
 | `make releases` | Each release's chart and app version | `helm list -A` |
 | `make rollback R=…` | Previous revision | `helm rollback` |
-| `make restart R=…` | Same version, new pods | `kubectl rollout restart` |
+| `make pull R=…\|G=…\|S=…` | Same version, its image downloaded again | `crictl pull` |
+| `make restart R=…\|G=…\|S=…` | Same version, new pods | `kubectl rollout restart` |
 | `make validate` | Pre-flight: tools, firewall, Secrets, renders, port clashes, configs | `scripts/validate.sh` |
 | `make verify` | Post-flight: every group really works | `scripts/verify.sh` |
 

@@ -12,13 +12,14 @@ updated: 2026-11-08
 **Where:** on the server, in `homelab-infra`, unless a step says otherwise · **All guides:** [[Homelab guides]]
 
 ## See what would change
-- `make diff` (or `R=<release>`, or `G=<group>`)
+- `make diff` (or `R=<release>`, or `G=<group>`, or `S=agents` for every agent)
 - raw: `helmfile diff` (`helmfile -l name=<release> diff`, `helmfile -l group=<group> diff`)
 
 ## Apply it
 - everything (the release train): `make apply` — raw: `helmfile apply`
 - one release: `make apply R=<release>` — raw: `helmfile -l name=<release> apply`
 - one group (`platform`, `repository`, `message-broker`, `observability`, `gateway`, `llm`, `apps`): `make apply G=<group>` — raw: `helmfile -l group=<group> apply`
+- every agent (`agent-<name>`, scope `agents`): `make apply S=agents` — raw: `helmfile -l scope=agents apply`
 
 ## Re-run a release's deploy jobs without a change (e.g. Keycloak's realm sync)
 - `make sync R=<release>`
