@@ -18,6 +18,7 @@ tags: [log, ai, agents]
 - pycraftcore: `OmegaTreeReader`, the configuration's YAML loading for any tree ([[pycraftcore - Configure a service]]).
 - First run on the server: the orchestrator's call to observation failed (`varchar(36)`: the peer's `contextId` was `<conversation>:<peer>`), and every agent logged as `agent-runtime-service`. Now a peer's `contextId` is a uuid5 of both, and each agent's service name is `agent-<name>`.
 - Then `ask_agents` hung: peers got no model and took their first listed one, a small local model, while the orchestrator waited without a sign. Now every tool call gets a `ToolContext` (conversation, model) and peers run in the orchestrator's model.
+- `python_executor` became opt-in: a scope lists it in its `tools` to get its own; observation and security don't.
 - Tried locally: the toolbox, observation, chat and orchestration as four processes; scopes, cards, `/v1/agents` and a real parallel `ask_agents` call worked (no model server was reachable, so every answer was an error).
 
 ## What I learned

@@ -10,7 +10,7 @@ updated: 2026-11-15
 Newest first.
 
 ## 2026-11-15 — Tools served by scope, one endpoint each
-- **Decision:** a scope is an `mcp` operation on the `self` connector (`config/debug/operation/scope.yml`): a name and shell-style patterns of tool names. Each scope gets its own MCP server at `/mcp/<scope>` (`all` stays at `/mcp`), its own publisher filtering catalog changes by scope, and its own `python_executor` built over the scope's view, so its description and its sandbox bridge cover only that scope's tools.
+- **Decision:** a scope is an `mcp` operation on the `self` connector (`config/debug/operation/scope.yml`): a name and shell-style patterns of tool names. Each scope gets its own MCP server at `/mcp/<scope>` (`all` stays at `/mcp`), its own publisher filtering catalog changes by scope, and, when its patterns name it, its own `python_executor` built over the scope's view, so its description and its sandbox bridge cover only that scope's tools. `python_executor` is opt-in: a scope that runs no code (observation, security) doesn't list it.
 - **Why:** each agent should discover only the tools meant for it ([[Agent runtime agents]]); an endpoint per scope enforces it on the toolbox's side: a tool outside the scope can't be listed or called there, even by a model that invents its name.
 - **Alternatives:** scopes as tags in `_meta`, filtered by each client (the toolbox would still serve every tool to anyone); one toolbox per scope (eight deployments for one catalog).
 - **Consequences:** a new tool must be added to the patterns of the scopes that should offer it; tools from other MCP servers join or leave the matching scopes live. One Starlette app runs every scope's session manager; only the main server boots the toolbox.

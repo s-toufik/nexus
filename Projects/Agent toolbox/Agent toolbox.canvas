@@ -64,7 +64,7 @@
 			"y": 30,
 			"width": 400,
 			"height": 190,
-			"text": "### Tools\nusers_tables (read-only SQL) · file_reader / file_writer · python_executor (one per scope, its scope's tools only)"
+			"text": "### Tools\nusers_tables (read-only SQL) · file_reader / file_writer · python_executor (in the scopes that list it, its scope's tools only)"
 		},
 		{
 			"id": "ext",
