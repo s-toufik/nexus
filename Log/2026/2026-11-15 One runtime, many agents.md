@@ -16,12 +16,14 @@ tags: [log, ai, agents]
 - `/v1/stream` became `/v1/api2a`; `GET /v1/agents` lists the agents; homelab-ui got an agent picker.
 - homelab-infra: one release per agent, gateway routes `/api/agents/<name>`, the toolbox's fence admits every agent ([[Homelab - Run the LLM and agent]]).
 - pycraftcore: `OmegaTreeReader`, the configuration's YAML loading for any tree ([[pycraftcore - Configure a service]]).
+- First run on the server: the orchestrator's call to observation failed (`varchar(36)`: the peer's `contextId` was `<conversation>:<peer>`), and every agent logged as `agent-runtime-service`. Now a peer's `contextId` is a uuid5 of both, and each agent's service name is `agent-<name>`.
 - Tried locally: the toolbox, observation, chat and orchestration as four processes; scopes, cards, `/v1/agents` and a real parallel `ask_agents` call worked (no model server was reachable, so every answer was an error).
 
 ## What I learned
 - A name can clash with a protocol's vocabulary: an A2A *skill* is one capability on a card, so the folder of agents is `agents/`, not `skills/` ([[Agent2Agent protocol]]).
 - When a plan step makes exactly one tool call, parallel delegation needs one tool that fans out, not one tool per agent.
 - A routing table chosen from known routes stays testable; a graph assembled from YAML wouldn't ([[Agent runtime turn]]).
+- The a2a-sdk stores task and context ids in `varchar(36)` columns: an id built by joining strings breaks on PostgreSQL only (SQLite doesn't check the size), so a derived id must be a UUID itself.
 - The a2a-sdk can define a custom-named task table only once per process: tests need distinct names.
 
 ## Decisions
