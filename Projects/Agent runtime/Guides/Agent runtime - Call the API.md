@@ -12,7 +12,7 @@ updated: 2026-11-15
 **Where:** from any machine that reaches the agent (tailnet: `http://<HOMELAB_DOMAIN>:8000`, the supervisor; signed in: `https://<HOMELAB_DOMAIN>/api/agents/<name>` for any agent) · **All guides:** [[Agent runtime guides]]
 
 ## From Postman
-Every call below is ready in the Postman hub, `~/SandBox/postman_hub` (collection *Agents*: Discovery, Chat, A2A, Health). Each URL is `{{source}}{{agent_url}}/…`: pick the environment (Local; Homelab, the supervisor on `:8000`; Homelab gateway, every agent's `/v1` API with your sign-in cookie), then the agent in the collection variable `agent`. The A2A requests save `task_id` and `context_id`, so GetTask and CancelTask follow a SendMessage without copying ids.
+Every call below is ready in the Postman hub, `~/SandBox/postman_hub` (collection *Agents*: Discovery, Chat, A2A, Health): import the four files of its `import/` folder (Collection v2.1 and Environment JSON; Postman's importer doesn't read the YAML of `postman/`). Each URL is `{{source}}{{agent_url}}/…`: pick the environment (Local; Homelab, the supervisor on `:8000`; Homelab gateway, every agent's `/v1` API with your sign-in cookie), then the agent in the collection variable `agent`. The A2A requests save `task_id` and `context_id`, so GetTask and CancelTask follow a SendMessage without copying ids.
 
 ## List the agents
 
