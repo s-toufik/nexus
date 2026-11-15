@@ -34,7 +34,7 @@ data: {"content":"…","metadata":{"outcome":"answered"}}
 - vs **WebSockets:** two-way, own protocol, more moving parts; SSE suffices for server push.
 
 ## In our projects
-- agent-runtime `POST /v1/stream`: `status`, `token`, `final`, `error`, `complete`, heartbeat every 15 s ([[Agent runtime - Call the API]]).
+- agent-runtime `POST /v1/api2a`: `status`, `token`, `final`, `error`, `complete`, heartbeat every 15 s ([[Agent runtime - Call the API]]).
 - homelab-ui parses frames from `fetch` with an async generator ([[Homelab UI state and streaming]]).
 - pycraftcore `event_stream`, `with_heartbeat`, `cancel_on_disconnect` ([[pycraftcore web toolkits]]).
 - The benchmark's two stream endpoints.
@@ -42,7 +42,7 @@ data: {"content":"…","metadata":{"outcome":"answered"}}
 ## Check yourself
 1. Why not `EventSource` for the agent?
 > [!success]- Answer
-> `EventSource` only sends GET requests, with no body and no custom headers. The agent's `POST /v1/stream` needs a JSON body, and Caddy wants `X-Homelab-Request` on writes, so homelab-ui reads `fetch()`'s body stream and parses the frames itself.
+> `EventSource` only sends GET requests, with no body and no custom headers. The agent's `POST /v1/api2a` needs a JSON body, and Caddy wants `X-Homelab-Request` on writes, so homelab-ui reads `fetch()`'s body stream and parses the frames itself.
 2. What breaks if a proxy buffers the response?
 > [!success]- Answer
 > The client gets nothing until the buffer fills or the response ends: tokens arrive all at once at the end, the progress events are useless, and an idle-looking connection may be closed by a timeout.

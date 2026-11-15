@@ -3,7 +3,7 @@ type: architecture
 project: "[[Homelab]]"
 order: 2
 tags: [homelab, architecture, delivery]
-updated: 2026-11-12
+updated: 2026-11-15
 ---
 
 # Homelab deployment
@@ -76,7 +76,7 @@ cnpg ─► postgres ─► db-migrate ─► postgrest
                  ├─► keycloak ─► oauth2-proxy (also needs caddy)
                  │            └► grafana (also prometheus, loki, tempo)
                  ├─► postgres-mcp ─┐
-mongodb ─► mongodb-mcp ───────────┼─► agent-toolbox ─► agent-runtime (also mongodb)
+mongodb ─► mongodb-mcp ───────────┼─► agent-toolbox ─► agent-<name> × 8 (also mongodb, postgres)
 grafana ─► grafana-mcp ───────────┘                └► mcp-inspector
 kafka ─► kafka-ui, kafka-exporter          prometheus, loki ─► alloy, otel-collector
 ```
@@ -119,9 +119,9 @@ Pushes publish nothing; a tag `vX.Y.Z-rc.N` on `develop` publishes the image `X.
 3. A deploy of `keycloak` fails. What happens to `oauth2-proxy` and `grafana` in that same `make apply`?
 > [!success]- Answer
 > The train stops at the failure: releases after it in `needs:` order, `oauth2-proxy` and `grafana`, aren't deployed in that run and keep their previous version. Fix, commit, `make apply` again.
-4. Where would you set an env variable for agent-runtime that only this server needs? And one every install of it needs?
+4. Where would you set an env variable for an agent that only this server needs? And one every install of agent-runtime needs?
 > [!success]- Answer
-> Only this server: `apps/agent-runtime/values.yaml.gotmpl` in homelab-infra, then `make apply R=agent-runtime`. Every install: agent-runtime's own `devops/helm/values.yml`, released with a new tag, then the version bumped in `versions.yaml`.
+> Only this server: `apps/agent-<name>/values.yaml.gotmpl` in homelab-infra (each agent's), then `make apply R=agent-<name>` (or `G=apps` for all). Every install: agent-runtime's own `devops/helm/values.yml`, released with a new tag, then the version bumped in `versions.yaml`.
 
 ## Go further
 - [helmfile docs](https://helmfile.readthedocs.io/) — environments, `needs`, hooks, templates.

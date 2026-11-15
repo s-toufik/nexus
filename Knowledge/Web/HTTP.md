@@ -15,7 +15,7 @@ Most bugs you'll debug at the edges — a 401, a 403, a 406, a CORS error, a str
 
 ## How it works
 ```text
-POST /v1/stream HTTP/1.1                 ← method, path, version
+POST /v1/api2a HTTP/1.1                 ← method, path, version
 Host: agent-runtime:8000                 ← headers
 Content-Type: application/json
 X-Request-ID: my-conversation

@@ -3,7 +3,7 @@ type: architecture
 project: "[[pycraftcore]]"
 order: 2
 tags: [pycraftcore, architecture, configuration]
-updated: 2026-11-12
+updated: 2026-11-15
 ---
 
 # pycraftcore configuration
@@ -17,13 +17,14 @@ Previous: [[pycraftcore modules]] · Next: [[pycraftcore web toolkits]]
 ## The three kinds
 | Kind | Example | Read with |
 |---|---|---|
-| connector | an API `weather` (base URL, timeout, retry, auth), a database, an MCP server, telemetry | `config.connector.api("weather")`, `.database()`, `.mcp()`, `.file()`, `.telemetry()` |
-| operation | `forecast`: GET `/forecast` on connector `weather`, `parameters: {days: 3}` | `config.operation.api("forecast")` |
+| connector | how to reach a system, common to every use: an API `weather` (base URL, timeout, retry, auth), a database (host, port, auth, `timeout`, `pool`), an MCP server, an A2A agent, telemetry | `config.connector.api("weather")`, `.database()`, `.mcp()`, `.a2a()`, `.file()`, `.telemetry()` |
+| operation | one use of a connector: `forecast`, GET `/forecast` on `weather`, `parameters: {days: 3}`; a database operation (`database`, `collections`, `ttl`); an MCP or A2A operation | `config.operation.api("forecast")`, `.database()`, `.mcp()`, `.a2a()` |
 | server | `weather-api`: `base_path`, `docs`, `cors_origins`, your `parameters` | `config.server.asgi("weather-api")` |
 
 `root.yml` picks the environment (`config/<APP_ENV>/`), the log level, and which entries exist. A connector is reused by many operations through OmegaConf interpolation (`connector: ${connector.weather}`).
 
 ## Why this design
+- **One reader for every tree.** `OmegaTreeReader` merges a root file with folders of YAML and resolves references; the configuration reader is that plus a fixed layout (`root.yml`, `<env>/connector|operation|server/`) and its schema. Other trees use it too, like agent-runtime's `agents/<name>/`.
 - **12-factor config** ([[The Twelve-Factor App]]): the same files everywhere, values from the environment.
 - **Typed and validated at boot:** a missing or mistyped value fails at start, not at the first request ([[Data validation with pydantic and msgspec]]).
 - **One vocabulary across services:** agent-runtime's `external_mcp_*` connectors and the toolbox's MCP operations are the same mechanism.

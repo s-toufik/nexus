@@ -2,13 +2,13 @@
 type: architecture
 project: "[[Homelab UI]]"
 tags: [homelab-ui, ui-page]
-updated: 2026-11-12
+updated: 2026-11-15
 ---
 
 # Homelab UI page - Agent
 
-> **Route** `/agent` · **for** everyone · **talks to** agent-runtime (`/api/agent/v1/stream`, `/v1/models`) · **code** `src/app/features/agent/`
-> Talk to the homelab's agent: it answers, or proposes a plan that uses tools, runs it when you say yes, and streams its words as it writes them.
+> **Route** `/agent` · **for** everyone · **talks to** the agents (the orchestrator's `/api/agent/v1/agents`, then the chosen agent's `/api/agents/<name>/v1/api2a` and `/v1/models`) · **code** `src/app/features/agent/`
+> Talk to one of the homelab's agents — the orchestrator by default, which hands the work to the others: it answers, or proposes a plan that uses tools, runs it when you say yes, and streams its words as it writes them.
 
 ![[Homelab UI - Agent answer.webp]]
 
@@ -23,7 +23,7 @@ updated: 2026-11-12
 | 6 | Iteration · Max iteration | Steps used (1) out of the budget (20) ([[Agent runtime turn]]). |
 | 7 | Composer | Enter sends, Shift+Enter adds a line. |
 | 8 | Send | Turns into a red **stop** while the agent works. |
-| 9 | Settings | Model, auto-approve, conversation (below). |
+| 9 | Settings | Agent, model, auto-approve, conversation (below). |
 | 10 | Menu | Every page. |
 
 ![[Homelab UI - Agent plan.webp]]
@@ -42,21 +42,24 @@ updated: 2026-11-12
 ## Settings
 | # | What | What it tells you, what it does |
 |:-:|---|---|
-| 1 | Model | The model for this conversation; the list comes from the agent (`/v1/models`). Remembered on this device. |
-| 2 | Auto-approve plans | Run plans without asking. Off by default — keep it off until you trust the task. |
-| 3 | Conversation id | The `request_id` every message carries; the same id continues the same conversation. |
-| 4 | Copy | Copy it, to continue on another device (paste it there). |
-| 5 | Start a new conversation | A new id, an empty history. |
-| 6 | Close | Close the panel. |
+| 1 | Agent | Who you talk to. The list comes from the orchestrator (`/api/agent/v1/agents`), which knows every agent; the orchestrator is the default. Choosing another starts a new conversation with it. Remembered on this device, and Tasker's code blocks ask the same agent ([[Agent runtime agents]]). |
+| 2 | What it does | The chosen agent's description, from its card. |
+| 3 | Model | The model for this conversation; the list comes from the chosen agent (`/v1/models`). Remembered on this device. |
+| 4 | Auto-approve plans | Run plans without asking. Off by default — keep it off until you trust the task. |
+| 5 | Conversation id | The `request_id` every message carries; the same id continues the same conversation with the same agent. |
+| 6 | Copy | Copy it, to continue on another device (paste it there). |
+| 7 | Start a new conversation | A new id, an empty history. |
+| 8 | Fixed by the server | Steps the agent always runs on one model, whatever you pick (here understand, plan and summarize). When none is pinned (`pinned_steps: {}`), the list is absent and the model you pick does every step. |
+| 9 | Close | Close the panel. |
 
-When the server pins steps to models, a *Fixed by the server* list appears below; today none are pinned (`pinned_steps: {}`), so the model you pick does every step.
+The picture shows the analysis agent with a staged conversation.
 
 ## Use it to
-- Ask about the homelab and let it look: *"Which pods restarted today?"*, *"How full is the disk?"* — it has the Grafana, PostgreSQL and MongoDB tools.
+- Ask about the homelab and let it look: *"Which pods restarted today?"*, *"How full is the disk?"* — the orchestrator hands it to observation (Grafana) or analysis (PostgreSQL, MongoDB); or pick that agent yourself.
 - Delegate a small task with files or Python, and approve the plan.
 
 ## How it works
-Each message is `POST /api/agent/v1/stream` with `{message, model_name, request_id, auto_approve}`; the reply is a stream of `status`, `token`, `final` and `complete` events ([[Homelab UI state and streaming]], [[Agent runtime]]).
+Each message is `POST /api/agents/<name>/v1/api2a` (the orchestrator: `/api/agent/v1/api2a`) with `{message, model_name, request_id, auto_approve}`; the reply is a stream of `status`, `token`, `final` and `complete` events ([[Homelab UI state and streaming]], [[Agent runtime]]).
 
 ## What the real homelab showed (2026-11-11)
 - **A new browser gets a broken agent.** The page picks the first model of the list, `qwen3.5-0.8b`, a *local* model. But agent-runtime sends every model call to `llmBaseUrl` = NVIDIA's hosted API (homelab-infra `environments/default.yaml`), which doesn't know that name: every message fails with *The model server rejected the request (404 page not found)*. NVIDIA's models work. *Fixed in the code: each model names its provider in `operation/llm.yml`; local models go to llama-swap (`HOMELAB_LLM_BASE_URL`), NVIDIA's to NVIDIA, each with its own client and circuit breaker.*

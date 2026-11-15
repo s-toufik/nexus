@@ -16,11 +16,11 @@ Back: [[Agent runtime]] · Next: [[Agent runtime turn]]
 
 ## The rings
 ```text
-bootstrap      settings, di/ (one wiring class per kind), container, create_agent_application (Granian's target), FastAPI API (+ the a2a-sdk's routes)
- └ adapter     inbound:  StreamAgentController, SsePresenter (/v1/stream); A2aAgentExecutor, A2aTaskPresenter (/a2a, a2a-sdk)
-               outbound: LangChain model adapters + prompts, Toolbox (MCP), LangGraph runtime, checkpointer
-    └ application   HandleMessage, RunA2aTask, one handler per step (*_step.py), ports: Actor, Planner, ToolExecutor, WorkflowRunner…
-       └ domain     Conversation, Turn, Plan, Answer, TurnPolicy, a2a (TaskState, TaskUpdate, AgentProfile) — no framework
+bootstrap      settings, the agent definition (agents/<name>/), di/ (one wiring class per kind), container, create_agent_application (Granian's target), FastAPI API (+ the a2a-sdk's routes)
+ └ adapter     inbound:  StreamAgentController, SsePresenter (/v1/api2a); A2aAgentExecutor, A2aTaskPresenter (/a2a, a2a-sdk)
+               outbound: LangChain model adapters + PromptBook, Toolbox (MCP, the agent's scope), A2aPeerAgents (other agents), LangGraph runtime, checkpointer
+    └ application   HandleMessage, RunA2aTask, ListAgents, AskAgentsTool, one handler per step (*_step.py), ports: Actor, Planner, ToolExecutor, PeerAgentsPort, WorkflowRunner…
+       └ domain     Conversation, Turn, Plan, Answer, TurnPolicy + TurnShape, agent (Agent, ToolScope, AgentPrompts, PeerAgent), a2a (TaskState, TaskUpdate) — no framework
 ```
 This is [[Hexagonal architecture]]: the core states *what it needs* as ports (interfaces); the outside world plugs in as adapters.
 
@@ -38,21 +38,21 @@ The wiring only builds and connects objects, one class per kind, each given what
 
 | Class | Builds |
 |---|---|
-| `ToolsDI` | MCP sessions from `connector/mcp.yml`, the tool registry and its refresher, the `Toolbox` |
+| `ToolsDI` | MCP sessions from `connector/mcp.yml` (the toolbox at the agent's scope), the agents it may call (`ask_agents`), the tool registry and its refresher, the `Toolbox` |
 | `ModelsDI` | Model providers, their resilient HTTP clients, the `ModelCatalog` from `operation/llm.yml` and `operation/agent.yml` |
 | `StorageDI` | The conversation checkpointer (MongoDB, else SQLite) and the A2A task database (PostgreSQL, else SQLite), from the database operations of `operation/database.yml` (names, tables, TTLs) and their connectors |
-| `WorkflowDI` | The step handlers, the LangGraph graph and its runner |
+| `WorkflowDI` | The step handlers the agent's turns reach, the `TurnPolicy` of its shape, the LangGraph graph and its runner |
 | `A2aDI` | The agent card, the SDK's request handler, the task store and its cleanup |
 
-`AgentDI` composes them and builds the two use cases; the container adds the boot-time state. `create_agent_application` builds the container and the app; routers are built from provider functions (`Callable[[], Service]`) that read the booted container. That's the **composition root** of [[Dependency injection]]: one place where concrete classes are chosen.
+`AgentDI` loads the agent (`AGENT`, `agents/<name>/`), builds its `PromptBook`, composes them and builds the use cases; the container adds the boot-time state. `create_agent_application` builds the container and the app; routers are built from provider functions (`Callable[[], Service]`) that read the booted container. That's the **composition root** of [[Dependency injection]]: one place where concrete classes are chosen.
 
 ## Boundaries, enforced
-`tests/architecture/test_boundaries.py` imports every module and fails if, for example, the domain imports LangChain, or the application imports a web framework, or one inbound adapter imports another, or anything but `adapter/inbound/a2a/` imports the A2A SDK (they share only `adapter/inbound/exception/` and `turn_status.py`) ([[Architecture tests]]). Without that test, layers erode one "quick" import at a time.
+`tests/architecture/test_boundaries.py` imports every module and fails if, for example, the domain imports LangChain, or the application imports a web framework, or one inbound adapter imports another, or anything but `adapter/inbound/a2a/` (the server) and `adapter/outbound/agent/a2a/` (the client) imports the A2A SDK (they share only `adapter/inbound/exception/` and `turn_status.py`) ([[Architecture tests]]). Without that test, layers erode one "quick" import at a time.
 
 ## Boot
-1. Settings from `config/<APP_ENV>/` and env ([[pycraftcore configuration]]).
+1. Settings from `config/<APP_ENV>/` and env ([[pycraftcore configuration]]), and the agent from `agents/<AGENT>/` ([[Agent runtime agents]]).
 2. Logging and telemetry (pycraftcore).
-3. Discover MCP tools on every connector; a server that's down is skipped with a warning.
+3. Discover MCP tools on every connector, and the agents it may call; a server or agent that's down is skipped with a warning and joins later.
 4. `/health/readiness` answers 200 only now — Kubernetes routes traffic after boot ([[Probes]]).
 
 ## Check yourself

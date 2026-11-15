@@ -3,7 +3,7 @@ type: architecture
 project: "[[Agent runtime]]"
 order: 2
 tags: [agent-runtime, architecture, ai]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Agent runtime turn
@@ -37,6 +37,8 @@ Previous: [[Agent runtime layers]] · Next: [[Agent runtime plans and outcomes]]
 Each role can be pinned to a model in `operation/agent.yml` (e.g. a small fast model for understand), or follow the model the user chose.
 
 ## The routing table
+The rows below are the full shape, every route allowed. An agent's `turns` keeps only some of them, and its graph only the steps they reach ([[Agent runtime agents]]).
+
 `domain/workflow/turn_policy.py`: after a step, the **first row whose condition holds wins**.
 | After | Condition | Next |
 |---|---|---|

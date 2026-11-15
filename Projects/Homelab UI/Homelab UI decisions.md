@@ -2,12 +2,18 @@
 type: decisions
 project: "[[Homelab UI]]"
 tags: [homelab-ui, decisions]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Homelab UI decisions
 
 Newest first.
+
+## 2026-11-15 — Pick the agent, listed by the orchestrator
+- **Decision:** the Agent page's settings get an **Agent** list, filled from the orchestrator's `GET /v1/agents`; each message goes to the chosen agent at `/api/agents/<name>/v1/api2a` (the orchestrator stays at `/api/agent`). The choice is remembered with the model, and Tasker's code blocks use it.
+- **Why:** you can always ask the orchestrator, and still talk to one agent directly when you know which one you want ([[Agent runtime agents]]).
+- **Alternatives:** a list of agents in the UI's own config (one more place to update for each new agent).
+- **Consequences:** in direct mode (development), only the agent on the configured port answers; the other agents are reached through the gateway.
 
 ## 2026-11-07 — Rebuild every tool UI natively, not in iframes
 - **Context:** one control center for Grafana, Prometheus, Loki, Tempo, Kafka UI, Alloy, llama-swap, the toolbox, Keycloak's account, Kubernetes.

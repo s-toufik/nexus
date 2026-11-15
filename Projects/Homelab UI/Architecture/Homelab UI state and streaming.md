@@ -3,7 +3,7 @@ type: architecture
 project: "[[Homelab UI]]"
 order: 2
 tags: [homelab-ui, architecture, frontend]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Homelab UI state and streaming
@@ -21,7 +21,8 @@ readonly canSend = computed(() => this.draft().trim().length > 0 && !this.isStre
 readonly phase = computed<SwarmPhase>(() => { /* idle, thinking, executor, final, error */ });
 ```
 - Templates read signals; Angular updates exactly the parts that depend on what changed — no zone.js, no manual change detection ([[Signals]]).
-- `effect(() => this.preferences.write({...}))` saves the model and auto-approve choice whenever they change.
+- `effect(() => this.preferences.write({...}))` saves the agent, model and auto-approve choice whenever they change.
+- The **agent** comes from the orchestrator's `GET /v1/agents` (`AgentDirectoryService`); `agentAddress(name)` gives the orchestrator `/api/agent` and every other agent `/api/agents/<name>`. `chooseAgent` starts a new conversation and loads that agent's models.
 - Because the store is a root singleton, the **Agent page and the assistant drawer show one conversation**: they inject the same `AgentStore`.
 
 ## One client for every tool: `GatewayApi`
@@ -34,7 +35,7 @@ Every feature's API service calls `GatewayApi.json()/text()/send()`:
 `GatewaySession` reads the account from `/oauth2/userinfo` at start-up (an app initializer), shows it in the sidebar, re-checks every minute and when the tab comes back, and knows whether you have the `admin` role.
 
 ## The agent stream
-`POST /api/agent/v1/stream` answers `text/event-stream` ([[Server-sent events]]). `EventSource` can't POST, so `AgentApiService.stream()` reads the body itself:
+`POST /api/agents/<name>/v1/api2a` answers `text/event-stream` ([[Server-sent events]]). `EventSource` can't POST, so `AgentApiService.stream()` reads the body itself:
 ```text
 fetch ─► response.body.getReader() ─► TextDecoder ─► buffer
       ─► split on "\n\n" (one frame) ─► "event: …" + "data: {json}" ─► yield StreamEvent
@@ -56,7 +57,7 @@ An `AbortController` cancels the request when you start a new conversation. The 
 > `AgentStore` is `providedIn: 'root'`: one instance for the whole app. The Agent page and the drawer inject the same store, so they read the same signals.
 2. Why can't `EventSource` be used here, and what replaces it?
 > [!success]- Answer
-> `EventSource` only makes GET requests, without a body or custom headers, and the agent needs `POST /api/agent/v1/stream` with a JSON body and `X-Homelab-Request`. `AgentApiService.stream()` uses `fetch`, reads `response.body` with a reader, and parses the frames in an async generator.
+> `EventSource` only makes GET requests, without a body or custom headers, and the agent needs `POST /api/agents/<name>/v1/api2a` with a JSON body and `X-Homelab-Request`. `AgentApiService.stream()` uses `fetch`, reads `response.body` with a reader, and parses the frames in an async generator.
 3. What would break if `GatewayApi` didn't add `X-Homelab-Request`?
 > [!success]- Answer
 > Caddy's `no_cross_site_writes` would refuse every write with 403: sending a message to the agent, saving a Tasker workflow, unloading a model, every POST, PUT or DELETE. Reads would still work.

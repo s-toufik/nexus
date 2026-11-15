@@ -29,7 +29,7 @@ The whole agent in one picture: the **harness** in the middle (what this tour is
 
 **How it works**
 ```text
-client ── POST /v1/stream ──► agent-runtime
+client ── POST /v1/api2a ──► agent-runtime
    ▲                           understand ─► (clarify | plan | act) ─► … ─► finish ─► summarize
    └──── SSE: status · token · final · complete      │                     │
                                      OpenAI-compatible API (model)   MCP (tools)   MongoDB (conversations)
@@ -38,7 +38,7 @@ A direct question is answered at once; anything needing tools first becomes a pl
 
 **Example from our projects** — a request and the frames it produces:
 ```bash
-curl -N http://<HOMELAB_DOMAIN>:8000/v1/stream -H 'Content-Type: application/json' \
+curl -N http://<HOMELAB_DOMAIN>:8000/v1/api2a -H 'Content-Type: application/json' \
   -d '{"message": "What is a KV cache?", "model_name": "qwen3-8b", "request_id": "tour-1"}'
 ```
 ```text

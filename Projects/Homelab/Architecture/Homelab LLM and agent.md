@@ -3,12 +3,12 @@ type: architecture
 project: "[[Homelab]]"
 order: 6
 tags: [homelab, architecture, ai]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Homelab LLM and agent
 
-> Local models served by llama-swap behind an OpenAI-compatible API; an agent (agent-runtime) that thinks with a remote or local model and acts through tools (agent-toolbox) over MCP; and a network fence so that the code the agent writes can't reach anything it shouldn't.
+> Local models served by llama-swap behind an OpenAI-compatible API; agents (agent-runtime, one pod per agent) that think with a remote or local model, act through tools (agent-toolbox) over MCP and hand work to each other over A2A; and a network fence so that the code the agent writes can't reach anything it shouldn't.
 
 Previous: [[Homelab observability]] · Next: [[Homelab security model]]
 
@@ -22,15 +22,20 @@ Previous: [[Homelab observability]] · Next: [[Homelab security model]]
 - **Memory is the constraint**: 26 GiB limit on a 32 GiB machine. The always-on 8B plus one on-demand model fit; two big on-demand ones wouldn't, hence one at a time.
 - `make llm-download MODELS=…` pre-downloads models (first use would otherwise wait for a multi-GB download); the release's timeout is 60 min for the same reason.
 
-## The agent
+## The agents
 ```text
-homelab-ui (Agent page, assistant panel) ─► /api/agent ─► agent-runtime ─┬─ OpenAI API ─► NVIDIA's API (default) or llm
-tailnet device ─► <tailscale-ip>:8000 ─────────────────►                 ├─ MCP ─► agent-toolbox ─► files, Python sandbox,
-                                                                          │                         grafana_*, mongodb_*, postgres_*
-                                                                          └─ conversations ─► MongoDB
+homelab-ui (Agent page, assistant) ─► /api/agent ───────► agent-orchestration ─ A2A (ask_agents) ─► agent-<name>
+                                   ─► /api/agents/<name> ──────────────────────────────────────────► agent-<name>
+tailnet device ─► <tailscale-ip>:8000 ─► agent-orchestration
+
+agent-<name> ─┬─ OpenAI API ─► NVIDIA's API or llm
+              ├─ MCP /mcp/<scope> ─► agent-toolbox ─► files, Python sandbox, grafana_*, mongodb_*, postgres_*
+              ├─ conversations ─► MongoDB (database agent_<name>)
+              └─ A2A tasks ─► PostgreSQL (table tasks_<name>)
 ```
-- **agent-runtime** runs the loop: read the conversation, ask the model, run the tools it asks for, repeat ([[AI agents and sandboxing]]). Its LLM provider is `llmBaseUrl` in `environments/default.yaml` (NVIDIA's hosted API by default; key in Secret `agent-runtime`).
-- **agent-toolbox** is an [[Model Context Protocol|MCP]] server: file tools on its own volume, a Python executor, and the tools it **republishes** from three other MCP servers.
+- **One release per agent**, `agent-<name>` (orchestration, chat, observation, analysis, coding, security, kitchen, travel), all the same agent-runtime image started with `AGENT=<name>` ([[Agent runtime agents]]). `agents:` in `environments/default.yaml` lists them; `apps/agent-<name>/values.yaml.gotmpl` gives each its name, its MongoDB database and its tasks table.
+- **The orchestrator** is the entry point (`:8000`, `/api/agent`): it never answers itself but calls the others by their service names (`AGENT_<NAME>_URL`). Each agent runs the loop: read the conversation, ask the model, run the tools it asks for, repeat ([[AI agents and sandboxing]]). The models: the homelab's `llm` and NVIDIA's API (key in Secret `agent-runtime`).
+- **agent-toolbox** is an [[Model Context Protocol|MCP]] server: file tools on its own volume, a Python executor, and the tools it **republishes** from three other MCP servers, served **by scope** (`/mcp/<scope>`): each agent sees only its own.
 
 ## The MCP servers behind the toolbox
 | Release | Tools appear as | Talks to | Read-only means |
@@ -45,7 +50,7 @@ The toolbox prefixes each remote tool (`list-databases` → `mongodb_list_databa
 
 ## The fence
 agent-toolbox runs code the model wrote. Assume that code can be wrong or manipulated (a prompt injection in a web page it read). Its [[NetworkPolicy]]:
-- **in**: only agent-runtime, MCP Inspector, Caddy, tailnet devices, on port 8001;
+- **in**: only the agents (pods labelled `homelab.io/role: agent`), MCP Inspector, Caddy, tailnet devices, on port 8001;
 - **out**: DNS, the OTel Collector, the three MCP servers, and the internet **except** private ranges (`10/8`, `172.16/12`, `192.168/16`, `100.64/10`, `169.254/16`).
 
 So it can't reach PostgreSQL, MongoDB, Kafka, the LLM, your home network, the cloud metadata address, or the server itself. Its only way to data is through the MCP servers — and their read-only accounts. `make verify` checks the fence from inside the pod.

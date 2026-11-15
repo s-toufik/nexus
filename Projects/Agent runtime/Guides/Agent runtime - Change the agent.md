@@ -2,7 +2,7 @@
 type: guide
 project: "[[Agent runtime]]"
 tags: [guide, agent-runtime]
-updated: 2026-11-14
+updated: 2026-11-15
 ---
 
 # Agent runtime - Change the agent
@@ -15,7 +15,9 @@ updated: 2026-11-14
 |---|---|
 | When a step follows another | `TurnPolicy` (and a condition in `conditions.py`); the graph follows |
 | What a step does | Its handler in `application/step/` |
-| What a model is told | `adapter/outbound/llm/langchain/prompts/` |
+| What a model is told | For one agent: `agents/<name>/prompts/<step>.md`; for every agent without its own: the generic templates in `adapter/outbound/llm/langchain/prompts/` |
+| Which routes an agent's turns take, which tools it sees, who it may call | `turns`, `tool_scope`, `peers` in `agents/<name>/agent.yml` ([[Agent runtime agents]]) |
+| A new agent | [[Agent runtime - Add an agent]] |
 | What the client sees for a step | `adapter/inbound/web/stream/sse_presenter.py` |
 | A LangGraph-only feature for one step (interrupt, subgraph) | Override `work` in that step's node in `adapter/outbound/langgraph/node/` |
 | A new request option | `AgentRequestSchema` (`bootstrap/application/fastapi/schema/`) → `AgentRequest` → `TurnOptions`, read in the domain |

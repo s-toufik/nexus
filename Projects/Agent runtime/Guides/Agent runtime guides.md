@@ -2,7 +2,7 @@
 type: index
 project: "[[Agent runtime]]"
 tags: [index, guide, agent-runtime]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Agent runtime guides
@@ -12,9 +12,10 @@ updated: 2026-11-08
 ## Use it
 - [[Agent runtime - Run it locally]]
 - [[Agent runtime - Call the API]] — models, a message, the streamed reply and its outcome.
-- [[Agent runtime - Configure it]] — env, config files, models, model per step, more MCP servers.
+- [[Agent runtime - Configure it]] — env, the agent, config files, models, model per step, more MCP servers.
 
 ## Change it
+- [[Agent runtime - Add an agent]] — a folder, its prompts, the orchestrator's peers.
 - [[Agent runtime - Change the agent]] — where to edit for each kind of change.
 - [[Agent runtime - Test and check]]
 - [[Agent runtime - Evaluate the agent]] — the outside evaluation.

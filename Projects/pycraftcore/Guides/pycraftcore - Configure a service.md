@@ -112,5 +112,17 @@ server = config.server.asgi("weather-api")  # AsgiServer
 - An A2A connector (`type: a2a`: `base_url`, `timeout`, `binding` `JSONRPC` / `HTTP+JSON` / `GRPC`) describes an A2A agent's endpoint, whether the service calls it or serves it; an A2A operation points at it with its `parameters`.
 - `log` and `server` are required, like `connector` and `operation`. A service that serves no HTTP API writes `server: {}`.
 
+## Read another tree of YAML the same way
+1. Point `OmegaTreeReader` at a root file and the folders to merge under it:
+   ```python
+   from pycraftcore.application_configuration.adapter import OmegaTreeReader
+
+   tree = OmegaTreeReader(Path("agents/chat/agent.yml"), [Path("agents/chat/skills")]).read("agent")
+   ```
+2. Validate the dict it returns with your own pydantic model.
+3. Check: a missing root file, a missing key, a section that isn't a mapping or an unset `${oc.env:…}` raises at once with the file or key; a missing folder counts as no files.
+
+agent-runtime reads its agent folders this way ([[Agent runtime agents]]).
+
 ## Why it works
 - [[pycraftcore configuration]] · [[Data validation with pydantic and msgspec]]

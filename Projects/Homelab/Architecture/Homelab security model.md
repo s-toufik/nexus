@@ -3,7 +3,7 @@ type: architecture
 project: "[[Homelab]]"
 order: 7
 tags: [homelab, architecture, security]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Homelab security model
@@ -54,7 +54,7 @@ homelab-ui's Kubernetes page and Headlamp need the Kubernetes API with full righ
 The power is real, so it sits behind every layer at once.
 
 ## What's deliberately outside the sign-in
-MongoDB `:27017` (its own password), Kafka `:9094` and OTLP `:4317/4318` (no auth), agent-runtime `:8000`, agent-toolbox `:8001`. Their clients are programs. They rely on the **network layer only** — tailnet devices. Known trade-off: any device on your tailnet can produce to Kafka. Tailscale ACLs could narrow it further.
+MongoDB `:27017` (its own password), Kafka `:9094` and OTLP `:4317/4318` (no auth), the orchestrator (agent-orchestration) `:8000`, agent-toolbox `:8001`. Their clients are programs. They rely on the **network layer only** — tailnet devices. Known trade-off: any device on your tailnet can produce to Kafka. Tailscale ACLs could narrow it further.
 
 ## Known limits (honest list)
 - **One node, one disk**: backups are on the same machine. A dead SSD loses both. An off-site copy is the missing piece.

@@ -7,7 +7,7 @@
 			"y": -300,
 			"width": 300,
 			"height": 320,
-			"text": "## Read in order\n1. [[Agent runtime layers]]\n2. [[Agent runtime turn]]\n3. [[Agent runtime plans and outcomes]]\n4. [[Agent runtime evaluation]]\n\n[[Agent runtime decisions]] \u00b7 [[Agent runtime guides]]",
+			"text": "## Read in order\n1. [[Agent runtime layers]]\n2. [[Agent runtime turn]]\n3. [[Agent runtime plans and outcomes]]\n4. [[Agent runtime evaluation]]\n5. [[Agent runtime agents]]\n\n[[Agent runtime decisions]] · [[Agent runtime guides]]",
 			"color": "6"
 		},
 		{
@@ -17,7 +17,7 @@
 			"y": 60,
 			"width": 300,
 			"height": 150,
-			"text": "## Clients\nhomelab-ui, curl, the evaluation\nPOST /v1/stream \u2192 SSE\n[[Server-sent events]]",
+			"text": "## Clients\nhomelab-ui (agent picker), curl, the evaluation\nPOST /v1/api2a → SSE · GET /v1/agents\n[[Server-sent events]]",
 			"color": "5"
 		},
 		{
@@ -37,7 +37,7 @@
 			"y": -270,
 			"width": 860,
 			"height": 90,
-			"text": "### bootstrap \u2014 di/ (ToolsDI, ModelsDI, StorageDI, WorkflowDI, A2aDI), settings, FastAPI API (pycraftcore.web_fastapi) + a2a-sdk routes, Granian\n[[Dependency injection]] \u00b7 [[ASGI]]"
+			"text": "### bootstrap — the agent (agents/<AGENT>/), di/ (ToolsDI, ModelsDI, StorageDI, WorkflowDI, A2aDI), settings, FastAPI API (pycraftcore.web_fastapi) + a2a-sdk routes, Granian\n[[Dependency injection]] · [[ASGI]]"
 		},
 		{
 			"id": "in",
@@ -55,7 +55,7 @@
 			"y": -160,
 			"width": 300,
 			"height": 140,
-			"text": "### application\nHandleMessage \u00b7 step handlers \u00b7 ports (Actor, Planner, ToolExecutor, WorkflowRunner)"
+			"text": "### application\nHandleMessage · step handlers · ports (Actor, Planner, ToolExecutor, WorkflowRunner)"
 		},
 		{
 			"id": "dom",
@@ -64,7 +64,7 @@
 			"y": -160,
 			"width": 260,
 			"height": 140,
-			"text": "### domain\nConversation \u00b7 Turn \u00b7 Plan \u00b7 TurnPolicy (the routing table) \u00b7 a2a (TaskState, AgentProfile)"
+			"text": "### domain\nConversation · Turn · Plan · TurnPolicy + TurnShape (the routing table an agent allows) · agent (Agent, ToolScope, PeerAgent) · a2a (TaskState)"
 		},
 		{
 			"id": "out",
@@ -73,7 +73,7 @@
 			"y": 0,
 			"width": 860,
 			"height": 140,
-			"text": "### adapter/outbound\nLangChain model per role + prompts \u00b7 Toolbox (MCP) \u00b7 LangGraph graph generated from TurnPolicy \u00b7 checkpointer\n[[LangGraph]] \u00b7 [[Hexagonal architecture]]"
+			"text": "### adapter/outbound\nLangChain model per role + PromptBook (the agent's prompts, else generic) · Toolbox (MCP, the agent's scope) · A2aPeerAgents (ask_agents) · LangGraph graph generated from TurnPolicy · checkpointer\n[[LangGraph]] · [[Hexagonal architecture]]"
 		},
 		{
 			"id": "steps",
@@ -82,7 +82,7 @@
 			"y": 160,
 			"width": 860,
 			"height": 140,
-			"text": "### A turn\nunderstand \u2192 clarify | plan (\u2192 screen) | act \u21c4 run_tools \u2192 review \u21c4 feedback \u2192 finish \u2192 summarize\n[[Agent runtime turn]] \u00b7 [[Agent patterns]]"
+			"text": "### A turn\nunderstand → clarify | plan (→ screen) | act ⇄ run_tools → review ⇄ feedback → finish → summarize\n[[Agent runtime turn]] · [[Agent patterns]]"
 		},
 		{
 			"id": "llm",
@@ -118,7 +118,26 @@
 			"y": 170,
 			"width": 300,
 			"height": 120,
-			"text": "### Telemetry\nOTLP \u2192 collector\n[[OpenTelemetry]]"
+			"text": "### Telemetry\nOTLP → collector\n[[OpenTelemetry]]"
+		},
+		{
+			"id": "agents",
+			"type": "text",
+			"x": -760,
+			"y": 240,
+			"width": 300,
+			"height": 160,
+			"text": "## agents/<name>/\nagent.yml: identity, skills, tool_scope, turns, peers\nprompts/<step>.md\nAGENT=<name> picks one, one pod each\n[[Agent runtime agents]]",
+			"color": "4"
+		},
+		{
+			"id": "peers",
+			"type": "text",
+			"x": 560,
+			"y": 320,
+			"width": 300,
+			"height": 130,
+			"text": "### Other agents\nA2A: cards, ask_agents (several at once)\n[[Agent2Agent protocol]]"
 		}
 	],
 	"edges": [
@@ -159,6 +178,22 @@
 			"fromNode": "boot",
 			"toNode": "otel",
 			"label": "logs, traces",
+			"fromSide": "right",
+			"toSide": "left"
+		},
+		{
+			"id": "e5",
+			"fromNode": "agents",
+			"toNode": "boot",
+			"label": "AGENT",
+			"fromSide": "top",
+			"toSide": "left"
+		},
+		{
+			"id": "e6",
+			"fromNode": "out",
+			"toNode": "peers",
+			"label": "ask_agents",
 			"fromSide": "right",
 			"toSide": "left"
 		}

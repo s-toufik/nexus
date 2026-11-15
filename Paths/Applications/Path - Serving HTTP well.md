@@ -18,7 +18,7 @@ updated: 2026-11-10
 |---|---|
 | Server vs application (ASGI) | Granian serving Litestar in agent-runtime; the toolbox's ASGI app |
 | Framework choice on evidence | the web framework benchmark's result |
-| Streaming over HTTP | agent-runtime `/v1/stream`; pycraftcore `event_stream`, `with_heartbeat` |
+| Streaming over HTTP | agent-runtime `/v1/api2a`; pycraftcore `event_stream`, `with_heartbeat` |
 | Health endpoints for orchestration | `/actuator/health`, `/health/readiness` (503 until boot) |
 | One contract over three frameworks | pycraftcore `web_litestar`, `web_fastapi`, `web_blacksheep` |
 | Retries and circuit breakers | pycraftcore `resilient_http`; agent-runtime's model calls |
@@ -75,7 +75,7 @@ async def updates() -> Stream:
 **Common mistake** — testing a stream with `curl` without `-N`: curl buffers and you see everything at the end.
 
 ### Do (from your Mac)
-1. `curl -N http://<HOMELAB_DOMAIN>:8000/v1/stream -H 'Content-Type: application/json' -d '{"message":"What is a KV cache? Two sentences.","model_name":"<from /v1/models>","request_id":"path-http-2"}'` → status, tokens, final, complete.
+1. `curl -N http://<HOMELAB_DOMAIN>:8000/v1/api2a -H 'Content-Type: application/json' -d '{"message":"What is a KV cache? Two sentences.","model_name":"<from /v1/models>","request_id":"path-http-2"}'` → status, tokens, final, complete.
 2. Same without `-N` → nothing until the end.
 
 ### Check

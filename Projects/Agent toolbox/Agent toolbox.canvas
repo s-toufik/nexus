@@ -7,7 +7,7 @@
 			"y": -280,
 			"width": 300,
 			"height": 280,
-			"text": "## Read in order\n1. [[Agent toolbox layers]]\n2. [[Agent toolbox sandbox]]\n3. [[Agent toolbox republished tools]]\n\n[[Agent toolbox decisions]] \u00b7 [[Agent toolbox guides]]",
+			"text": "## Read in order\n1. [[Agent toolbox layers]]\n2. [[Agent toolbox sandbox]]\n3. [[Agent toolbox republished tools]]\n\n[[Agent toolbox decisions]] · [[Agent toolbox guides]]",
 			"color": "6"
 		},
 		{
@@ -17,7 +17,7 @@
 			"y": 60,
 			"width": 300,
 			"height": 150,
-			"text": "## MCP clients\n[[Agent runtime]], MCP Inspector, homelab-ui Tools page\n[[Model Context Protocol]]",
+			"text": "## MCP clients\n[[Agent runtime]] agents (each at its scope), MCP Inspector, homelab-ui Tools page\n[[Model Context Protocol]]",
 			"color": "5"
 		},
 		{
@@ -37,7 +37,7 @@
 			"y": -250,
 			"width": 380,
 			"height": 120,
-			"text": "### ToolBinder (inbound/mcp)\none MCP tool per Tool, schemas from pydantic, allowed hosts"
+			"text": "### ToolBinder (inbound/mcp)\none MCP server per scope: /mcp (all) · /mcp/<scope>; one MCP tool per Tool, schemas from pydantic, allowed hosts"
 		},
 		{
 			"id": "bridge",
@@ -55,7 +55,7 @@
 			"y": -100,
 			"width": 820,
 			"height": 100,
-			"text": "### InvokeToolUseCase \u2014 validate \u00b7 log \u00b7 run \u00b7 map failures\nsame path for both doors \u00b7 [[Agent toolbox layers]]"
+			"text": "### InvokeToolUseCase — validate · log · run · map failures\nsame path for both doors · [[Agent toolbox layers]]"
 		},
 		{
 			"id": "tools",
@@ -64,7 +64,7 @@
 			"y": 30,
 			"width": 400,
 			"height": 190,
-			"text": "### Tools\nusers_tables (read-only SQL) \u00b7 file_reader / file_writer \u00b7 python_executor"
+			"text": "### Tools\nusers_tables (read-only SQL) · file_reader / file_writer · python_executor (one per scope, its scope's tools only)"
 		},
 		{
 			"id": "ext",
@@ -73,7 +73,7 @@
 			"y": 30,
 			"width": 400,
 			"height": 190,
-			"text": "### McpBackedTool\ngrafana_* \u00b7 mongodb_* \u00b7 postgres_*\n[[Agent toolbox republished tools]]"
+			"text": "### McpBackedTool\ngrafana_* · mongodb_* · postgres_*\n[[Agent toolbox republished tools]]"
 		},
 		{
 			"id": "sandbox",

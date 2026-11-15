@@ -18,7 +18,7 @@ updated: 2026-11-10
 |---|---|
 | Address ranges (CIDR) | Tailscale `100.64/10`, pods `10.42/16`, Services `10.43/16`, node `10.250.0.1/32`; the toolbox's egress `except` list |
 | DNS, split horizon | MagicDNS for devices; CoreDNS rewrite of the domain to Caddy for pods |
-| HTTP semantics | 302/401/403/406/421 you'll meet on the homelab; `/v1/stream` |
+| HTTP semantics | 302/401/403/406/421 you'll meet on the homelab; `/v1/api2a` |
 | TLS and certificates | Caddy with the Tailscale-issued certificate |
 | A private network, a host firewall | Tailscale only; hostPorts on the Tailscale IP; the LAN guard |
 

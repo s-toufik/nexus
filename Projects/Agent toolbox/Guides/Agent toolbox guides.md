@@ -2,7 +2,7 @@
 type: index
 project: "[[Agent toolbox]]"
 tags: [index, guide, agent-toolbox]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Agent toolbox guides
@@ -15,6 +15,7 @@ updated: 2026-11-08
 ## Change it
 - [[Agent toolbox - Add a tool]]
 - [[Agent toolbox - Add an MCP server]]
+- [[Agent toolbox - Add or change a scope]] — which tools each agent sees.
 - [[Agent toolbox - Test and check]]
 
 ## Ship it

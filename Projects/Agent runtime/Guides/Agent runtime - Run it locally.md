@@ -28,7 +28,7 @@ make run
 
 | | Endpoint |
 |---|---|
-| Chat (SSE) | `POST http://<host>:<port>/v1/stream` |
+| Chat (SSE) | `POST http://<host>:<port>/v1/api2a` |
 | Models | `GET http://<host>:<port>/v1/models` |
 | Health | `GET http://<host>:<port>/actuator/health` (also `/health/liveness`, `/health/readiness`) |
 | Version | `GET http://<host>:<port>/actuator/info` |
@@ -40,7 +40,7 @@ With Docker, `make docker_build` builds the image (see [[Agent runtime - Release
 
 ## Read the logs
 
-One format for every line; the third column is the request id (the conversation id on `/v1/stream`), `-` outside a request:
+One format for every line; the third column is the request id (the conversation id on `/v1/api2a`), `-` outside a request:
 
 ```text
 2026-09-27 10:47:47.785 | INFO     | my-conversation | stream_agent_controller:execute:45 - stream request accepted

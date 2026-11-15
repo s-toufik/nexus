@@ -1,63 +1,497 @@
 {
-	"nodes":[
-		{"id":"g-gw","type":"group","x":-1380,"y":-560,"width":1120,"height":1043,"color":"1","label":"gateway"},
-		{"id":"g-obs","type":"group","x":280,"y":400,"width":1580,"height":540,"color":"5","label":"observability"},
-		{"id":"g-repo","type":"group","x":560,"y":-250,"width":800,"height":610,"color":"2","label":"repository"},
-		{"id":"g-apps","type":"group","x":-180,"y":-1140,"width":820,"height":480,"color":"4","label":"apps"},
-		{"id":"g-srv","type":"group","x":-760,"y":1000,"width":1840,"height":200,"color":"6","label":"the server: one laptop, single-node k3s"},
-		{"id":"g-llm","type":"group","x":1080,"y":-1140,"width":720,"height":480,"color":"3","label":"llm"},
-		{"id":"g-mb","type":"group","x":1650,"y":-95,"width":420,"height":150,"color":"2","label":"message-broker"},
-		{"id":"caddy","type":"text","text":"### Caddy\nHTTPS, routes, sign-in check, strips forged headers\n[[Reverse proxy]] · [[TLS and certificates]] · [[CSRF]]","x":-910,"y":-505,"width":420,"height":150},
-		{"id":"devices","type":"text","text":"## Your devices\nBrowser, Compass, scripts\non the **tailnet** only\n[[Tailscale]] · [[DNS]]","x":-1940,"y":-505,"width":300,"height":170,"color":"5"},
-		{"id":"kc","type":"text","text":"### Keycloak\naccounts, sign-in page\n[[OAuth 2.0 and OpenID Connect]]","x":-490,"y":80,"width":200,"height":130},
-		{"id":"k3s","type":"text","text":"### k3s\nnamespace `homelab`, local-path volumes, encrypted Secrets\n[[k3s]] · [[Kubernetes]]","x":-740,"y":1030,"width":420,"height":150},
-		{"id":"net","type":"text","text":"### Network\nTailscale address for every port; node IP 10.250.0.1 on a dummy interface; nftables LAN guard\n[[Firewall and nftables]] · [[IP addresses and CIDR]]","x":-300,"y":1030,"width":420,"height":150},
-		{"id":"plat","type":"text","text":"### platform\nCloudNativePG operator · Reloader\n[[Secrets management]]","x":140,"y":1030,"width":420,"height":150},
-		{"id":"deploy","type":"text","text":"### How it ships\ngit tag → image + chart → `versions.yaml` → `make apply`\n[[Homelab deployment]] · [[Helm]] · [[helmfile]]","x":580,"y":1030,"width":480,"height":150},
-		{"id":"loki","type":"text","text":"### Loki\nlogs\n[[Loki and LogQL]]","x":1020,"y":680,"width":170,"height":120},
-		{"id":"prom","type":"text","text":"### Prometheus\nmetrics\n[[Prometheus and PromQL]]","x":1020,"y":520,"width":170,"height":120},
-		{"id":"otel","type":"text","text":"### OTel Collector\nOTLP from your apps\n[[OpenTelemetry]]","x":290,"y":430,"width":280,"height":120},
-		{"id":"graf","type":"text","text":"### Grafana\ndashboards, explore, signals linked by trace_id and exemplars\n[[Grafana]] · [[Observability]]","x":1280,"y":800,"width":570,"height":115},
-		{"id":"alloy","type":"text","text":"### Alloy\nnode, containers, pod logs\n[[Grafana Alloy]]","x":300,"y":800,"width":280,"height":115},
-		{"id":"tempo","type":"text","text":"### Tempo\ntraces\n[[Distributed tracing and Tempo]]","x":1640,"y":430,"width":190,"height":120},
-		{"id":"bk","type":"text","text":"backups 03:00 → /var/backups · [[Backups and restores]]","x":820,"y":300,"width":400,"height":35},
-		{"id":"mongo","type":"text","text":"### MongoDB\nconversations\n[[MongoDB]]","x":1160,"y":120,"width":190,"height":130},
-		{"id":"pgrst","type":"text","text":"### PostgREST\nTasker's API\n[[Row-level security]]","x":580,"y":120,"width":190,"height":130},
-		{"id":"pg","type":"text","text":"### PostgreSQL (CloudNativePG)\nroles per app, databases homelab · keycloak\n[[Operator]] · [[PostgreSQL roles and privileges]]","x":855,"y":-240,"width":400,"height":110},
-		{"id":"kafka","type":"text","text":"### Kafka · Kafka UI\nKRaft, 7 days\n[[Kafka]]","x":1670,"y":-65,"width":380,"height":100},
-		{"id":"ui","type":"text","text":"### homelab-ui\ncontrol center, Tasker, agent panel","x":0,"y":-1120,"width":400,"height":80},
-		{"id":"rt","type":"text","text":"### agent-runtime\nthe agent loop\n[[AI agents and sandboxing]]","x":-140,"y":-935,"width":190,"height":150},
-		{"id":"tb","type":"text","text":"### agent-toolbox\nMCP tools, fenced\n[[NetworkPolicy]]","x":180,"y":-835,"width":190,"height":150},
-		{"id":"llm","type":"text","text":"### llm (llama-swap)\nlocal models, OpenAI API\n[[llama-swap]] · [[OpenAI-compatible API]]","x":1240,"y":-1070,"width":380,"height":100},
-		{"id":"mcp","type":"text","text":"### grafana-mcp · mongodb-mcp · postgres-mcp\nread-only unless `mcp.<server>.write`\n[[Model Context Protocol]]","x":1240,"y":-825,"width":380,"height":130},
-		{"id":"oauth","type":"text","text":"### oauth2-proxy\nsession cookie\n[[Forward authentication]]","x":-800,"y":80,"width":200,"height":130},
-		{"id":"kube","type":"text","text":"### kube-api · Headlamp\n`kubectl proxy`, admins only\n[[RBAC]]","x":-1330,"y":80,"width":420,"height":120},
-		{"id":"read","type":"text","text":"## Read in order\n1. [[Homelab server]]\n2. [[Homelab deployment]]\n3. [[Homelab gateway and sign-in]]\n4. [[Homelab data]]\n5. [[Homelab observability]]\n6. [[Homelab LLM and agent]]\n7. [[Homelab security model]]\n8. [[Homelab failure modes]]\n9. [[Homelab change cookbook]]\n\n[[Homelab decisions]] · [[Homelab guides]] · [[Paths]]","x":-1940,"y":-1055,"width":300,"height":440,"color":"6"}
+	"nodes": [
+		{
+			"id": "g-gw",
+			"type": "group",
+			"x": -1380,
+			"y": -560,
+			"width": 1120,
+			"height": 1043,
+			"color": "1",
+			"label": "gateway"
+		},
+		{
+			"id": "g-obs",
+			"type": "group",
+			"x": 280,
+			"y": 400,
+			"width": 1580,
+			"height": 540,
+			"color": "5",
+			"label": "observability"
+		},
+		{
+			"id": "g-repo",
+			"type": "group",
+			"x": 560,
+			"y": -250,
+			"width": 800,
+			"height": 610,
+			"color": "2",
+			"label": "repository"
+		},
+		{
+			"id": "g-apps",
+			"type": "group",
+			"x": -180,
+			"y": -1140,
+			"width": 820,
+			"height": 480,
+			"color": "4",
+			"label": "apps"
+		},
+		{
+			"id": "g-srv",
+			"type": "group",
+			"x": -760,
+			"y": 1000,
+			"width": 1840,
+			"height": 200,
+			"color": "6",
+			"label": "the server: one laptop, single-node k3s"
+		},
+		{
+			"id": "g-llm",
+			"type": "group",
+			"x": 1080,
+			"y": -1140,
+			"width": 720,
+			"height": 480,
+			"color": "3",
+			"label": "llm"
+		},
+		{
+			"id": "g-mb",
+			"type": "group",
+			"x": 1650,
+			"y": -95,
+			"width": 420,
+			"height": 150,
+			"color": "2",
+			"label": "message-broker"
+		},
+		{
+			"id": "caddy",
+			"type": "text",
+			"text": "### Caddy\nHTTPS, routes, sign-in check, strips forged headers\n[[Reverse proxy]] · [[TLS and certificates]] · [[CSRF]]",
+			"x": -910,
+			"y": -505,
+			"width": 420,
+			"height": 150
+		},
+		{
+			"id": "devices",
+			"type": "text",
+			"text": "## Your devices\nBrowser, Compass, scripts\non the **tailnet** only\n[[Tailscale]] · [[DNS]]",
+			"x": -1940,
+			"y": -505,
+			"width": 300,
+			"height": 170,
+			"color": "5"
+		},
+		{
+			"id": "kc",
+			"type": "text",
+			"text": "### Keycloak\naccounts, sign-in page\n[[OAuth 2.0 and OpenID Connect]]",
+			"x": -490,
+			"y": 80,
+			"width": 200,
+			"height": 130
+		},
+		{
+			"id": "k3s",
+			"type": "text",
+			"text": "### k3s\nnamespace `homelab`, local-path volumes, encrypted Secrets\n[[k3s]] · [[Kubernetes]]",
+			"x": -740,
+			"y": 1030,
+			"width": 420,
+			"height": 150
+		},
+		{
+			"id": "net",
+			"type": "text",
+			"text": "### Network\nTailscale address for every port; node IP 10.250.0.1 on a dummy interface; nftables LAN guard\n[[Firewall and nftables]] · [[IP addresses and CIDR]]",
+			"x": -300,
+			"y": 1030,
+			"width": 420,
+			"height": 150
+		},
+		{
+			"id": "plat",
+			"type": "text",
+			"text": "### platform\nCloudNativePG operator · Reloader\n[[Secrets management]]",
+			"x": 140,
+			"y": 1030,
+			"width": 420,
+			"height": 150
+		},
+		{
+			"id": "deploy",
+			"type": "text",
+			"text": "### How it ships\ngit tag → image + chart → `versions.yaml` → `make apply`\n[[Homelab deployment]] · [[Helm]] · [[helmfile]]",
+			"x": 580,
+			"y": 1030,
+			"width": 480,
+			"height": 150
+		},
+		{
+			"id": "loki",
+			"type": "text",
+			"text": "### Loki\nlogs\n[[Loki and LogQL]]",
+			"x": 1020,
+			"y": 680,
+			"width": 170,
+			"height": 120
+		},
+		{
+			"id": "prom",
+			"type": "text",
+			"text": "### Prometheus\nmetrics\n[[Prometheus and PromQL]]",
+			"x": 1020,
+			"y": 520,
+			"width": 170,
+			"height": 120
+		},
+		{
+			"id": "otel",
+			"type": "text",
+			"text": "### OTel Collector\nOTLP from your apps\n[[OpenTelemetry]]",
+			"x": 290,
+			"y": 430,
+			"width": 280,
+			"height": 120
+		},
+		{
+			"id": "graf",
+			"type": "text",
+			"text": "### Grafana\ndashboards, explore, signals linked by trace_id and exemplars\n[[Grafana]] · [[Observability]]",
+			"x": 1280,
+			"y": 800,
+			"width": 570,
+			"height": 115
+		},
+		{
+			"id": "alloy",
+			"type": "text",
+			"text": "### Alloy\nnode, containers, pod logs\n[[Grafana Alloy]]",
+			"x": 300,
+			"y": 800,
+			"width": 280,
+			"height": 115
+		},
+		{
+			"id": "tempo",
+			"type": "text",
+			"text": "### Tempo\ntraces\n[[Distributed tracing and Tempo]]",
+			"x": 1640,
+			"y": 430,
+			"width": 190,
+			"height": 120
+		},
+		{
+			"id": "bk",
+			"type": "text",
+			"text": "backups 03:00 → /var/backups · [[Backups and restores]]",
+			"x": 820,
+			"y": 300,
+			"width": 400,
+			"height": 35
+		},
+		{
+			"id": "mongo",
+			"type": "text",
+			"text": "### MongoDB\nconversations\n[[MongoDB]]",
+			"x": 1160,
+			"y": 120,
+			"width": 190,
+			"height": 130
+		},
+		{
+			"id": "pgrst",
+			"type": "text",
+			"text": "### PostgREST\nTasker's API\n[[Row-level security]]",
+			"x": 580,
+			"y": 120,
+			"width": 190,
+			"height": 130
+		},
+		{
+			"id": "pg",
+			"type": "text",
+			"text": "### PostgreSQL (CloudNativePG)\nroles per app, databases homelab · keycloak\n[[Operator]] · [[PostgreSQL roles and privileges]]",
+			"x": 855,
+			"y": -240,
+			"width": 400,
+			"height": 110
+		},
+		{
+			"id": "kafka",
+			"type": "text",
+			"text": "### Kafka · Kafka UI\nKRaft, 7 days\n[[Kafka]]",
+			"x": 1670,
+			"y": -65,
+			"width": 380,
+			"height": 100
+		},
+		{
+			"id": "ui",
+			"type": "text",
+			"text": "### homelab-ui\ncontrol center, Tasker, agent panel (pick an agent)",
+			"x": 0,
+			"y": -1120,
+			"width": 400,
+			"height": 80
+		},
+		{
+			"id": "rt",
+			"type": "text",
+			"text": "### the agents (agent-runtime)\none pod per agent; the orchestrator calls the others over A2A\n[[AI agents and sandboxing]] · [[Agent runtime agents]]",
+			"x": -140,
+			"y": -935,
+			"width": 190,
+			"height": 150
+		},
+		{
+			"id": "tb",
+			"type": "text",
+			"text": "### agent-toolbox\nMCP tools by scope, fenced\n[[NetworkPolicy]]",
+			"x": 180,
+			"y": -835,
+			"width": 190,
+			"height": 150
+		},
+		{
+			"id": "llm",
+			"type": "text",
+			"text": "### llm (llama-swap)\nlocal models, OpenAI API\n[[llama-swap]] · [[OpenAI-compatible API]]",
+			"x": 1240,
+			"y": -1070,
+			"width": 380,
+			"height": 100
+		},
+		{
+			"id": "mcp",
+			"type": "text",
+			"text": "### grafana-mcp · mongodb-mcp · postgres-mcp\nread-only unless `mcp.<server>.write`\n[[Model Context Protocol]]",
+			"x": 1240,
+			"y": -825,
+			"width": 380,
+			"height": 130
+		},
+		{
+			"id": "oauth",
+			"type": "text",
+			"text": "### oauth2-proxy\nsession cookie\n[[Forward authentication]]",
+			"x": -800,
+			"y": 80,
+			"width": 200,
+			"height": 130
+		},
+		{
+			"id": "kube",
+			"type": "text",
+			"text": "### kube-api · Headlamp\n`kubectl proxy`, admins only\n[[RBAC]]",
+			"x": -1330,
+			"y": 80,
+			"width": 420,
+			"height": 120
+		},
+		{
+			"id": "read",
+			"type": "text",
+			"text": "## Read in order\n1. [[Homelab server]]\n2. [[Homelab deployment]]\n3. [[Homelab gateway and sign-in]]\n4. [[Homelab data]]\n5. [[Homelab observability]]\n6. [[Homelab LLM and agent]]\n7. [[Homelab security model]]\n8. [[Homelab failure modes]]\n9. [[Homelab change cookbook]]\n\n[[Homelab decisions]] · [[Homelab guides]] · [[Paths]]",
+			"x": -1940,
+			"y": -1055,
+			"width": 300,
+			"height": 440,
+			"color": "6"
+		}
 	],
-	"edges":[
-		{"id":"e0","fromNode":"devices","fromSide":"right","toNode":"caddy","toSide":"left","label":"HTTPS :443 and tool ports"},
-		{"id":"e1","fromNode":"caddy","fromSide":"bottom","toNode":"oauth","toSide":"top","label":"signed in?"},
-		{"id":"e2","fromNode":"oauth","fromSide":"right","toNode":"kc","toSide":"left","label":"OIDC"},
-		{"id":"e3","fromNode":"kc","fromSide":"right","toNode":"pg","toSide":"left","label":"accounts"},
-		{"id":"e4","fromNode":"caddy","fromSide":"right","toNode":"g-apps","toSide":"left","label":"/ · /api/agent"},
-		{"id":"e5","fromNode":"caddy","fromSide":"right","toNode":"pgrst","toSide":"left","label":"/api/tasker + secret"},
-		{"id":"e6","fromNode":"caddy","fromSide":"bottom","toNode":"kube","toSide":"top","label":"/api/kube · :4466"},
-		{"id":"e7","fromNode":"pgrst","fromSide":"top","toNode":"pg","toSide":"bottom","label":"RLS"},
-		{"id":"e8","fromNode":"rt","fromSide":"right","toNode":"tb","toSide":"left","label":"MCP"},
-		{"id":"e9","fromNode":"rt","fromSide":"bottom","toNode":"mongo","toSide":"top","label":"conversations"},
-		{"id":"e10","fromNode":"rt","fromSide":"right","toNode":"llm","toSide":"left","label":"OpenAI API (or NVIDIA)"},
-		{"id":"e11","fromNode":"tb","fromSide":"right","toNode":"mcp","toSide":"left","label":"only way to data"},
-		{"id":"e12","fromNode":"mcp","fromSide":"bottom","toNode":"pg","toSide":"top","label":"read-only role"},
-		{"id":"e13","fromNode":"mcp","fromSide":"bottom","toNode":"mongo","toSide":"top","label":"read-only user"},
-		{"id":"e14","fromNode":"g-apps","fromSide":"bottom","toNode":"otel","toSide":"top","label":"OTLP"},
-		{"id":"e15","fromNode":"otel","fromSide":"right","toNode":"prom","toSide":"left"},
-		{"id":"e16","fromNode":"otel","fromSide":"right","toNode":"loki","toSide":"left"},
-		{"id":"e17","fromNode":"otel","fromSide":"right","toNode":"tempo","toSide":"left"},
-		{"id":"e18","fromNode":"alloy","fromSide":"top","toNode":"prom","toSide":"left","label":"remote write"},
-		{"id":"e19","fromNode":"alloy","fromSide":"right","toNode":"loki","toSide":"left","label":"pod logs"},
-		{"id":"e20","fromNode":"graf","fromSide":"top","toNode":"prom","toSide":"right"},
-		{"id":"e21","fromNode":"graf","fromSide":"top","toNode":"loki","toSide":"bottom"},
-		{"id":"e22","fromNode":"graf","fromSide":"top","toNode":"tempo","toSide":"bottom"},
-		{"id":"e23","fromNode":"rt","fromSide":"bottom","toNode":"otel","toSide":"top"}
+	"edges": [
+		{
+			"id": "e0",
+			"fromNode": "devices",
+			"fromSide": "right",
+			"toNode": "caddy",
+			"toSide": "left",
+			"label": "HTTPS :443 and tool ports"
+		},
+		{
+			"id": "e1",
+			"fromNode": "caddy",
+			"fromSide": "bottom",
+			"toNode": "oauth",
+			"toSide": "top",
+			"label": "signed in?"
+		},
+		{
+			"id": "e2",
+			"fromNode": "oauth",
+			"fromSide": "right",
+			"toNode": "kc",
+			"toSide": "left",
+			"label": "OIDC"
+		},
+		{
+			"id": "e3",
+			"fromNode": "kc",
+			"fromSide": "right",
+			"toNode": "pg",
+			"toSide": "left",
+			"label": "accounts"
+		},
+		{
+			"id": "e4",
+			"fromNode": "caddy",
+			"fromSide": "right",
+			"toNode": "g-apps",
+			"toSide": "left",
+			"label": "/ · /api/agent"
+		},
+		{
+			"id": "e5",
+			"fromNode": "caddy",
+			"fromSide": "right",
+			"toNode": "pgrst",
+			"toSide": "left",
+			"label": "/api/tasker + secret"
+		},
+		{
+			"id": "e6",
+			"fromNode": "caddy",
+			"fromSide": "bottom",
+			"toNode": "kube",
+			"toSide": "top",
+			"label": "/api/kube · :4466"
+		},
+		{
+			"id": "e7",
+			"fromNode": "pgrst",
+			"fromSide": "top",
+			"toNode": "pg",
+			"toSide": "bottom",
+			"label": "RLS"
+		},
+		{
+			"id": "e8",
+			"fromNode": "rt",
+			"fromSide": "right",
+			"toNode": "tb",
+			"toSide": "left",
+			"label": "MCP"
+		},
+		{
+			"id": "e9",
+			"fromNode": "rt",
+			"fromSide": "bottom",
+			"toNode": "mongo",
+			"toSide": "top",
+			"label": "conversations"
+		},
+		{
+			"id": "e10",
+			"fromNode": "rt",
+			"fromSide": "right",
+			"toNode": "llm",
+			"toSide": "left",
+			"label": "OpenAI API (or NVIDIA)"
+		},
+		{
+			"id": "e11",
+			"fromNode": "tb",
+			"fromSide": "right",
+			"toNode": "mcp",
+			"toSide": "left",
+			"label": "only way to data"
+		},
+		{
+			"id": "e12",
+			"fromNode": "mcp",
+			"fromSide": "bottom",
+			"toNode": "pg",
+			"toSide": "top",
+			"label": "read-only role"
+		},
+		{
+			"id": "e13",
+			"fromNode": "mcp",
+			"fromSide": "bottom",
+			"toNode": "mongo",
+			"toSide": "top",
+			"label": "read-only user"
+		},
+		{
+			"id": "e14",
+			"fromNode": "g-apps",
+			"fromSide": "bottom",
+			"toNode": "otel",
+			"toSide": "top",
+			"label": "OTLP"
+		},
+		{
+			"id": "e15",
+			"fromNode": "otel",
+			"fromSide": "right",
+			"toNode": "prom",
+			"toSide": "left"
+		},
+		{
+			"id": "e16",
+			"fromNode": "otel",
+			"fromSide": "right",
+			"toNode": "loki",
+			"toSide": "left"
+		},
+		{
+			"id": "e17",
+			"fromNode": "otel",
+			"fromSide": "right",
+			"toNode": "tempo",
+			"toSide": "left"
+		},
+		{
+			"id": "e18",
+			"fromNode": "alloy",
+			"fromSide": "top",
+			"toNode": "prom",
+			"toSide": "left",
+			"label": "remote write"
+		},
+		{
+			"id": "e19",
+			"fromNode": "alloy",
+			"fromSide": "right",
+			"toNode": "loki",
+			"toSide": "left",
+			"label": "pod logs"
+		},
+		{
+			"id": "e20",
+			"fromNode": "graf",
+			"fromSide": "top",
+			"toNode": "prom",
+			"toSide": "right"
+		},
+		{
+			"id": "e21",
+			"fromNode": "graf",
+			"fromSide": "top",
+			"toNode": "loki",
+			"toSide": "bottom"
+		},
+		{
+			"id": "e22",
+			"fromNode": "graf",
+			"fromSide": "top",
+			"toNode": "tempo",
+			"toSide": "bottom"
+		},
+		{
+			"id": "e23",
+			"fromNode": "rt",
+			"fromSide": "bottom",
+			"toNode": "otel",
+			"toSide": "top"
+		}
 	]
 }

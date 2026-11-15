@@ -2,12 +2,19 @@
 type: decisions
 project: "[[Homelab]]"
 tags: [homelab, decisions]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Homelab decisions
 
 Why the homelab is built this way, and what was turned down. Newest first. Read one, then ask yourself whether you'd choose the same today.
+
+## 2026-11-15 — One release per agent
+- **Context:** agent-runtime became one runtime for many agents ([[Agent runtime agents]]).
+- **Decision:** a release `agent-<name>` per agent, generated in `helmfile.yaml.gotmpl` from `agents:` in `environments/default.yaml`, each with its own `apps/agent-<name>/values.yaml.gotmpl` (`AGENT`, its MongoDB database `agent_<name>`, its tasks table `tasks_<name>`). The orchestrator keeps `:8000` and `/api/agent`, and gets every agent's URL; the gateway adds `/api/agents/<name>/`; the toolbox admits pods labelled `homelab.io/role: agent`. The old `agent-runtime` release is `installed: false`.
+- **Why:** separate state, tools, restarts and logs per agent, and the same image for all.
+- **Alternatives:** one release with several containers (one restart takes all); one values file templated from the release's labels (fewer files, but helmfile can't be rendered on the Mac to check it).
+- **Consequences:** eight pods at 256–512 MiB each; adding an agent touches `agents:`, its values folder, the orchestrator's values and the gateway pattern ([[Homelab - Run the LLM and agent]]).
 
 ## 2026-11-08 — MCP servers' write access is a deployment switch
 - **Context:** the agent can use Grafana, MongoDB and PostgreSQL through their MCP servers. Writing is useful sometimes, dangerous always.

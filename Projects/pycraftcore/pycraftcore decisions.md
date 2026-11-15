@@ -34,6 +34,11 @@ updated: 2026-11-15
 - **Alternatives:** a fix inside agent-runtime (MongoDB code in a service); dropping and recreating the index (rebuilds it, and needs no less privilege); dropping the database by hand after each TTL change.
 - **Consequences:** changing an index needs the `collMod` action (`dbAdmin` or root), more than `readWrite`.
 
+## A generic YAML tree reader
+- **Decision:** `OmegaTreeReader(root_file, folders)` reads any tree of YAML: folders merged in name order, the root file last, `${…}` resolved, `read(key)` returning plain data for the caller's own pydantic model. `OmegaConfigurationReader` is now that reader plus the configuration's layout and schema.
+- **Why:** agent-runtime's agent folders wanted the same loading as `config/` without copying the merge and the error handling.
+- **Consequences:** errors name the file or the key: a missing root file, key, mapping or environment variable fails at once.
+
 ## Databases and A2A split into connectors and operations
 - **Decision:** a database connector holds only what every use needs to connect (engine, host, port, auth, `timeout`, a typed `pool` of `min`/`max`); a `DatabaseOperation` holds what one use does (`database`, `collections` by role, `ttl`, `parameters`) and is what the settings mappers take. An `A2aConnector` (`base_url`, `timeout`, `binding`) and `A2aOperation` join API, file and MCP. 6.0.0.
 - **Why:** `default_name`, `pool.timeout_ms` and `pool.ttl` were one use's settings inside the connection, and collection names lived in code; two uses of one server needed two connectors. A2A settings sat in a server's free-form `parameters`.

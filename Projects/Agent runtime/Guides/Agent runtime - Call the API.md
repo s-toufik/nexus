@@ -9,7 +9,18 @@ updated: 2026-11-15
 
 > List the models, send a message, and read the streamed reply and its outcome — what a client like homelab-ui does. Other agents use A2A instead.
 
-**Where:** from any machine that reaches the agent (tailnet: `http://<HOMELAB_DOMAIN>:8000`) · **All guides:** [[Agent runtime guides]]
+**Where:** from any machine that reaches the agent (tailnet: `http://<HOMELAB_DOMAIN>:8000`, the orchestrator; signed in: `https://<HOMELAB_DOMAIN>/api/agents/<name>` for any agent) · **All guides:** [[Agent runtime guides]]
+
+## List the agents
+
+`GET /v1/agents` returns this agent and the agents it can call (the orchestrator knows them all), with their descriptions and skills:
+
+```json
+{ "agents": [{ "name": "orchestration", "description": "…", "skills": [] },
+             { "name": "chat", "description": "…", "skills": [{ "id": "answer", "name": "Answer and explain", "description": "…", "tags": [], "examples": [] }] }] }
+```
+
+Each agent answers on its own `/v1/api2a` and `/v1/models`; pick one to talk to it directly ([[Agent runtime agents]]).
 
 ## List the models
 
@@ -27,7 +38,7 @@ Build your model picker from `models`. When `pinned_steps` covers every step, th
 ## Send a message
 
 ```bash
-curl -N http://<host>:<port>/v1/stream \
+curl -N http://<host>:<port>/v1/api2a \
   -H 'Content-Type: application/json' \
   -d '{"message": "how many users signed up today?", "model_name": "qwen3-8b", "request_id": "my-conversation"}'
 ```

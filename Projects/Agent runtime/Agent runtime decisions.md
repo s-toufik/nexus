@@ -9,6 +9,31 @@ updated: 2026-11-15
 
 Newest first.
 
+## One runtime, many agents
+- **Decision:** an agent is a folder, `agents/<name>/` (identity, skills, `tool_scope`, `turns`, `peers`, `routes`, `prompts/<step>.md`), read like `config/` with pycraftcore's `OmegaTreeReader`; `AGENT=<name>` picks it, one process (one pod) per agent. Eight to start: orchestration, chat, observation, analysis, coding, security, kitchen, travel.
+- **Why:** one codebase to fix and one image to build; each agent is a small reviewable folder. A pod each keeps their conversations, tasks, tools, restarts and logs apart.
+- **Alternatives:** one service per agent (the same code copied eight times); several agents in one process (shared memory, models and failures; each agent's paths in config were kept for it, but a pod each made them rarely needed). The folder was first called `skills/`, but an A2A *skill* is one capability on a card, so `agents/` it is.
+- **Consequences:** `HOMELAB_ASSISTANT` and `AgentProfile` are gone; the card comes from the folder. Each agent names its own MongoDB database and A2A tasks table when they share the servers.
+
+## Prompts per agent, checked at boot
+- **Decision:** a `PromptBook` gives each step the agent's `prompts/<step>.md`, else the generic template in `langchain/prompts/`; the generic ones say `You are {identity}` (the agent's description). Each prompt's `{placeholders}` must be known to its step, and the ones the step can't work without must be there.
+- **Why:** agents differ most in what they're told, and a broken template should stop the pod, not fail the first user.
+- **Alternatives:** whole prompts in YAML (escaping and multi-line pain); only a persona line per agent (the orchestrator needs a different plan prompt altogether).
+
+## Turn shapes: allowed routes, not a graph in YAML
+- **Decision:** `turns` lists routes the code knows (`direct`, `clarify`, `plan`, `review`); `TurnPolicy(shape)` keeps their rows and the graph only the steps they reach. A test walks every shape.
+- **Why:** routes need conditions in code; a YAML graph could leave a step without a way out.
+- **Consequences:** an agent without `plan` is never offered `request_plan`; one without `direct` plans what it would have answered (the orchestrator then hands it to chat).
+
+## Delegation is one tool, `ask_agents`
+- **Decision:** the orchestrator's peers become one tool built from their A2A cards; one call holds several `{agent, message}` requests run at the same time; later plan steps make calls serial. Peers run auto-approved: approving the orchestrator's plan covers them.
+- **Why:** a plan step makes exactly one tool call, so one tool per agent couldn't call two at once; reusing the plan → act → run tools machinery keeps approvals, budgets and review as they are. Peers join and leave through the tool refresher, like MCP servers.
+- **Alternatives:** a new DELEGATE step (a second way to run work); each peer's plan sent up for approval (one approval per agent and more round trips).
+
+## `/v1/stream` is `/v1/api2a`
+- **Decision:** the streaming route is `routes.api2a` (default `/v1/api2a`, *API to agent*), beside `/a2a` (agent to agent); `GET /v1/agents` lists the agents for a client's picker.
+- **Consequences:** homelab-ui and the evaluation moved with it; the old path answers 404.
+
 ## Routing as a table, LangGraph generated from it
 - **Context:** an agent's control flow (when to plan, review, retry, stop) is where most bugs and surprises live.
 - **Decision:** one ordered table, `TurnPolicy`, of (after, condition, next); the LangGraph edges are generated from it; a test checks they match.

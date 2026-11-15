@@ -15,13 +15,17 @@ updated: 2026-11-15
 
 | Variable | Default | Meaning |
 |---|---|---|
+| `AGENT` | `chat` | Which agent this process is: the folder `agents/<AGENT>/` ([[Agent runtime agents]]) |
+| `AGENTS_DIR` | `./agents` | Where the agent folders are |
+| `AGENT_<NAME>_URL` | empty | Where agent `<name>` answers (its root, e.g. `http://agent-chat:8000`), for an agent that calls it; empty: not called |
+| `A2A_TASKS_TABLE` | `tasks` | The A2A tasks table; one per agent when agents share a database |
 | `APP_ENV` | `debug` | Which `config/<APP_ENV>/` folder is read |
 | `CONFIGURATION_DIR` | `./config` | Where `config/` is |
 | `LOG_LEVEL` | `INFO` | `DEBUG`, `INFO`, `WARNING`, `ERROR` or `CRITICAL` |
 | `DEPLOYMENT_ENVIRONMENT` | `unknown` | Label shown by `/actuator/info` and on telemetry |
 | `GUARDRAIL_ENABLED` | `false` | `true` checks every plan before it runs and refuses unsafe ones |
 | `MAX_CONCURRENT_STREAMS` | `200` | Open streams accepted at once; above it the API answers `503` |
-| `WEB_BASE_PATH` | empty | A prefix for every route, e.g. `/agent-runtime` → `/agent-runtime/v1/stream`. Use it when the gateway keeps the prefix. Starts with `/`, no trailing `/` |
+| `WEB_BASE_PATH` | empty | A prefix for every route, e.g. `/agent-runtime` → `/agent-runtime/v1/api2a`. Use it when the gateway keeps the prefix. Starts with `/`, no trailing `/` |
 | `WEB_DOCS` | `false` | `true` serves the API documentation at `<base path>/docs` |
 | `AGENT_ANSWER_DELIVERY` | `stream` | `stream`: answers that need no review arrive as `token` events, then `final`. `whole`: only `final` |
 | `A2A_MODEL` | empty | The model A2A tasks use when the message names none; empty: the first listed model |
@@ -30,7 +34,7 @@ updated: 2026-11-15
 | `DB_POSTGRES_A2A_HOST` / `_PORT` / `_NAME` / `_USERNAME` / `_PASSWORD` | empty, `5432`, `agent_runtime` | A2A task storage in PostgreSQL; no host or unreachable: SQLite (`a2a_tasks.db` next to the checkpoint) |
 | `HOMELAB_LLM_BASE_URL`, `HOMELAB_LLM_API_KEY` | one provider required | The homelab's model server, e.g. `http://<llm-server>:<port>/v1`, and its key (empty for a local server) |
 | `NVIDIA_LLM_BASE_URL`, `NVIDIA_LLM_API_KEY` | one provider required | NVIDIA's API, `https://integrate.api.nvidia.com/v1`, and its `nvapi-…` key |
-| `TOOLBOX_URL` | required | The MCP server, e.g. `http://<toolbox-host>:<port>/mcp` |
+| `TOOLBOX_URL` | required | The toolbox, e.g. `http://<toolbox-host>:<port>/mcp`; the agent adds `/<tool_scope>` |
 | `DB_MONGO_CHECKPOINT_HOST` / `_PORT` / `_NAME` / `_USERNAME` / `_PASSWORD` | required | Conversation storage in MongoDB |
 | `DB_SQLITE_CHECKPOINT_HOST` / `_NAME` | required | SQLite fallback (folder and file name) |
 | `OTEL_HOST`, `OTEL_PORT` | required | OpenTelemetry collector (gRPC); an empty host turns telemetry off |

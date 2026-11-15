@@ -35,7 +35,7 @@ homelab-ui is one static app served by nginx in a pod, behind Caddy. Everything 
 | Kafka, Pipeline, Models | `/kafka`, `/pipeline`, `/models` | `/api/kafka`, `/api/alloy`, `/api/llm` |
 | Tools | `/tools` | `/api/toolbox/mcp` (MCP over HTTP) |
 | Account, Kubernetes | `/account`, `/kubernetes` | `/api/account`, `/api/kube` (admins) |
-| Agent, assistant | `/agent` | `/api/agent/v1/stream`, `/api/agent/v1/models` |
+| Agent, assistant | `/agent` | `/api/agent/v1/agents`, `/api/agents/<name>/v1/api2a`, `/api/agents/<name>/v1/models` (the orchestrator: `/api/agent/…`) |
 | Tasker | `/tasker` | `/api/tasker` (PostgREST) |
 
 **Common mistake** — expecting every page to work under `npm start` on your Mac. Only the agent does: the other APIs exist only behind the gateway.
@@ -253,7 +253,7 @@ readonly canSend = computed(() => this.draft().trim().length > 0 && !this.isStre
 ### Check
 1. Follow one agent answer from the server to the screen.
 > [!success]- Answer
-> `stream()` POSTs to `/api/agent/v1/stream`, reads the body, splits frames, yields `StreamEvent`s; `AgentStore` handles each (`status` → progress, `token` → append, `final` → replace and keep metadata, `complete` → stop); templates reading those signals update.
+> `stream()` POSTs to `/api/agents/<name>/v1/api2a`, reads the body, splits frames, yields `StreamEvent`s; `AgentStore` handles each (`status` → progress, `token` → append, `final` → replace and keep metadata, `complete` → stop); templates reading those signals update.
 
 **You can now:** explain how the agent's answer appears word by word. Deep dives: [[Homelab UI state and streaming]] · [[Homelab UI Tasker]].
 

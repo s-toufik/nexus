@@ -19,11 +19,11 @@ APIs are contracts between teams and programs. A clear, versioned, documented co
 - **Errors as data:** a consistent body, e.g. `{"detail": "…"}`, with the right status.
 - **Validation at the edge:** bodies checked against a schema ([[Data validation with pydantic and msgspec]]).
 - **Evolution rules:** adding fields is safe if clients ignore unknown ones; removing or renaming breaks them.
-- **Not everything is REST:** streams (SSE), RPC-style actions (`POST /v1/stream`), MCP's JSON-RPC.
+- **Not everything is REST:** streams (SSE), RPC-style actions (`POST /v1/api2a`), MCP's JSON-RPC.
 - **OpenAPI:** frameworks generate it from routes and schemas; `/docs` serves Swagger UI.
 
 ## In our projects
-- agent-runtime: `/v1/stream`, `/v1/models`, `/actuator/*`; `/docs` with `WEB_DOCS=true`; clients must ignore unknown events and outcomes ([[Agent runtime - Call the API]]).
+- agent-runtime: `/v1/api2a`, `/v1/models`, `/actuator/*`; `/docs` with `WEB_DOCS=true`; clients must ignore unknown events and outcomes ([[Agent runtime - Call the API]]).
 - pycraftcore: `{"detail": …}` errors, docs only when `api.docs` is on ([[pycraftcore web toolkits]]).
 - PostgREST turns tables into a REST API ([[PostgREST]]).
 
@@ -31,7 +31,7 @@ APIs are contracts between teams and programs. A clear, versioned, documented co
 1. Why must a client ignore fields it doesn't know?
 > [!success]- Answer
 > So the server can add fields, events or outcomes without breaking it. Adding is the safe way to evolve an API only if clients don't fail on what they don't know.
-2. Is `POST /v1/stream` RESTful? Does it matter?
+2. Is `POST /v1/api2a` RESTful? Does it matter?
 > [!success]- Answer
 > Not strictly: it's an RPC-style action ("run this turn and stream the result"), not a resource changed with a verb. It doesn't matter much: what matters is a clear, documented, versioned contract. Forcing a stream into REST resources would only make it harder to use.
 

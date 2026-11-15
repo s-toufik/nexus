@@ -4,12 +4,12 @@ status: active
 started: 2026-09
 repos: [agent-toolbox]
 tags: [project, agent-toolbox, ai, mcp]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Agent toolbox
 
-> An MCP server that gives an agent hands: tools to query data, read and write files, and run Python for analysis in a sandbox where every other tool is callable as a plain function. It also republishes the tools of other MCP servers (Grafana, MongoDB, PostgreSQL) as its own.
+> An MCP server that gives an agent hands: tools to query data, read and write files, and run Python for analysis in a sandbox where every other tool is callable as a plain function. It also republishes the tools of other MCP servers (Grafana, MongoDB, PostgreSQL) as its own, and serves them by scope: one endpoint per kind of agent, each with its own `python_executor`.
 
 ## In one picture
 ![[Agent toolbox.canvas]]
@@ -24,10 +24,10 @@ updated: 2026-11-08
 |---|---|
 | `users_tables` | Read-only SQL on the service database; writes and schema changes refused before the database |
 | `file_reader`, `file_writer` | Files in the working directory (yml, yaml, json, csv parsed; md, txt as text) |
-| `python_executor` | Runs Python in a sandbox; returns `result` and what it printed; on failure, the traceback of its own lines |
+| `python_executor` | Runs Python in a sandbox; returns `result` and what it printed; on failure, the traceback of its own lines. One per scope, describing and calling only that scope's tools |
 | `grafana_*`, `mongodb_*`, `postgres_*` | Republished from Grafana's, MongoDB's and PostgreSQL's MCP servers |
 
-Endpoints: `/mcp` (streamable HTTP), `/actuator/health`, `/health/liveness`, `/health/readiness` (503 until tools are registered), `/actuator/info`.
+Endpoints: `/mcp` (every tool, streamable HTTP), `/mcp/<scope>` (a scope's tools: observation, analysis, coding, security, kitchen, travel), `/actuator/health`, `/health/liveness`, `/health/readiness` (503 until tools are registered), `/actuator/info`.
 
 ## Read it in this order
 1. [[Agent toolbox layers]] — one use case, two doors (MCP and the sandbox).
@@ -39,5 +39,6 @@ Then [[Agent toolbox decisions]] and [[Agent toolbox guides]].
 ## Knowledge it uses
 [[Model Context Protocol]] · [[AI agents and sandboxing]] · [[Hexagonal architecture]] · [[Dependency injection]] · [[Architecture tests]] · [[Data validation with pydantic and msgspec]] · [[ASGI]] · [[asyncio]] · [[NetworkPolicy]] · [[pycraftcore]]
 
-## Where it stands (2026-11-08)
+## Where it stands (2026-11-15)
+- **On `develop`:** tool scopes, one MCP endpoint each, for the agents of [[Agent runtime agents]]; needs pycraftcore 6.0.0.
 - **Released:** v1.1.0 with external MCP tools; the homelab rolls out grafana-mcp, mongodb-mcp, postgres-mcp.

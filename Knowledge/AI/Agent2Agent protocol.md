@@ -23,7 +23,7 @@ Agents built by different teams or vendors need a common way to find each other,
 - **Errors** are JSON-RPC errors with A2A codes: `-32001` task not found, `-32002` not cancelable, `-32003` push not supported, `-32004` unsupported operation, `-32005` content type not supported, `-32009` version not supported.
 
 ## In our projects
-- **agent-runtime is an A2A server**: `POST /a2a` (JSON-RPC) and its card at `/.well-known/agent-card.json`, beside `/v1/stream`, served by the official `a2a-sdk` mounted on FastAPI. The SDK does the protocol (JSON-RPC, task store, streaming, cancel, `ListTasks`, `SubscribeToTask`, A2A 0.3 compatibility), so we maintain only what is ours ([[Agent runtime layers]], [[Hexagonal architecture]]):
+- **agent-runtime is an A2A server**: `POST /a2a` (JSON-RPC) and its card at `/.well-known/agent-card.json`, beside `/v1/api2a`, served by the official `a2a-sdk` mounted on FastAPI. The SDK does the protocol (JSON-RPC, task store, streaming, cancel, `ListTasks`, `SubscribeToTask`, A2A 0.3 compatibility), so we maintain only what is ours ([[Agent runtime layers]], [[Hexagonal architecture]]):
   - `domain/a2a/`: `TaskState` and the rule from an `Outcome` to a task state, `TaskUpdate`, `A2aTaskRequest`, `AgentProfile`. Plain Python, no SDK;
   - `application`: `RunA2aTask` (behind `RunA2aTaskPort`) runs `HandleMessage` in the task's conversation and reports each event as a `TaskUpdate`;
   - `adapter/inbound/a2a/`: the SDK's `AgentExecutor`, a presenter that turns a `TaskUpdate` into `TaskUpdater` calls, and the card. The only code that imports the SDK, and a boundary test checks it.

@@ -4,7 +4,7 @@ status: active
 started: 2026-10-30
 repos: [homelab-infra, kube-charts, homelab-ui, agent-runtime, agent-toolbox]
 tags: [project, homelab, kubernetes]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Homelab
@@ -61,6 +61,7 @@ Then [[Homelab decisions]] — why it's built this way and what was turned down 
 - **Linux:** [[systemd]]
 
 ## Where it stands (2026-11-08)
+- **Next deploy (2026-11-15):** agent-runtime becomes one release per agent (`agent-orchestration`, `agent-chat`, …), the toolbox serves tools by scope; steps in [[Homelab - Run the LLM and agent]].
 - **Done:** all three phases are deployed on the server: core (charts, PostgreSQL, Keycloak, oauth2-proxy, Caddy, homelab-ui), data and agent (MongoDB, Kafka, PostgREST, migrations, agent-runtime, agent-toolbox), observability, LLM and backups. homelab-ui rebuilt every tool UI natively; Headlamp is there for admins.
 - **In flight:** the Grafana, MongoDB and PostgreSQL MCP servers for the agent's toolbox (written, being rolled out), `make restart`, the pod DNS fix.
 - **Next:** see the latest note in [[Log]].
