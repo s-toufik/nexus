@@ -13,6 +13,9 @@ tags: [log, frontend, design, research]
 - Designed Draft 5 · Briefing on the design canvas: a receding sidebar on computer and iPad, a tab bar on the phone, list + detail for Assistant and People, one ⌘K field to find or ask, plans shown inline in the conversation, and Today written as a short briefing ("Kitchen has a plan waiting for you. The homelab is healthy.") with only three sections.
 - Added an interactive **Map** of the k3s cluster, laid out like homelab-infra's groups: click a service to light up what it talks to and what uses it, with its state and actions (Open, Logs, Metrics, Restart, Ask Observation) in a side panel.
 
+- Reworked the look after the user's homelab diagram: deep navy panels, Geist with Geist Mono for addresses and ports, small coloured capitals as section titles, generous spacing; a light version with the same structure.
+- Rebuilt the Map in the diagram's layout: Networks (tailnet, pods, services, host ports, outbound) and a legend on the left; the path from your devices through caddy and oauth2-proxy in the middle; the tailnet ports and the agent pipeline on the right; then the server panel with node figures, volumes and every service as a card in five categories. Clicking a card highlights what it talks to and what uses it, lights its port, and fills a details column.
+
 ## What I learned
 - "Don't compete for attention you haven't earned" (Linear's 2026 refresh): navigation recedes, content leads, colour only where it means something.
 - Apple: at most two levels in a sidebar; list + detail when there's room; a tab bar on the phone.
