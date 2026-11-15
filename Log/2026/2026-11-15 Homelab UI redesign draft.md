@@ -21,7 +21,7 @@ tags: [log, frontend, design, access]
 - People are managed from the UI through a small admin API in front of Keycloak's admin REST API, behind `admin_only`; the admin never sees a password (set-up link instead).
 
 ## Next
-- [ ] Choose among the four drafts (or a mix), then turn it into the real UI: shell, home, chat, admin pages.
-- [ ] If Draft 2: theme tokens as CSS variables, the Appearance setting saved per account.
-- [ ] The access API and the gateway rules per page, in homelab-infra.
-- [ ] iOS: web app manifest, icons, safe areas, standalone mode.
+- [x] Choose among the four drafts: Draft 2 with five themes, built in [[2026-11-15 Homelab UI Draft 2 built]].
+- [x] Theme tokens as CSS variables, the Appearance setting saved per account.
+- [x] The access API and the gateway rules per page, in homelab-infra.
+- [x] iOS: web app manifest, icons, safe areas, standalone mode.

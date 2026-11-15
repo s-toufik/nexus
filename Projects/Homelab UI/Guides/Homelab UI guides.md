@@ -18,5 +18,8 @@ updated: 2026-11-08
 - [[Homelab UI - Extend a page]] — a new API through the gateway, a new answer detail, hiding the drawer.
 - [[Homelab UI - Add a status]] — the Status page and the menu's Infrastructure section.
 
+## People
+- [[Homelab UI - Give someone a page]] — add a person, give or take a page, make a page grantable, install on an iPhone.
+
 ## On the homelab
 - [[Homelab - Release an app]] · [[Homelab - Roll back]] · [[Homelab - Deploy a change]]

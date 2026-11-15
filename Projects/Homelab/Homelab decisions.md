@@ -9,6 +9,11 @@ updated: 2026-11-15
 
 Why the homelab is built this way, and what was turned down. Newest first. Read one, then ask yourself whether you'd choose the same today.
 
+## 2026-11-15 — The gateway checks the page, not only the sign-in
+- **Decision:** every `/api/<tool>/` route also asks oauth2-proxy for the page's role (`(page_access)`, `allowed_groups=role:admin,role:<page>`), and `/api/people/` reaches Keycloak's admin API with the admin's own token; the `admin` role carries realm-management's `view-users`, `query-users`, `manage-users`. Page roles are listed once in `gateway/keycloak/pages.txt`.
+- **Why:** homelab-ui now hides pages per person ([[Homelab UI decisions]]); hiding must never be the only lock.
+- **Consequences:** a role given or taken counts at the next session refresh (at most 4 minutes); `make user-grant` / `make user-revoke` do it from the terminal.
+
 ## 2026-11-15 — One release per agent
 - **Context:** agent-runtime became one runtime for many agents ([[Agent runtime agents]]).
 - **Decision:** a release `agent-<name>` per agent, generated in `helmfile.yaml.gotmpl` from `agents:` in `environments/default.yaml`, each with its own `apps/agent-<name>/values.yaml.gotmpl` (`AGENT`, its MongoDB database `agent_<name>`, its tasks table `tasks_<name>`). The entry agent (the orchestrator, the supervisor since it replaced orchestrator and chat) keeps `:8000` and `/api/agent`, and gets every agent's URL; the gateway adds `/api/agents/<name>/`; the toolbox admits pods labelled `homelab.io/role: agent`. The old `agent-runtime` release is `installed: false`.
