@@ -2,7 +2,7 @@
 type: decisions
 project: "[[Agent runtime]]"
 tags: [agent-runtime, decisions]
-updated: 2026-11-14
+updated: 2026-11-15
 ---
 
 # Agent runtime decisions
@@ -41,6 +41,7 @@ Newest first.
 ## A2A with the SDK, rules in `domain/a2a`
 - **Decision:** `POST /a2a` speaks [[Agent2Agent protocol|A2A]] 1.0 through the official `a2a-sdk` (`DefaultRequestHandler`, its database task store, JSON-RPC routes, 0.3 compatibility). Our code is split by layer: `domain/a2a/` (task states and the rule from an `Outcome`, `TaskUpdate`, `A2aTaskRequest`, `AgentProfile`), `RunA2aTask` in the application (runs `HandleMessage`, reports `TaskUpdate`s), and in `adapter/inbound/a2a/` the SDK's `AgentExecutor`, a presenter and the card. `contextId` is the conversation.
 - **Why:** minimal maintenance: the SDK follows the spec and does the protocol work; we keep only the rules, which stay plain Python and testable without the SDK. A boundary test keeps the SDK and protobuf out of the domain and the application.
+- **Turn options in the card:** the agent's own options (model, auto-approve) are an A2A extension in `capabilities.extensions`, `https://github.com/s-toufik/agent-runtime/a2a/turn-options/v1`, with `required: false`. Its `params` (models, default model) are filled when the card is served, from `DescribeA2aOptions`, the same rule `RunA2aTask` uses for the default, so the card and the turn can't disagree. The protocol's own fields (message, ids, version) stay out of the card: every A2A client knows them. The metadata keys carry the extension's URI, as the spec suggests; the short `model` / `autoApprove` stay accepted. The SDK doesn't send back which extensions were activated, so the options are read whether or not the client names the extension; their values are type-checked.
 - **Task storage:** the SDK's `DatabaseTaskStore` on a SQLAlchemy engine from [[pycraftcore]]: PostgreSQL when reachable at boot, else SQLite next to the conversation checkpoint. Tasks survive a restart; `TaskRetention` deletes those not updated for `A2A_TASK_TTL` (a week, like the conversations). The handler is built before boot, so it reaches the chosen store through `DelegatingTaskStore`. The TTL isn't announced in the agent card: it has no field for it, and a client meets it as `TaskNotFoundError`.
 - **Alternatives:** the hand-written JSON-RPC server it replaced (its stream format was a guess); the SDK with no domain package (the outcome-to-state rule would live in an adapter); tasks in memory, capped by count (what we had: lost on restart); tasks in MongoDB (the SDK has no MongoDB store, so we'd maintain one).
 

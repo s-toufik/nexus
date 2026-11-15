@@ -111,7 +111,8 @@ New events, fields and outcomes may be added: ignore the ones you don't know, an
 | `TASK_STATE_FAILED` | an `error` |
 | `TASK_STATE_CANCELED` | `CancelTask` |
 
-- `message.metadata.model` picks the model (else `A2A_MODEL`, else the first listed); `message.metadata.autoApprove: true` runs plans without waiting.
+- The card offers the agent's own options as an extension, `https://github.com/s-toufik/agent-runtime/a2a/turn-options/v1` (not required): its `params` give the `models` and the `defaultModel`.
+- `message.metadata["<extension uri>/model"]` picks the model (else `A2A_MODEL`, else the first listed); `message.metadata["<extension uri>/autoApprove"]: true` runs plans without waiting. The short keys `model` and `autoApprove` work too.
 - `GetTask`, `CancelTask`, `ListTasks` and `SubscribeToTask` work on the tasks of the last week (`A2A_TASK_TTL`), kept in a database across restarts; an older one answers `-32001`; `configuration.returnImmediately: true` answers at once with the task to follow.
 - Closing a stream doesn't stop the task; `CancelTask` does.
 - Send `A2A-Version: 1.0`: without it the call is read as A2A 0.3.
@@ -119,24 +120,14 @@ New events, fields and outcomes may be added: ignore the ones you don't know, an
 
 ## Try A2A from Postman
 
-The collection `agent-runtime A2A` is in agent-runtime's `postman/` folder: the card, a conversation (send, stream, get, reply, continue, list), a background task (start without waiting, follow, cancel) and the A2A 0.3 form.
-
-1. In Postman, open agent-runtime's folder as a local workspace.
-   It gives the collection `agent-runtime A2A` and the environment `agent-runtime local`.
-2. Pick the environment `agent-runtime local` and set `base_url` (`http://localhost:8000` for `make run`, or `http://<homelab-host>:8000`).
-   It gives the address every request uses.
-3. Optionally, change the collection variables `prompt`, `reply` (`yes`), `follow_up` and `auto_approve`.
-   It gives what the messages say.
-4. Send `Get the agent card`, then the requests of `Conversation` in order.
-   It gives each task's state in the Console; each request saves `task_id` and `context_id` for the next one.
-5. Or run it all from a terminal:
-   ```bash
-   postman collection run "postman/collections/agent-runtime A2A" -e "postman/environments/agent-runtime local.environment.yaml" --env-var base_url=http://<host>:<port>
-   ```
-   It gives every request with its checks, passed or failed.
-
-- A JSON-RPC error still answers HTTP 200, so the checks read the body's `error`.
-- `Reply in the same task` only works when the task waits (`TASK_STATE_INPUT_REQUIRED`); on an ended task it gets "is in terminal state", which the check expects.
+1. In Postman, click **Import** and paste `http://<host>:<port>/docs/openapi.json` (needs `WEB_DOCS=true`).
+   It gives a collection with `GET /.well-known/agent-card.json`, `POST /a2a` and the other routes.
+2. Send `GET /.well-known/agent-card.json`.
+   It gives the card; `capabilities.extensions` lists the models (`params.models`) and the default.
+3. In `POST /a2a`, add the header `A2A-Version: 1.0`.
+   It gives A2A 1.0; without it the call is read as 0.3 and `SendMessage` answers `-32009` (version not supported).
+4. Put a raw JSON body with `"method": "SendMessage"` and the message, as in the curl above.
+   It gives the task; change `method` and `params` for `GetTask`, `ListTasks`, `CancelTask` and the others.
 
 ## Why it works
 - [[Agent runtime plans and outcomes]] — why a message gets an outcome.
