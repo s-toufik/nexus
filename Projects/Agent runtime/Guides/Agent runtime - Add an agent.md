@@ -20,9 +20,8 @@ updated: 2026-11-15
 3. Check: `make test` — raw: `uv run pytest -q`. `test_every_agent_folder_loads_and_its_prompts_fit_their_steps[<name>]` passes.
 
 ## 2. Let the supervisor call it
-1. In `config/debug/connector/a2a.yml`, add a connector `agent_<name>` with `base_url: ${oc.env:AGENT_<NAME>_URL,""}`, and list it under `a2a:` in `config/root.yml`.
-2. Add `<name>` to `peers` in `agents/supervisor/agent.yml`.
-3. Check: `make check` — raw: `uv run ruff check src tests && uv run ty check && uv run pytest -q`.
+1. Add `<name>` to `peers` in `agents/supervisor/agent.yml`. Nothing in `config/` changes: the supervisor reaches it at `AGENT_<NAME>_URL`, and its database and tasks table are named after it.
+2. Check: `make check` — raw: `uv run ruff check src tests && uv run ty check && uv run pytest -q`.
 
 ## 3. Try it locally
 1. Start it on its own port:

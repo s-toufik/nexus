@@ -2,7 +2,7 @@
 type: project
 status: active
 started: 2026-09
-repos: [agent-runtime]
+repos: [agent-runtime, agent-evaluation]
 tags: [project, agent-runtime, ai]
 updated: 2026-11-15
 ---
@@ -60,4 +60,4 @@ Then [[Agent runtime decisions]] and [[Agent runtime guides]].
 ## Where it stands (2026-11-15)
 - **On `develop`:** seven agents from `agents/`, one pod each; the supervisor answers what needs no data and delegates the rest over A2A with `ask_agents`; `/v1/stream` is now `/v1/api2a`. Needs pycraftcore 6.0.0 and an agent-toolbox with scopes.
 - **Released:** v1.0.0 on the homelab.
-- **On `develop`:** see the repository; the toolbox's new MCP tools appear without changes here (discovered at start).
+- **Repositories:** [[agent-runtime]] (the agents) and [[agent-evaluation]] (the evaluation, out of the runtime since 2026-11-15).

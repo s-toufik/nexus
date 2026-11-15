@@ -2,14 +2,14 @@
 type: guide
 project: "[[Agent runtime]]"
 tags: [guide, agent-runtime]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Agent runtime - Evaluate the agent
 
 > Test a running agent from the outside: send realistic conversations, check the replies in code or with a judge model, read the reports.
 
-**Where:** on your Mac, in `agent-runtime`, with the toolbox and the agent running · **All guides:** [[Agent runtime guides]]
+**Where:** on your Mac, in `agent-evaluation` ([[agent-evaluation]]; `make install` once), with the toolbox and the agent running · **All guides:** [[Agent runtime guides]]
 
 ## Run it
 
@@ -171,11 +171,11 @@ The checks available today (`cases/dsl.py`):
 
 ## Add a check, a capability or a kind
 
-Write a small frozen dataclass in `domain/check/` with a `label` property and an `async verify(context) -> CheckResult`. `context` gives the current reply, the conversation so far, the rules (capabilities, markers, security) and the judge. Export it from `cases/dsl.py` and test it in `tests/agent_evaluation/test_checks.py`.
+Write a small frozen dataclass in `domain/check/` with a `label` property and an `async verify(context) -> CheckResult`. `context` gives the current reply, the conversation so far, the rules (capabilities, markers, security) and the judge. Export it from `cases/dsl.py` and test it in `tests/test_checks.py`.
 
 Add it to `capabilities` in `control_panel.json` with `available` and its tool patterns, then use its name in cases. A case naming a capability the panel doesn't define stops the run with an error before anything is sent.
 
-Add the value to `domain/kind.py`, create `cases/case_<kind>.py` with `KIND` and `CASES`, add the module to `MODULES` in `cases/__init__.py`, and give it an entry under `kinds` in the panel. `tests/agent_evaluation/test_catalog.py` checks that every kind has its file and its cases.
+Add the value to `domain/kind.py`, create `cases/case_<kind>.py` with `KIND` and `CASES`, add the module to `MODULES` in `cases/__init__.py`, and give it an entry under `kinds` in the panel. `tests/test_catalog.py` checks that every kind has its file and its cases.
 
 ## Why it works
 - [[Agent runtime evaluation]] — why an outside evaluation, and how a run is decided.

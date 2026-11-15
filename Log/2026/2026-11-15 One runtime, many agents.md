@@ -22,6 +22,7 @@ tags: [log, ai, agents]
 - The orchestrator and chat merged into one **supervisor** (`agents/supervisor/`): it answers what needs no data and plans `ask_agents` calls for the rest. Seven agents; `agent-supervisor` takes `:8000` and `/api/agent`. homelab-infra got `make pull` and `S=agents` (helmfile label `scope: agents`).
 - The guardrail moved into each `agent.yml` (`guardrail: true`, the default); `GUARDRAIL_ENABLED` is gone.
 - An agent may fix its model in `agent.yml` (`model:`); kitchen runs on `nvidia/nemotron-3.5-lightning-30b-a3b`.
+- Cleanup: names derived from `AGENT` (database, tasks table, peer connectors), no legacy A2A keys, no `role`/`A2A_MODEL`, the guardrail in `TurnShape`, and the evaluation moved to its own repository, [[agent-evaluation]].
 - Tried locally: the toolbox, observation, chat and orchestration as four processes; scopes, cards, `/v1/agents` and a real parallel `ask_agents` call worked (no model server was reachable, so every answer was an error).
 
 ## What I learned
@@ -30,10 +31,10 @@ tags: [log, ai, agents]
 - A routing table chosen from known routes stays testable; a graph assembled from YAML wouldn't ([[Agent runtime turn]]).
 - The a2a-sdk stores task and context ids in `varchar(36)` columns: an id built by joining strings breaks on PostgreSQL only (SQLite doesn't check the size), so a derived id must be a UUID itself.
 - What a tool needs from the turn should reach it as an argument, not from an ambient context variable: the model wasn't in one, so it was silently lost.
-- The a2a-sdk can define a custom-named task table only once per process: tests need distinct names.
+- The a2a-sdk can define a custom-named task table only once per process: create its model once per table name and reuse it.
 
 ## Decisions
-- [[Agent runtime decisions]]: a supervisor instead of an orchestrator and a chat agent; the guardrail set per agent; an agent may fix its model.
+- [[Agent runtime decisions]]: a supervisor instead of an orchestrator and a chat agent; the guardrail set per agent; an agent may fix its model; the cleanup after the agents.
 - [[Agent runtime decisions]]: one runtime, many agents; prompts per agent; turn shapes; delegation as `ask_agents`; `/v1/api2a`.
 - [[Agent toolbox decisions]]: tools served by scope.
 - [[Homelab decisions]]: one release per agent.

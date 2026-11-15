@@ -123,7 +123,7 @@ New events, fields and outcomes may be added: ignore the ones you don't know, an
 | `TASK_STATE_CANCELED` | `CancelTask` |
 
 - The card offers the agent's own options as an extension, `https://github.com/s-toufik/agent-runtime/a2a/turn-options/v1` (not required): its `params` give the `models` and the `defaultModel`.
-- `message.metadata["<extension uri>/model"]` picks the model (else `A2A_MODEL`, else the first listed); `message.metadata["<extension uri>/autoApprove"]: true` runs plans without waiting. The short keys `model` and `autoApprove` work too.
+- `message.metadata["<extension uri>/model"]` picks the model (else the first listed; an agent with its own `model` always uses it); `message.metadata["<extension uri>/autoApprove"]: true` runs plans without waiting. Only these keys are read: the short `model` and `autoApprove` of 1.x are gone.
 - `GetTask`, `CancelTask`, `ListTasks` and `SubscribeToTask` work on the tasks of the last week (`A2A_TASK_TTL`), kept in a database across restarts; an older one answers `-32001`; `configuration.returnImmediately: true` answers at once with the task to follow.
 - Closing a stream doesn't stop the task; `CancelTask` does.
 - Send `A2A-Version: 1.0`: without it the call is read as A2A 0.3.

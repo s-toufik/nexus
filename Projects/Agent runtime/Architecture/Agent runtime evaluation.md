@@ -3,19 +3,19 @@ type: architecture
 project: "[[Agent runtime]]"
 order: 4
 tags: [agent-runtime, architecture, ai, testing]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Agent runtime evaluation
 
-> Unit tests prove the code follows its rules; they can't prove the *model* behaves. `agent_evaluation` is a separate program that talks to a **running** agent over its public API, sends realistic conversations several times, checks the replies in code where it can and with a **judge model** where it must, and writes reports per kind of behaviour.
+> Unit tests prove the code follows its rules; they can't prove the *model* behaves. `agent_evaluation`, in its own repository ([[agent-evaluation]]), is a separate program that talks to a **running** agent over its public API, sends realistic conversations several times, checks the replies in code where it can and with a **judge model** where it must, and writes reports per kind of behaviour.
 
 Previous: [[Agent runtime plans and outcomes]] · Back: [[Agent runtime]]
 
 **Do it:** [[Agent runtime - Evaluate the agent]]
 
 ## Why from the outside
-It never imports the agent or reads its config: it evaluates exactly what is deployed, through the same HTTP contract homelab-ui uses (`message`, `model_name`, `request_id`, `auto_approve`; events `status`, `token`, `final`, `error`, `complete`). If that contract changes, one adapter changes.
+It never imports the agent or reads its config (since the move, it can't: it's another repository, and its judge has its own `ChatOpenAI` client): it evaluates exactly what is deployed, through the same HTTP contract homelab-ui uses (`message`, `model_name`, `request_id`, `auto_approve`; events `status`, `token`, `final`, `error`, `complete`). If that contract changes, one adapter changes.
 
 ## What it checks
 **Kinds:** tool selection, security, guardrail, task completion, memory, relevance, planning, routing, quality.

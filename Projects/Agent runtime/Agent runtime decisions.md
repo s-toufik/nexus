@@ -9,6 +9,12 @@ updated: 2026-11-15
 
 Newest first.
 
+## Cleanup after the agents: one name, one source
+- **Decision:** five cleanups at once. (1) Everything per agent comes from its name: MongoDB database `agent_{agent}` and tasks table `tasks_{agent}` in `operation/database.yml`, peer connectors built from `peers` and one template `agent_peer`; `DB_MONGO_CHECKPOINT_NAME`, `A2A_TASKS_TABLE` and the seven `agent_<name>` connectors are gone. (2) The short A2A metadata keys `model` and `autoApprove` are gone. (3) `ProcessSettings.role`, the self connector named `agent-runtime` and `A2A_MODEL` are gone. (4) The evaluation moved to its own repository, [[agent-evaluation]], with its own `ChatOpenAI` judge. (5) The guardrail is `TurnShape.screen`.
+- **Why:** adding agents had left the name in five places, leftovers of the single-agent version, and a 4,000-line tool inside the runtime that only borrowed its LLM client.
+- **Alternatives:** a rewrite (the layers were sound and 655 tests held the behaviour); keeping `A2A_MODEL` (a fifth level in the model order, now covered by `model` in `agent.yml`).
+- **Consequences:** an agent's values file in homelab-infra only says `AGENT`; the names are the same as before, so no data moves. The a2a-sdk's table model is created once per table name (`database_task_store`), so several stores of one table can exist in a process.
+
 ## An agent may fix its model, in `agent.yml`
 - **Decision:** an optional `model` in `agents/<name>/agent.yml`; `AgentModels` (application layer) wraps the server's model catalog: every turn of that agent runs on it, and its listing (`/v1/models`, the card's turn options) shows only it. The server's pinned steps still win for their step; a model no provider serves stops the agent at boot. The card's `defaultModel` is now always a listed model (an unlisted `A2A_MODEL` gives way to the first listed).
 - **Why:** some agents need a given model (a fast one for kitchen, a code model for coding), and the supervisor passes its own model to every agent it calls: a request alone can't keep an agent on its model.

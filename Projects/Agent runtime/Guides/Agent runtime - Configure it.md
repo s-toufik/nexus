@@ -18,7 +18,6 @@ updated: 2026-11-15
 | `AGENT` | `supervisor` | Which agent this process is: the folder `agents/<AGENT>/` ([[Agent runtime agents]]) |
 | `AGENTS_DIR` | `./agents` | Where the agent folders are |
 | `AGENT_<NAME>_URL` | empty | Where agent `<name>` answers (its root, e.g. `http://agent-observation:8000`), for an agent that calls it; empty: not called |
-| `A2A_TASKS_TABLE` | `tasks` | The A2A tasks table; one per agent when agents share a database |
 | `APP_ENV` | `debug` | Which `config/<APP_ENV>/` folder is read |
 | `CONFIGURATION_DIR` | `./config` | Where `config/` is |
 | `LOG_LEVEL` | `INFO` | `DEBUG`, `INFO`, `WARNING`, `ERROR` or `CRITICAL` |
@@ -27,7 +26,6 @@ updated: 2026-11-15
 | `WEB_BASE_PATH` | empty | A prefix for every route, e.g. `/agent-runtime` → `/agent-runtime/v1/api2a`. Use it when the gateway keeps the prefix. Starts with `/`, no trailing `/` |
 | `WEB_DOCS` | `false` | `true` serves the API documentation at `<base path>/docs` |
 | `AGENT_ANSWER_DELIVERY` | `stream` | `stream`: answers that need no review arrive as `token` events, then `final`. `whole`: only `final` |
-| `A2A_MODEL` | empty | The model A2A tasks use when the message names none (if the agent lists it); empty: the first listed model. An agent with `model` in its `agent.yml` ignores it |
 | `A2A_URL` | empty | The A2A endpoint the agent card announces, e.g. behind a gateway; empty: the address the card was read from, plus `/a2a` |
 | `A2A_TASK_TTL` | `604800` (a week) | How long an A2A task is kept after its last update, in seconds; keep it equal to the conversation's TTL |
 | `DB_POSTGRES_A2A_HOST` / `_PORT` / `_NAME` / `_USERNAME` / `_PASSWORD` | empty, `5432`, `agent_runtime` | A2A task storage in PostgreSQL; no host or unreachable: SQLite (`a2a_tasks.db` next to the checkpoint) |
@@ -40,7 +38,7 @@ updated: 2026-11-15
 
 "Required" variables must exist; an empty value is fine when the feature is unused.
 
-`LOG_LEVEL`, `WEB_BASE_PATH`, `WEB_DOCS`, `MAX_CONCURRENT_STREAMS`, `AGENT_ANSWER_DELIVERY`, `A2A_MODEL`, `A2A_URL` and `A2A_TASK_TTL` have their defaults in the YAML (`root.yml`, `server/asgi.yml`). In a deployment, never pass one empty (e.g. Compose's `${WEB_DOCS}` with nothing set): an empty variable overrides the YAML default, and the agent refuses to start.
+`LOG_LEVEL`, `WEB_BASE_PATH`, `WEB_DOCS`, `MAX_CONCURRENT_STREAMS`, `AGENT_ANSWER_DELIVERY`, `A2A_URL` and `A2A_TASK_TTL` have their defaults in the YAML (`root.yml`, `server/asgi.yml`). In a deployment, never pass one empty (e.g. Compose's `${WEB_DOCS}` with nothing set): an empty variable overrides the YAML default, and the agent refuses to start.
 
 **Configuration files.** `config/root.yml` lists what exists; `config/<APP_ENV>/` defines it:
 
@@ -50,7 +48,7 @@ updated: 2026-11-15
 | `connector/mcp.yml` | The MCP servers |
 | `connector/database.yml` | How to reach each database server (`mongodb`, `sqlite`, `postgresql`): host, port, credentials, `timeout`, `pool` |
 | `operation/database.yml` | What each use stores where: `conversation_mongodb` (database, `checkpoints` and `writes` collections, `ttl` a week), `conversation_sqlite`, `a2a_tasks_postgresql` and `a2a_tasks_sqlite` (database or file, `tasks` table, `ttl` from `A2A_TASK_TTL`). A changed conversation `ttl` is applied to MongoDB's existing indexes at boot; the MongoDB user needs `collMod` (`dbAdmin` or root) |
-| `connector/a2a.yml` and `operation/a2a.yml` | The A2A endpoint the card announces (`A2A_URL`, binding `JSONRPC`) and the default model of A2A tasks (`A2A_MODEL`) |
+| `connector/a2a.yml` and `operation/a2a.yml` | The A2A endpoint the card announces (`A2A_URL`, binding `JSONRPC`), and `agent_peer`, the template of the connector to each peer (`AGENT_<PEER>_URL`) |
 | `connector/telemetry.yml` | The OpenTelemetry collector |
 | `operation/llm.yml` | The models users can pick, and their parameters |
 | `operation/agent.yml` | Which model each step uses |
