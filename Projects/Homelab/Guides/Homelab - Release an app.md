@@ -62,7 +62,7 @@ A tag `vX.Y.Z-rc.N` on `develop` of agent-runtime (or agent-toolbox) publishes t
 GitHub has the new build under the old version (`1.1.2` here), but the server keeps the old one in two caches: helmfile's chart cache (`Skipping refresh for chart … shared cache` in `make apply`), and k3s's images (pods pull an image only if it isn't there yet, `imagePullPolicy: IfNotPresent`). On the server, in `homelab-infra`:
 
 1. **Forget the cached chart:** `helmfile cache cleanup`. The next deploy downloads the chart again.
-2. **Remove the cached image:** `sudo k3s crictl rmi docker.io/toufik142/homelab-ui:1.1.2`. It prints `Deleted: …`; if the image is in use, do step 4, then this step and step 4 again.
+2. **Pull the new build under the same tag:** `sudo k3s crictl pull docker.io/toufik142/homelab-ui:1.1.2`. It prints `Image is up to date for sha256:…`, the new digest. The tag now points at the new build; the running pods keep the old one until step 4, and `sudo k3s crictl rmi --prune` removes it afterwards.
 3. **Deploy the downloaded chart:** `make sync R=homelab-ui` — raw: `helmfile -l name=homelab-ui sync`. It ends with `UPDATED RELEASES: homelab-ui`.
 4. **Replace the pods, so they pull the image:** `make restart R=homelab-ui` — raw: `kubectl -n homelab rollout restart deploy/homelab-ui`. `make ps` shows a new homelab-ui pod.
 5. **Check the pod runs the new build:**
@@ -74,6 +74,7 @@ GitHub has the new build under the old version (`1.1.2` here), but the server ke
 
 - Only the code changed: steps 2, 4, 5 are enough. The chart changed too (`devops/helm/values.yml`): all of them.
 - Same for agent-runtime and agent-toolbox: their release name and image (`toufik142/agent-runtime`, `toufik142/agent-toolbox`).
+- agent-runtime is one image for every agent: pull `toufik142/agent-runtime:X.Y.Z` once, then `make restart R=agent-<name>` for each agent; step 5 for all of them: `kubectl -n homelab get pods -l homelab.io/role=agent -o custom-columns=POD:.metadata.name,IMAGE:.status.containerStatuses[0].imageID`.
 - Next time, tag a new version instead (`v1.1.3`, then `apps.homelabUi: 1.1.3` in `environments/versions.yaml`, `make apply R=homelab-ui`): a new number skips both caches, and `make rollback` still knows the previous build.
 
 ## If it goes wrong
