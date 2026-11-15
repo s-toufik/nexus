@@ -22,7 +22,7 @@ readonly phase = computed<SwarmPhase>(() => { /* idle, thinking, executor, final
 ```
 - Templates read signals; Angular updates exactly the parts that depend on what changed — no zone.js, no manual change detection ([[Signals]]).
 - `effect(() => this.preferences.write({...}))` saves the agent, model and auto-approve choice whenever they change.
-- The **agent** comes from the orchestrator's `GET /v1/agents` (`AgentDirectoryService`); `agentAddress(name)` gives the orchestrator `/api/agent` and every other agent `/api/agents/<name>`. `chooseAgent` starts a new conversation and loads that agent's models.
+- The **agent** comes from the supervisor's `GET /v1/agents` (`AgentDirectoryService`); `agentAddress(name)` gives the supervisor `/api/agent` and every other agent `/api/agents/<name>`. `chooseAgent` starts a new conversation and loads that agent's models.
 - Because the store is a root singleton, the **Agent page and the assistant drawer show one conversation**: they inject the same `AgentStore`.
 
 ## One client for every tool: `GatewayApi`

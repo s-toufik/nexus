@@ -9,6 +9,12 @@ updated: 2026-11-15
 
 Newest first.
 
+## A supervisor instead of an orchestrator and a chat agent
+- **Decision:** `agents/supervisor/` replaces `orchestration` and `chat`: turns `direct, clarify, plan, review`, `tool_scope: none`, peers the six specialists. It answers from general knowledge what needs no data, and plans `ask_agents` calls for what needs the homelab's data or tools. Seven agents.
+- **Why:** the orchestrator couldn't answer directly, so "hello" or "what is a probe?" became a plan to approve, then a call to chat: an extra pod, an extra model call and a wait for nothing.
+- **Alternatives:** keep both (the cost above); give the orchestrator `direct` and keep chat as a peer (nobody calls it).
+- **Consequences:** approval still covers every delegation: a direct turn only offers `request_plan`, never `ask_agents`. `AGENT` defaults to `supervisor`; on the homelab `agent-supervisor` takes `:8000` and `/api/agent`.
+
 ## One runtime, many agents
 - **Decision:** an agent is a folder, `agents/<name>/` (identity, skills, `tool_scope`, `turns`, `peers`, `routes`, `prompts/<step>.md`), read like `config/` with pycraftcore's `OmegaTreeReader`; `AGENT=<name>` picks it, one process (one pod) per agent. Eight to start: orchestration, chat, observation, analysis, coding, security, kitchen, travel.
 - **Why:** one codebase to fix and one image to build; each agent is a small reviewable folder. A pod each keeps their conversations, tasks, tools, restarts and logs apart.

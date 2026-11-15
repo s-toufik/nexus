@@ -7,8 +7,8 @@ updated: 2026-11-15
 
 # Homelab UI page - Agent
 
-> **Route** `/agent` · **for** everyone · **talks to** the agents (the orchestrator's `/api/agent/v1/agents`, then the chosen agent's `/api/agents/<name>/v1/api2a` and `/v1/models`) · **code** `src/app/features/agent/`
-> Talk to one of the homelab's agents — the orchestrator by default, which hands the work to the others: it answers, or proposes a plan that uses tools, runs it when you say yes, and streams its words as it writes them.
+> **Route** `/agent` · **for** everyone · **talks to** the agents (the supervisor's `/api/agent/v1/agents`, then the chosen agent's `/api/agents/<name>/v1/api2a` and `/v1/models`) · **code** `src/app/features/agent/`
+> Talk to one of the homelab's agents — the supervisor by default, which answers itself or hands the work to the others: it answers, or proposes a plan that uses tools, runs it when you say yes, and streams its words as it writes them.
 
 ![[Homelab UI - Agent answer.webp]]
 
@@ -42,7 +42,7 @@ updated: 2026-11-15
 ## Settings
 | # | What | What it tells you, what it does |
 |:-:|---|---|
-| 1 | Agent | Who you talk to. The list comes from the orchestrator (`/api/agent/v1/agents`), which knows every agent; the orchestrator is the default. Choosing another starts a new conversation with it. Remembered on this device, and Tasker's code blocks ask the same agent ([[Agent runtime agents]]). |
+| 1 | Agent | Who you talk to. The list comes from the supervisor (`/api/agent/v1/agents`), which knows every agent; the supervisor is the default. Choosing another starts a new conversation with it. Remembered on this device, and Tasker's code blocks ask the same agent ([[Agent runtime agents]]). |
 | 2 | What it does | The chosen agent's description, from its card. |
 | 3 | Model | The model for this conversation; the list comes from the chosen agent (`/v1/models`). Remembered on this device. |
 | 4 | Auto-approve plans | Run plans without asking. Off by default — keep it off until you trust the task. |
@@ -55,11 +55,11 @@ updated: 2026-11-15
 The picture shows the analysis agent with a staged conversation.
 
 ## Use it to
-- Ask about the homelab and let it look: *"Which pods restarted today?"*, *"How full is the disk?"* — the orchestrator hands it to observation (Grafana) or analysis (PostgreSQL, MongoDB); or pick that agent yourself.
+- Ask about the homelab and let it look: *"Which pods restarted today?"*, *"How full is the disk?"* — the supervisor hands it to observation (Grafana) or analysis (PostgreSQL, MongoDB); or pick that agent yourself.
 - Delegate a small task with files or Python, and approve the plan.
 
 ## How it works
-Each message is `POST /api/agents/<name>/v1/api2a` (the orchestrator: `/api/agent/v1/api2a`) with `{message, model_name, request_id, auto_approve}`; the reply is a stream of `status`, `token`, `final` and `complete` events ([[Homelab UI state and streaming]], [[Agent runtime]]).
+Each message is `POST /api/agents/<name>/v1/api2a` (the supervisor: `/api/agent/v1/api2a`) with `{message, model_name, request_id, auto_approve}`; the reply is a stream of `status`, `token`, `final` and `complete` events ([[Homelab UI state and streaming]], [[Agent runtime]]).
 
 ## What the real homelab showed (2026-11-11)
 - **A new browser gets a broken agent.** The page picks the first model of the list, `qwen3.5-0.8b`, a *local* model. But agent-runtime sends every model call to `llmBaseUrl` = NVIDIA's hosted API (homelab-infra `environments/default.yaml`), which doesn't know that name: every message fails with *The model server rejected the request (404 page not found)*. NVIDIA's models work. *Fixed in the code: each model names its provider in `operation/llm.yml`; local models go to llama-swap (`HOMELAB_LLM_BASE_URL`), NVIDIA's to NVIDIA, each with its own client and circuit breaker.*

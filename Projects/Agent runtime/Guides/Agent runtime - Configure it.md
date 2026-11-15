@@ -15,9 +15,9 @@ updated: 2026-11-15
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `AGENT` | `chat` | Which agent this process is: the folder `agents/<AGENT>/` ([[Agent runtime agents]]) |
+| `AGENT` | `supervisor` | Which agent this process is: the folder `agents/<AGENT>/` ([[Agent runtime agents]]) |
 | `AGENTS_DIR` | `./agents` | Where the agent folders are |
-| `AGENT_<NAME>_URL` | empty | Where agent `<name>` answers (its root, e.g. `http://agent-chat:8000`), for an agent that calls it; empty: not called |
+| `AGENT_<NAME>_URL` | empty | Where agent `<name>` answers (its root, e.g. `http://agent-observation:8000`), for an agent that calls it; empty: not called |
 | `A2A_TASKS_TABLE` | `tasks` | The A2A tasks table; one per agent when agents share a database |
 | `APP_ENV` | `debug` | Which `config/<APP_ENV>/` folder is read |
 | `CONFIGURATION_DIR` | `./config` | Where `config/` is |

@@ -15,7 +15,7 @@ updated: 2026-11-15
 - [[Agent runtime - Configure it]] — env, the agent, config files, models, model per step, more MCP servers.
 
 ## Change it
-- [[Agent runtime - Add an agent]] — a folder, its prompts, the orchestrator's peers.
+- [[Agent runtime - Add an agent]] — a folder, its prompts, the supervisor's peers.
 - [[Agent runtime - Change the agent]] — where to edit for each kind of change.
 - [[Agent runtime - Test and check]]
 - [[Agent runtime - Evaluate the agent]] — the outside evaluation.

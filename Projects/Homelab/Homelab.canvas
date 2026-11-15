@@ -245,7 +245,7 @@
 		{
 			"id": "rt",
 			"type": "text",
-			"text": "### the agents (agent-runtime)\none pod per agent; the orchestrator calls the others over A2A\n[[AI agents and sandboxing]] · [[Agent runtime agents]]",
+			"text": "### the agents (agent-runtime)\none pod per agent; the supervisor answers or calls the others over A2A\n[[AI agents and sandboxing]] · [[Agent runtime agents]]",
 			"x": -140,
 			"y": -935,
 			"width": 190,

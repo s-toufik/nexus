@@ -9,7 +9,7 @@ updated: 2026-11-15
 
 # Agent runtime
 
-> An AI agent served over HTTP. It understands a message, answers straight away when it can, writes a plan when the request needs tools, runs the tools once you approve, reviews its own answer, and streams everything back as server-sent events. One runtime, many agents: a folder `agents/<name>/` makes it the orchestrator, chat, observation, analysis, coding, security, kitchen or travel agent, each in its own pod.
+> An AI agent served over HTTP. It understands a message, answers straight away when it can, writes a plan when the request needs tools, runs the tools once you approve, reviews its own answer, and streams everything back as server-sent events. One runtime, many agents: a folder `agents/<name>/` makes it the supervisor, observation, analysis, coding, security, kitchen or travel agent, each in its own pod.
 
 ## In one picture
 ![[Agent runtime - Harness.svg]]
@@ -58,6 +58,6 @@ Then [[Agent runtime decisions]] and [[Agent runtime guides]].
 [[AI agents and sandboxing]] · [[Agent patterns]] · [[LangGraph]] · [[LLM evaluation]] · [[Guardrails and prompt injection]] · [[Hexagonal architecture]] · [[Dependency injection]] · [[Architecture tests]] · [[Server-sent events]] · [[ASGI]] · [[Python web frameworks]] · [[Data validation with pydantic and msgspec]] · [[asyncio]] · [[Retry and backoff]] · [[OpenTelemetry]] · [[MongoDB]] · [[Git flow]]
 
 ## Where it stands (2026-11-15)
-- **On `develop`:** eight agents from `agents/`, one pod each; the orchestrator delegates over A2A with `ask_agents`; `/v1/stream` is now `/v1/api2a`. Needs pycraftcore 6.0.0 and an agent-toolbox with scopes.
+- **On `develop`:** seven agents from `agents/`, one pod each; the supervisor answers what needs no data and delegates the rest over A2A with `ask_agents`; `/v1/stream` is now `/v1/api2a`. Needs pycraftcore 6.0.0 and an agent-toolbox with scopes.
 - **Released:** v1.0.0 on the homelab.
 - **On `develop`:** see the repository; the toolbox's new MCP tools appear without changes here (discovered at start).

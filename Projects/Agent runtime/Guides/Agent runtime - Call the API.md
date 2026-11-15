@@ -9,14 +9,14 @@ updated: 2026-11-15
 
 > List the models, send a message, and read the streamed reply and its outcome — what a client like homelab-ui does. Other agents use A2A instead.
 
-**Where:** from any machine that reaches the agent (tailnet: `http://<HOMELAB_DOMAIN>:8000`, the orchestrator; signed in: `https://<HOMELAB_DOMAIN>/api/agents/<name>` for any agent) · **All guides:** [[Agent runtime guides]]
+**Where:** from any machine that reaches the agent (tailnet: `http://<HOMELAB_DOMAIN>:8000`, the supervisor; signed in: `https://<HOMELAB_DOMAIN>/api/agents/<name>` for any agent) · **All guides:** [[Agent runtime guides]]
 
 ## List the agents
 
-`GET /v1/agents` returns this agent and the agents it can call (the orchestrator knows them all), with their descriptions and skills:
+`GET /v1/agents` returns this agent and the agents it can call (the supervisor knows them all), with their descriptions and skills:
 
 ```json
-{ "agents": [{ "name": "orchestration", "description": "…", "skills": [] },
+{ "agents": [{ "name": "supervisor", "description": "…", "skills": [] },
              { "name": "chat", "description": "…", "skills": [{ "id": "answer", "name": "Answer and explain", "description": "…", "tags": [], "examples": [] }] }] }
 ```
 

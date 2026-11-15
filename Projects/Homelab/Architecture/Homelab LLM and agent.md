@@ -24,17 +24,17 @@ Previous: [[Homelab observability]] · Next: [[Homelab security model]]
 
 ## The agents
 ```text
-homelab-ui (Agent page, assistant) ─► /api/agent ───────► agent-orchestration ─ A2A (ask_agents) ─► agent-<name>
+homelab-ui (Agent page, assistant) ─► /api/agent ───────► agent-supervisor ─ A2A (ask_agents) ─► agent-<name>
                                    ─► /api/agents/<name> ──────────────────────────────────────────► agent-<name>
-tailnet device ─► <tailscale-ip>:8000 ─► agent-orchestration
+tailnet device ─► <tailscale-ip>:8000 ─► agent-supervisor
 
 agent-<name> ─┬─ OpenAI API ─► NVIDIA's API or llm
               ├─ MCP /mcp/<scope> ─► agent-toolbox ─► files, Python sandbox, grafana_*, mongodb_*, postgres_*
               ├─ conversations ─► MongoDB (database agent_<name>)
               └─ A2A tasks ─► PostgreSQL (table tasks_<name>)
 ```
-- **One release per agent**, `agent-<name>` (orchestration, chat, observation, analysis, coding, security, kitchen, travel), all the same agent-runtime image started with `AGENT=<name>` ([[Agent runtime agents]]). `agents:` in `environments/default.yaml` lists them; `apps/agent-<name>/values.yaml.gotmpl` gives each its name, its MongoDB database and its tasks table.
-- **The orchestrator** is the entry point (`:8000`, `/api/agent`): it never answers itself but calls the others by their service names (`AGENT_<NAME>_URL`). Each agent runs the loop: read the conversation, ask the model, run the tools it asks for, repeat ([[AI agents and sandboxing]]). The models: the homelab's `llm` and NVIDIA's API (key in Secret `agent-runtime`).
+- **One release per agent**, `agent-<name>` (supervisor, observation, analysis, coding, security, kitchen, travel), all the same agent-runtime image started with `AGENT=<name>` ([[Agent runtime agents]]). `agents:` in `environments/default.yaml` lists them; `apps/agent-<name>/values.yaml.gotmpl` gives each its name, its MongoDB database and its tasks table.
+- **The supervisor** is the entry point (`:8000`, `/api/agent`): it answers what needs no data and calls the others by their service names (`AGENT_<NAME>_URL`). Each agent runs the loop: read the conversation, ask the model, run the tools it asks for, repeat ([[AI agents and sandboxing]]). The models: the homelab's `llm` and NVIDIA's API (key in Secret `agent-runtime`).
 - **agent-toolbox** is an [[Model Context Protocol|MCP]] server: file tools on its own volume, a Python executor, and the tools it **republishes** from three other MCP servers, served **by scope** (`/mcp/<scope>`): each agent sees only its own.
 
 ## The MCP servers behind the toolbox

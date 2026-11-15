@@ -66,7 +66,7 @@ Nobody clicks in Keycloak's console. `gateway/keycloak/sync.sh` runs as a [[Jobs
 
 ## Edge cases
 - **Endless redirect / error after sign-in**: almost always step 8 — pods can't reach `<domain>`. Check the `coredns-custom` ConfigMap (deployed by the Caddy release).
-- **Programs vs browsers**: MongoDB, Kafka, OTLP, the orchestrator (agent-orchestration) `:8000`, agent-toolbox `:8001` are *not* behind the sign-in — their clients can't do a browser login. They're reachable from the tailnet only. Never forward them on the router.
+- **Programs vs browsers**: MongoDB, Kafka, OTLP, the supervisor (agent-supervisor) `:8000`, agent-toolbox `:8001` are *not* behind the sign-in — their clients can't do a browser login. They're reachable from the tailnet only. Never forward them on the router.
 - **The cookie is `__Host-`**: the browser only accepts it with `Secure`, `Path=/` and no `Domain` — it can't leak to another subdomain.
 - **Signing everyone out**: `make sessions-revoke` rotates oauth2-proxy's cookie secret (every cookie becomes unreadable) and ends Keycloak sessions.
 - **Safari web apps upgrade `http://` to `https://`**: that's why the agent's docs moved from `:8000` (plain HTTP) to `:8100` (HTTPS through Caddy).
