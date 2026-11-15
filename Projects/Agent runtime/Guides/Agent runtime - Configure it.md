@@ -27,7 +27,7 @@ updated: 2026-11-15
 | `WEB_BASE_PATH` | empty | A prefix for every route, e.g. `/agent-runtime` → `/agent-runtime/v1/api2a`. Use it when the gateway keeps the prefix. Starts with `/`, no trailing `/` |
 | `WEB_DOCS` | `false` | `true` serves the API documentation at `<base path>/docs` |
 | `AGENT_ANSWER_DELIVERY` | `stream` | `stream`: answers that need no review arrive as `token` events, then `final`. `whole`: only `final` |
-| `A2A_MODEL` | empty | The model A2A tasks use when the message names none; empty: the first listed model |
+| `A2A_MODEL` | empty | The model A2A tasks use when the message names none (if the agent lists it); empty: the first listed model. An agent with `model` in its `agent.yml` ignores it |
 | `A2A_URL` | empty | The A2A endpoint the agent card announces, e.g. behind a gateway; empty: the address the card was read from, plus `/a2a` |
 | `A2A_TASK_TTL` | `604800` (a week) | How long an A2A task is kept after its last update, in seconds; keep it equal to the conversation's TTL |
 | `DB_POSTGRES_A2A_HOST` / `_PORT` / `_NAME` / `_USERNAME` / `_PASSWORD` | empty, `5432`, `agent_runtime` | A2A task storage in PostgreSQL; no host or unreachable: SQLite (`a2a_tasks.db` next to the checkpoint) |

@@ -9,6 +9,12 @@ updated: 2026-11-15
 
 Newest first.
 
+## An agent may fix its model, in `agent.yml`
+- **Decision:** an optional `model` in `agents/<name>/agent.yml`; `AgentModels` (application layer) wraps the server's model catalog: every turn of that agent runs on it, and its listing (`/v1/models`, the card's turn options) shows only it. The server's pinned steps still win for their step; a model no provider serves stops the agent at boot. The card's `defaultModel` is now always a listed model (an unlisted `A2A_MODEL` gives way to the first listed).
+- **Why:** some agents need a given model (a fast one for kitchen, a code model for coding), and the supervisor passes its own model to every agent it calls: a request alone can't keep an agent on its model.
+- **Alternatives:** a default only (any request, the supervisor's included, would override it); a model per step in `agent.yml` (not needed yet; the server's pins cover steps); the model in the card only (the card describes the agent, it doesn't configure it).
+- **Consequences:** `ModelRegistry` gained `model_for(requested)`; the UI's model menu shows one model for such an agent.
+
 ## The guardrail is set per agent, in `agent.yml`
 - **Decision:** `guardrail: true|false` in each `agents/<name>/agent.yml` decides whether the agent screens its plans; it defaults to `true`, and every folder says it. The `GUARDRAIL_ENABLED` variable is gone (the chart set it to `true` for every pod).
 - **Why:** how much an agent is checked belongs to what the agent is, like its tool scope. The agents the supervisor calls run auto-approved, so their own screening is the only check of the steps they actually run.
