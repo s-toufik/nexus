@@ -9,6 +9,12 @@ updated: 2026-11-15
 
 Newest first.
 
+## The guardrail is set per agent, in `agent.yml`
+- **Decision:** `guardrail: true|false` in each `agents/<name>/agent.yml` decides whether the agent screens its plans; it defaults to `true`, and every folder says it. The `GUARDRAIL_ENABLED` variable is gone (the chart set it to `true` for every pod).
+- **Why:** how much an agent is checked belongs to what the agent is, like its tool scope. The agents the supervisor calls run auto-approved, so their own screening is the only check of the steps they actually run.
+- **Alternatives:** keep the variable and set it per release in homelab-infra (the agent's safety would live away from the agent); both, the variable overriding (two sources of truth).
+- **Consequences:** a local run screens as its folder says; turning screening off is a reviewed change in the folder, not a deployment setting.
+
 ## A supervisor instead of an orchestrator and a chat agent
 - **Decision:** `agents/supervisor/` replaces `orchestration` and `chat`: turns `direct, clarify, plan, review`, `tool_scope: none`, peers the six specialists. It answers from general knowledge what needs no data, and plans `ask_agents` calls for what needs the homelab's data or tools. Seven agents.
 - **Why:** the orchestrator couldn't answer directly, so "hello" or "what is a probe?" became a plan to approve, then a call to chat: an extra pod, an extra model call and a wait for nothing.

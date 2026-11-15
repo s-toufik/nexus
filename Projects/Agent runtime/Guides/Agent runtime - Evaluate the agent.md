@@ -13,7 +13,7 @@ updated: 2026-11-08
 
 ## Run it
 
-1. **Start the toolbox and the agent** the way you normally do, and leave them running. For the GUARDRAIL cases, start the agent with `GUARDRAIL_ENABLED=true`.
+1. **Start the toolbox and the agent** the way you normally do, and leave them running. For the GUARDRAIL cases, the agent you evaluate needs `guardrail: true` in its `agent.yml`.
 2. **Point the control panel at them**: edit `src/agent_evaluation/control_panel.json`, at least `agent.base_url`, `agent.model_name` and the `judge` section.
    ```json
    "agent": { "base_url": "http://<agent-host>:<port>", "endpoint": "/v1/api2a", "model_name": "<a name GET /v1/models lists>" }
@@ -89,7 +89,7 @@ Cases name what they need (`jira`, `oracle`, `files_write`…), never a tool nam
 - `tools` are name patterns (`*` wildcard) matched against the tools the agent reports having used. When you connect a new MCP server, set its capability to `available: true` and adjust the patterns to the tool names it exposes.
 - A case that **needs** an unavailable capability is reported as SKIPPED, with the reason. Some cases run **only while** a capability is missing: for example, without Jira the agent must not pretend it created a ticket.
 - `*_write` capabilities (`jira_write`, `confluence_write`) let cases create real tickets and pages. Enable them only against a test project or space.
-- `guardrail` is not a tool: set it to `true` when the agent runs with `GUARDRAIL_ENABLED=true`.
+- `guardrail` is not a tool: set it to `true` when the agent's `agent.yml` has `guardrail: true`.
 
 ## Read the results
 
@@ -153,7 +153,7 @@ Case(
   | `RELEASE_NOTES` | First line: "# Release 4.18.0 (2026-10-14)". |
   | `INVOICE_WITH_INJECTION` | Vendor Northwind Logistics GmbH, EUR 18,450.00, due 2026-11-15, plus a hidden instruction that must be ignored. |
 - Send anything destructive or secret-related without `auto_approve`: if the agent goes along with it, it only proposes a plan, so nothing runs and no secret reaches the reports.
-- GUARDRAIL cases need the agent started with `GUARDRAIL_ENABLED=true`, declared by the `guardrail` capability.
+- GUARDRAIL cases need an agent with `guardrail: true` in its `agent.yml`, declared by the `guardrail` capability.
 - Every message also gets `Completes()` automatically: a reply with an error event or no content fails.
 
 The checks available today (`cases/dsl.py`):

@@ -27,7 +27,7 @@ Previous: [[Agent runtime layers]] · Next: [[Agent runtime plans and outcomes]]
 | understand | What is this message: task, plan change, yes/drop, direct question, rework, too vague | `agent_context` |
 | clarify | Ask a question back | — |
 | plan | Write steps, each naming one tool | `agent_plan` |
-| screen | (guardrail on) refuse unsafe plans | `agent_guard` |
+| screen | (the agent's `guardrail: true`) refuse unsafe plans | `agent_guard` |
 | act | Answer, or call the current step's tools | `agent_act` |
 | run_tools | Execute tool calls over MCP | — |
 | review | Check the answer against the request | `agent_reflection` |
@@ -57,7 +57,7 @@ The rows below are the full shape, every route allowed. An agent's `turns` keeps
 | review | `retry_allowed` | feedback |
 | review | always | finish |
 | finish → summarize → end | | |
-With the guardrail, plan → screen → (act | finish).
+With the guardrail (`guardrail: true` in the agent's `agent.yml`), plan → screen → (act | finish).
 
 **Why a table and not graph edges written by hand:** the rules are data you can read in one screen, test without a model, and generate the graph from. The engine follows the policy, never the reverse ([[Agent patterns]]).
 

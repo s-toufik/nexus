@@ -215,6 +215,6 @@ List it under `mcp:` in `config/root.yml` and deploy: its tools join the catalog
 | Retries only for what's retryable | [[Retry and backoff]] | model calls (`connector/api.yml`) | [[Path - Serving HTTP well]] |
 | Tools over a protocol | [[Model Context Protocol]] | `adapter/outbound/tool/` | [[Path - Tools and safety]] |
 | Evaluation from outside | [[LLM evaluation]] | `src/agent_evaluation/` | [[Path - Proving it works]] |
-| Guardrails | [[Guardrails and prompt injection]] | screen step, `GUARDRAIL_ENABLED` | [[Path - Tools and safety]] |
+| Guardrails | [[Guardrails and prompt injection]] | screen step, `guardrail` in `agent.yml` | [[Path - Tools and safety]] |
 
 **Milestone:** you can explain any reply the agent gives, and point to the file that decided it.

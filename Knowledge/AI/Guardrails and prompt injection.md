@@ -21,7 +21,7 @@ updated: 2026-11-08
 - The **lethal trifecta**: private data + untrusted content + a way out → remove a leg.
 
 ## In our projects
-- agent-runtime's optional **screen** step (`GUARDRAIL_ENABLED=true`) refuses unsafe plans (`refused` outcome); plans need approval by default ([[Agent runtime plans and outcomes]]).
+- agent-runtime's **screen** step (`guardrail: true` in each agent's `agent.yml`, on for every agent) refuses unsafe plans (`refused` outcome); plans need approval by default ([[Agent runtime plans and outcomes]]).
 - The evaluation's `INVOICE_WITH_INJECTION` fixture and security checks (`KeepsInstructionsPrivate`, `LeaksNoSecrets`) ([[Agent runtime evaluation]]).
 - The toolbox fence and read-only MCP accounts ([[Homelab LLM and agent]]).
 
