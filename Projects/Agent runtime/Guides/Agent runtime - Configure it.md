@@ -45,7 +45,9 @@ updated: 2026-11-15
 |---|---|
 | `connector/api.yml` | The model server; `timeout` (seconds one model call may wait) and `retry` (retries after a 5xx, a 429 or a connection failure; a silent model is not retried) |
 | `connector/mcp.yml` | The MCP servers |
-| `connector/database.yml` | MongoDB, SQLite, PostgreSQL for A2A tasks, and how long conversations are kept (`ttl` of `mongodb_checkpointer`). A changed `ttl` is applied to MongoDB's existing indexes at boot, so it needs no manual step; the MongoDB user needs `collMod` (`dbAdmin` or root) |
+| `connector/database.yml` | How to reach each database server (`mongodb`, `sqlite`, `postgresql`): host, port, credentials, `timeout`, `pool` |
+| `operation/database.yml` | What each use stores where: `conversation_mongodb` (database, `checkpoints` and `writes` collections, `ttl` a week), `conversation_sqlite`, `a2a_tasks_postgresql` and `a2a_tasks_sqlite` (database or file, `tasks` table, `ttl` from `A2A_TASK_TTL`). A changed conversation `ttl` is applied to MongoDB's existing indexes at boot; the MongoDB user needs `collMod` (`dbAdmin` or root) |
+| `connector/a2a.yml` and `operation/a2a.yml` | The A2A endpoint the card announces (`A2A_URL`, binding `JSONRPC`) and the default model of A2A tasks (`A2A_MODEL`) |
 | `connector/telemetry.yml` | The OpenTelemetry collector |
 | `operation/llm.yml` | The models users can pick, and their parameters |
 | `operation/agent.yml` | Which model each step uses |

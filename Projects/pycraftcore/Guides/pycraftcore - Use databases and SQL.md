@@ -18,13 +18,15 @@ Repositories are built from a database connector and share one interface, `Async
 ```python
 from pycraftcore.repository.adapter import SqliteRepositoryFactory, SqliteSettingsMapper
 
-factory = SqliteRepositoryFactory(SqliteSettingsMapper(config.connector.database("users"))())
+factory = SqliteRepositoryFactory(SqliteSettingsMapper(config.operation.database("users"))())
 repository = await factory.connect()
 rows = await repository.execute("SELECT id, email FROM users LIMIT 10")
 await factory.disconnect()
 ```
 
 `PostgresRepositoryFactory` / `PostgresSettingsMapper` and `MongoRepositoryFactory` / `MongoSettingsMapper` work the same way, and so will any database added later: a factory, a settings mapper and a repository behind the same `AsyncRepository` port.
+
+A settings mapper takes a database operation: the connection from its connector (host, port, credentials, `timeout`, `pool`), the database from the operation. PostgreSQL gives up connecting after `timeout`; MongoDB waits that long to find the server and keeps its own pool. See [[pycraftcore - Configure a service]] for what goes where.
 
 Every factory has three methods: `connect()` gives the `AsyncRepository`, `connection()` gives the driver's own client, `disconnect()` closes both. `connection()` is for handing the database to a library with its own code, such as LangGraph's checkpointers in agent-runtime.
 
@@ -56,7 +58,7 @@ from pycraftcore.repository.adapter import (
     SqlAlchemyRepositoryFactory,
 )
 
-builder = PostgresEngineBuilder(PostgresSettingsMapper(config.connector.database("tasks"))())
+builder = PostgresEngineBuilder(PostgresSettingsMapper(config.operation.database("tasks"))())
 factory = SqlAlchemyRepositoryFactory(builder)   # SqliteEngineBuilder(...) works the same
 await factory.ping()                             # raises when the database can't be reached
 engine = await factory.connection()              # an AsyncEngine, for the library

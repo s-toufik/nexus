@@ -34,6 +34,12 @@ updated: 2026-11-15
 - **Alternatives:** a fix inside agent-runtime (MongoDB code in a service); dropping and recreating the index (rebuilds it, and needs no less privilege); dropping the database by hand after each TTL change.
 - **Consequences:** changing an index needs the `collMod` action (`dbAdmin` or root), more than `readWrite`.
 
+## Databases and A2A split into connectors and operations
+- **Decision:** a database connector holds only what every use needs to connect (engine, host, port, auth, `timeout`, a typed `pool` of `min`/`max`); a `DatabaseOperation` holds what one use does (`database`, `collections` by role, `ttl`, `parameters`) and is what the settings mappers take. An `A2aConnector` (`base_url`, `timeout`, `binding`) and `A2aOperation` join API, file and MCP. 6.0.0.
+- **Why:** `default_name`, `pool.timeout_ms` and `pool.ttl` were one use's settings inside the connection, and collection names lived in code; two uses of one server needed two connectors. A2A settings sat in a server's free-form `parameters`.
+- **Alternatives:** keep `default_name` on the connector as a default (PostgreSQL connects to one database, but every use would still repeat names and TTLs elsewhere); the connect timeout in the operation (it's the same for every use, so it belongs with the connection).
+- **Consequences:** unknown keys are refused on database connectors, pools and operations, so a 5.x config fails at load with the key to move instead of being half-ignored. MongoDB's pool stays pymongo's: mapping `pool.max` (default 1) would shrink it. The PostgreSQL connect timeout also stops a ping to an unreachable host from hanging.
+
 ## Configuration as connectors, operations and servers
 - **Decision:** YAML + OmegaConf, env interpolation, pydantic validation; only the loader reads the environment.
 - **Why:** one vocabulary for every service; fail at boot, not mid-request.

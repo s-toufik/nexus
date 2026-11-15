@@ -3,7 +3,7 @@ type: architecture
 project: "[[Agent runtime]]"
 order: 1
 tags: [agent-runtime, architecture]
-updated: 2026-11-14
+updated: 2026-11-15
 ---
 
 # Agent runtime layers
@@ -40,7 +40,7 @@ The wiring only builds and connects objects, one class per kind, each given what
 |---|---|
 | `ToolsDI` | MCP sessions from `connector/mcp.yml`, the tool registry and its refresher, the `Toolbox` |
 | `ModelsDI` | Model providers, their resilient HTTP clients, the `ModelCatalog` from `operation/llm.yml` and `operation/agent.yml` |
-| `StorageDI` | The conversation checkpointer (MongoDB, else SQLite) and the A2A task database (PostgreSQL, else SQLite), from `connector/database.yml` |
+| `StorageDI` | The conversation checkpointer (MongoDB, else SQLite) and the A2A task database (PostgreSQL, else SQLite), from the database operations of `operation/database.yml` (names, tables, TTLs) and their connectors |
 | `WorkflowDI` | The step handlers, the LangGraph graph and its runner |
 | `A2aDI` | The agent card, the SDK's request handler, the task store and its cleanup |
 

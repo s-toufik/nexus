@@ -2,7 +2,7 @@
 type: guide
 project: "[[Web framework benchmark]]"
 tags: [guide, web-framework]
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 # Web framework benchmark - Configure the shop
@@ -26,7 +26,8 @@ The work the shop does is set in `config/debug/`:
 | `server/asgi.yml` | `parameters`: the seed, the number of products, the image size |
 | `operation/inventory.yml`, `pricing.yml` | `latency_ms`: how long each fake API call takes |
 | `operation/market.yml` | `ticks` and `interval_ms`: the length and pace of the product stream |
-| `connector/database.yml` | The SQLite database and its connection pool |
+| `connector/database.yml` | Where the SQLite files go and their connection pool |
+| `operation/database.yml` | `shop`: the shop's SQLite file |
 
 ## Why it works
 - [[pycraftcore configuration]] · [[Web framework benchmark design]]
