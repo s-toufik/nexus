@@ -38,7 +38,7 @@ The wiring only builds and connects objects, one class per kind, each given what
 
 | Class | Builds |
 |---|---|
-| `ToolsDI` | MCP sessions from `connector/mcp.yml` (the toolbox at the agent's scope), the agents it may call (`ask_agents`), the tool registry and its refresher, the `Toolbox` |
+| `ToolsDI` | MCP sessions from `connector/mcp.yml` (the toolbox at the agent's scope), the agents it may call (`delegate_tasks`), the tool registry and its refresher, the `Toolbox` |
 | `ModelsDI` | Model providers, their resilient HTTP clients, the `ModelCatalog` from `operation/llm.yml` and `operation/agent.yml` |
 | `StorageDI` | The conversation checkpointer (MongoDB, else SQLite) and the A2A task database (PostgreSQL, else SQLite), from the database operations of `operation/database.yml` (names, tables, TTLs) and their connectors |
 | `WorkflowDI` | The step handlers the agent's turns reach, the `TurnPolicy` of its shape, the LangGraph graph and its runner |

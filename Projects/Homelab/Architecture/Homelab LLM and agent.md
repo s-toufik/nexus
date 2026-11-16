@@ -24,7 +24,7 @@ Previous: [[Homelab observability]] · Next: [[Homelab security model]]
 
 ## The agents
 ```text
-homelab-ui (Agent page, assistant) ─► /api/agent ───────► agent-supervisor ─ A2A (ask_agents) ─► agent-<name>
+homelab-ui (Agent page, assistant) ─► /api/agent ───────► agent-supervisor ─ A2A (delegate_tasks) ─► agent-<name>
                                    ─► /api/agents/<name> ──────────────────────────────────────────► agent-<name>
 tailnet device ─► <tailscale-ip>:8000 ─► agent-supervisor
 

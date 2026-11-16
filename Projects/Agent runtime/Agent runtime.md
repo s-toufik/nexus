@@ -41,7 +41,7 @@ The harness around the model, and what it holds: models, memory, protocols. How 
 | Steps and routing | Plain Python: `HandleMessage`, step handlers, `TurnPolicy` (the rows an agent's turns allow) | [[Agent runtime turn]] |
 | Workflow engine | LangGraph, generated from `TurnPolicy`; a checkpointer stores conversations in MongoDB (SQLite fallback) | [[LangGraph]] |
 | Models | LangChain chat models, one adapter per role, any OpenAI-compatible server | [[OpenAI-compatible API]] |
-| Tools | MCP clients to the toolbox (the agent's scope) and any `external_mcp_*` server; other agents through `ask_agents` (A2A client) | [[Model Context Protocol]], [[Agent2Agent protocol]] |
+| Tools | MCP clients to the toolbox (the agent's scope) and any `external_mcp_*` server; other agents through `delegate_tasks` (A2A client) | [[Model Context Protocol]], [[Agent2Agent protocol]] |
 | Foundation | [[pycraftcore]]: configuration, logging, telemetry, web toolkit | |
 | Evaluation | `agent_evaluation`, a separate program testing the running agent | [[Agent runtime evaluation]] |
 
@@ -58,6 +58,6 @@ Then [[Agent runtime decisions]] and [[Agent runtime guides]].
 [[AI agents and sandboxing]] · [[Agent patterns]] · [[LangGraph]] · [[LLM evaluation]] · [[Guardrails and prompt injection]] · [[Hexagonal architecture]] · [[Dependency injection]] · [[Architecture tests]] · [[Server-sent events]] · [[ASGI]] · [[Python web frameworks]] · [[Data validation with pydantic and msgspec]] · [[asyncio]] · [[Retry and backoff]] · [[OpenTelemetry]] · [[MongoDB]] · [[Git flow]]
 
 ## Where it stands (2026-11-15)
-- **On `develop`:** seven agents from `agents/`, one pod each; the supervisor answers what needs no data and delegates the rest over A2A with `ask_agents`; `/v1/stream` is now `/v1/api2a`. Needs pycraftcore 6.0.0 and an agent-toolbox with scopes.
+- **On `develop`:** seven agents from `agents/`, one pod each; the supervisor answers what needs no data and delegates the rest over A2A with `delegate_tasks`; `/v1/stream` is now `/v1/api2a`. Needs pycraftcore 6.0.0 and an agent-toolbox with scopes.
 - **Released:** v1.0.0 on the homelab.
 - **Repositories:** [[agent-runtime]] (the agents) and [[agent-evaluation]] (the evaluation, out of the runtime since 2026-11-15).

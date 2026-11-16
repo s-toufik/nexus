@@ -10,6 +10,7 @@ What happened, and when. One note per work session in `Log/<year>/`, named `YYYY
 Before working on a project, read its latest entry: you know where we stopped.
 
 ## 2026
+- [[2026-11-16 Agent progress, delegate_tasks]]
 - [[2026-11-16 Center sky, Agents map, role ids]]
 - [[2026-11-16 Agents scenes, chart zoom, account deletion]]
 - [[2026-11-16 People 404 and map false alarms]]

@@ -107,3 +107,8 @@ Newest first.
 ## Conversations in MongoDB, SQLite fallback
 - **Decision:** LangGraph checkpointer on MongoDB; SQLite when MongoDB is unreachable.
 - **Why:** conversations are documents; local runs need no database server.
+
+## Delegation is `delegate_tasks`, and delegated work is visible (2026-11-16)
+- **Decision:** `ask_agents` ({agent, message}) is renamed `delegate_tasks` ({agent, task}). Peers are asked with A2A streaming; each agent publishes its plan, tool calls and delegations as `progress` (A2A `working` status metadata, SSE `progress` event), and the supervisor forwards a peer's progress under the peer's name.
+- **Why:** a person should see which agent works on what, its plan steps and tool calls, and agents working in parallel, as Claude shows its sub-agents.
+- **Consequences:** release agent-runtime and homelab-ui together; earlier sections above keep the old name as it was then. See [[2026-11-16 Agent progress, delegate_tasks]].

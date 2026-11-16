@@ -73,7 +73,7 @@
 			"y": 0,
 			"width": 860,
 			"height": 140,
-			"text": "### adapter/outbound\nLangChain model per role + PromptBook (the agent's prompts, else generic) · Toolbox (MCP, the agent's scope) · A2aPeerAgents (ask_agents) · LangGraph graph generated from TurnPolicy · checkpointer\n[[LangGraph]] · [[Hexagonal architecture]]"
+			"text": "### adapter/outbound\nLangChain model per role + PromptBook (the agent's prompts, else generic) · Toolbox (MCP, the agent's scope) · A2aPeerAgents (delegate_tasks) · LangGraph graph generated from TurnPolicy · checkpointer\n[[LangGraph]] · [[Hexagonal architecture]]"
 		},
 		{
 			"id": "steps",
@@ -137,7 +137,7 @@
 			"y": 320,
 			"width": 300,
 			"height": 130,
-			"text": "### Other agents\nA2A: cards, ask_agents (several at once)\n[[Agent2Agent protocol]]"
+			"text": "### Other agents\nA2A: cards, delegate_tasks (several at once)\n[[Agent2Agent protocol]]"
 		}
 	],
 	"edges": [
@@ -193,7 +193,7 @@
 			"id": "e6",
 			"fromNode": "out",
 			"toNode": "peers",
-			"label": "ask_agents",
+			"label": "delegate_tasks",
 			"fromSide": "right",
 			"toSide": "left"
 		}
