@@ -21,6 +21,8 @@ updated: 2026-11-16
 
 ## What it does
 - **Today** (`/`): a short briefing — the date, a greeting, one or two sentences of what matters — then only what has something: waiting plans and alerts, the homelab in four numbers (admins), recent conversations.
+- **Center** (`/`): the first page, a globe of constellations where every page is a star; drag, zoom, fly to a group, click a star to open it.
+- **Agents** (`/agents`): a live map of the Assistant and its agents as animated scenes, with lines when it asks one.
 - **Assistant** (`/assistant`): conversations listed beside the open one, each tied to an agent, deletable one by one or all at once; plans wait in a card (Approve and run · Change it · Dismiss); a details column on wide screens. The drawer opens the assistant beside tool pages. Conversations are kept per account in the browser; agent-runtime's memory expires after 7 days.
 - **Map** (`/map`, admins): the cluster laid out like homelab-infra, live pod states, click a service to follow what it talks to.
 - **People** (`/people`, admins): a list beside the person's pages as switches; add a person with a temporary password.
