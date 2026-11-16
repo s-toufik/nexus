@@ -21,12 +21,12 @@ updated: 2026-11-16
 
 ## What it does
 - **Today** (`/`): a short briefing — the date, a greeting, one or two sentences of what matters — then only what has something: waiting plans and alerts, the homelab in four numbers (admins), recent conversations.
-- **Assistant** (`/assistant`): conversations listed beside the open one, each tied to an agent; plans wait in a card (Approve and run · Change it · Dismiss). The drawer opens the assistant beside tool pages.
+- **Assistant** (`/assistant`): conversations listed beside the open one, each tied to an agent, deletable one by one or all at once; plans wait in a card (Approve and run · Change it · Dismiss); a details column on wide screens. The drawer opens the assistant beside tool pages. Conversations are kept per account in the browser; agent-runtime's memory expires after 7 days.
 - **Map** (`/map`, admins): the cluster laid out like homelab-infra, live pod states, click a service to follow what it talks to.
 - **People** (`/people`, admins): a list beside the person's pages as switches; add a person with a temporary password.
-- **⌘K** finds any page or conversation, or asks an assistant. A receding sidebar on iPad and computer, a tab bar on the phone.
+- **⌘K** finds any page or conversation, or asks an assistant. A sidebar that folds to icons on iPad and computer (`[`); on the phone a slim top bar and a menu sliding from the left with the recent conversations.
 - **Tool pages:** Status, Dashboards, Metrics, Logs, Traces, Kafka, Pipeline, Models, Tools, Tool UIs, Kubernetes (admins), Tasker.
-- **Themes:** Navy (default), Light, Contrast, or Match my device, saved on the account.
+- **Themes:** Navy (default), Light, Contrast, Blossom, Lilac, Forest, Dragon Rider, Wizarding, or Match my device, saved on the account.
 
 ## How it's built
 | Part | Where | Role |
