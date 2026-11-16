@@ -4,12 +4,12 @@ status: active
 started: 2026-09
 repos: [homelab-ui]
 tags: [project, homelab-ui, frontend]
-updated: 2026-11-15
+updated: 2026-11-16
 ---
 
 # Homelab UI
 
-> The homelab's app for everyone at home: one Angular app, served by the gateway, that shows each person only the pages they were given — assistants like Kitchen and Travel for the family, every tool of the [[Homelab]] for admins — in one of five themes, on the phone, the tablet and the computer.
+> The homelab's app for everyone at home: one Angular app, served by the gateway, that shows each person only the pages they were given — assistants like Kitchen and Travel for the family, every tool of the [[Homelab]] and a live map of the cluster for admins — calm on a computer, comfortable on a phone.
 
 ## In one picture
 ![[Homelab UI.canvas]]
@@ -20,14 +20,13 @@ updated: 2026-11-15
 - **A real frontend to learn from.** Signals, dependency injection, lazy routes, streaming, a canvas editor, a strict layering rule — the skills of a modern frontend engineer.
 
 ## What it does
-- **Home** (`/`): a greeting, the person's assistants as full-colour cards (a waiting plan shows "1 plan to approve"), their pages as tiles, one Ask bar; admins also get the control center below.
-- **People** (`/people`, admins): accounts, the Access grid (people × pages), Add a person with a temporary password.
-- **Appearance:** Bright, Midnight, Sand, Pastel, Contrast or "Match my device", saved on the account.
-- **Control center** (on Home, admins): alerts, server gauges, data, LLM, Kubernetes, busiest containers, errors.
-- **Status** (`/status`): every homelab container, Ready / Not ready / Unknown, with links and connection addresses.
-- **Tool pages:** Dashboards, Metrics, Logs, Traces, Kafka, Pipeline, Models, Tools, Account, Tool UIs, Kubernetes (admins).
-- **Assistants** (`/agent/<name>`): one conversation per agent, a plan shown with **Go ahead / Change it / Not now**; the **assistant drawer** beside tool pages — streamed token by token from [[Agent runtime]].
-- **Tasker:** blocks on a canvas (Trigger, HTTP, Code, Transform, Output), run in the browser, saved per account in PostgreSQL through PostgREST.
+- **Today** (`/`): a short briefing — the date, a greeting, one or two sentences of what matters — then only what has something: waiting plans and alerts, the homelab in four numbers (admins), recent conversations.
+- **Assistant** (`/assistant`): conversations listed beside the open one, each tied to an agent; plans wait in a card (Approve and run · Change it · Dismiss). The drawer opens the assistant beside tool pages.
+- **Map** (`/map`, admins): the cluster laid out like homelab-infra, live pod states, click a service to follow what it talks to.
+- **People** (`/people`, admins): a list beside the person's pages as switches; add a person with a temporary password.
+- **⌘K** finds any page or conversation, or asks an assistant. A receding sidebar on iPad and computer, a tab bar on the phone.
+- **Tool pages:** Status, Dashboards, Metrics, Logs, Traces, Kafka, Pipeline, Models, Tools, Tool UIs, Kubernetes (admins), Tasker.
+- **Themes:** Navy (default), Light, Contrast, or Match my device, saved on the account.
 
 ## How it's built
 | Part | Where | Role |

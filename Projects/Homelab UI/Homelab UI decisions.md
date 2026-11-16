@@ -9,6 +9,12 @@ updated: 2026-11-15
 
 Newest first.
 
+## 2026-11-16 — Draft 5 · Briefing replaces the Draft 2 build
+- **Decision:** a calm desktop app that adapts down: a receding sidebar (Today, Assistant, Map, pages in Observe / Operate / Automate), a tab bar on the phone, one ⌘K field to find or ask, Today written as a briefing, conversations each tied to an agent, plans as a card in the conversation, People as list and detail, and an interactive Map of the cluster. Navy, Light and Contrast themes (Geist, Geist Mono for addresses), density by pointer.
+- **Why:** the Draft 2 build promoted the agents four times on one screen, repeated the navigation on Home and stretched phone cards across a desktop ([[2026-11-16 Homelab UI Briefing design]]).
+- **Alternatives:** polishing Draft 2 (the structure was the problem, not the colours).
+- **Consequences:** the access model, guards, People API, theme pipeline and agent streaming stay; the rail, the colourful Home, the Ask bar and the five-theme set are gone; old saved conversations are read and kept.
+
 ## 2026-11-15 — Draft 2 · Bright, five themes, one role per page
 - **Decision:** homelab-ui becomes an app for everyone at home in the Draft 2 · Bright design: Home shows only the pages a person was given, assistants as full-colour cards, one Ask bar; an app rail on iPad and computer, none on a phone. Access is a Keycloak realm role per page (`agent:kitchen`, `app:tasker`, `page:metrics`…) read from the `role:<name>` groups oauth2-proxy already sends; `admin` opens everything. Admins manage people in the UI through `/api/people` (Keycloak's admin API with their own token). Five themes (Bright, Midnight, Sand, Pastel, Contrast) or "Match my device", saved on the person's account.
 - **Why:** family members need a simple app with only their pages, on their iPhone; one role per page needs no new service, and the gateway can enforce the same roles ([[Homelab decisions]]).
