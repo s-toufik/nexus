@@ -26,7 +26,7 @@ updated: 2026-11-16
 - **People** (`/people`, admins): a list beside the person's pages as switches; add a person with a temporary password.
 - **⌘K** finds any page or conversation, or asks an assistant. A sidebar that folds to icons on iPad and computer (`[`); on the phone a slim top bar and a menu sliding from the left with the recent conversations.
 - **Tool pages:** Status, Dashboards, Metrics, Logs, Traces, Kafka, Pipeline, Models, Tools, Tool UIs, Kubernetes (admins), Tasker.
-- **Themes:** Navy (default), Light, Contrast, Blossom, Lilac, Forest, Dragon Rider, Wizarding, or Match my device, saved on the account.
+- **Themes:** Everyday (Navy, Light, Contrast, Blossom, Lilac, Forest) and Storybook, which change the whole appearance (Wizarding, Dragon Rider, Demigod, Regency), or Match my device, saved on the account. Side panels peek on hover, stay on click and resize.
 
 ## How it's built
 | Part | Where | Role |
