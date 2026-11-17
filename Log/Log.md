@@ -10,6 +10,7 @@ What happened, and when. One note per work session in `Log/<year>/`, named `YYYY
 Before working on a project, read its latest entry: you know where we stopped.
 
 ## 2026
+- [[2026-11-17 Agent casts]]
 - [[2026-11-17 Agent details window]]
 - [[2026-11-17 Observatory globe and pixel cast]]
 - [[2026-11-17 Plan panel and stopped answers]]
