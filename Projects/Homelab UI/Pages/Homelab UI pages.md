@@ -2,13 +2,16 @@
 type: index
 project: "[[Homelab UI]]"
 tags: [homelab-ui, ui-page, index]
-updated: 2026-11-12
+updated: 2026-11-18
 ---
 
 # Homelab UI pages
 
 > Every page of [[Homelab UI]], one note each: a real screenshot with numbered markers, what each number is, what the page is for, how it works underneath, what our homelab showed on 2026-11-11, and something to try.
 > The pictures are the real homelab with its domain, addresses and personal data masked (`<HOMELAB_DOMAIN>`, `<server>`, `<pod-ip>`, `you@example.com`). Two are sample data, and say so.
+
+> [!warning]- The menu picture below predates Draft 5 and the 2026-11-18 chrome rework
+> The *Draft 5* shell ([[Homelab UI decisions]], 2026-11-16) replaced the Settings/Sign-out menu and the Platform/AI/Automation/Observability/Streaming sections pictured below with Center/Today/Assistant/Agents/Map, ⌘K search, and Observe/Operate/Automate/Life sections; the 2026-11-18 rework then moved search into the sidebar and turned the top toolbar into a floating assistant button. Only [[Homelab UI page - Kitchen]]'s own picture reflects current reality — the rest of this gallery (including the menu below) is pending a full refresh.
 
 ## The menu
 ![[Homelab UI - Menu.webp]]
@@ -44,6 +47,7 @@ The [[Homelab UI page - Control center|control center]] is `/`, and the [[Homela
 | Repeat a check without me | [[Homelab UI page - Tasker\|Tasker]] | |
 | My password, my sessions | [[Homelab UI page - Account\|Account]] | |
 | The tool's own full interface | [[Homelab UI page - Tool UIs\|Tool UIs]] | |
+| What's for dinner? Scale a recipe, check its macros? | [[Homelab UI page - Kitchen\|Kitchen]] | [[Kitchen Atelier]] |
 
 ## How every page works
 Every page is a lazy-loaded *feature* (`src/app/features/<feature>/`) that calls one backend through the gateway: `/api/<tool>/…` on the same HTTPS origin, behind the same sign-in, on an allow-list of paths ([[Homelab UI structure]], [[Homelab gateway and sign-in]]). Changes carry the `X-Homelab-Request: 1` header, and admin-only changes need `role:admin` at Caddy.
