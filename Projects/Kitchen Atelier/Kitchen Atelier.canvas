@@ -1,0 +1,128 @@
+{
+  "nodes": [
+    {
+      "id": "read",
+      "type": "text",
+      "x": -760,
+      "y": -280,
+      "width": 300,
+      "height": 240,
+      "text": "## Read in order\n1. [[Kitchen Atelier structure]]\n2. [[Kitchen Atelier ingredients]]\n\n[[Kitchen Atelier decisions]] · [[Kitchen Atelier guides]]",
+      "color": "6"
+    },
+    {
+      "id": "ui",
+      "type": "text",
+      "x": -760,
+      "y": 0,
+      "width": 300,
+      "height": 150,
+      "text": "## homelab-ui Kitchen page\n/api/kitchen/… through Caddy\n[[Homelab UI page - Kitchen]]",
+      "color": "5"
+    },
+    {
+      "id": "g",
+      "type": "group",
+      "x": -400,
+      "y": -280,
+      "width": 820,
+      "height": 480,
+      "label": "kitchen-atelier",
+      "color": "4"
+    },
+    {
+      "id": "api",
+      "type": "text",
+      "x": -380,
+      "y": -250,
+      "width": 780,
+      "height": 100,
+      "text": "### FastAPI — /v1/recipes, /v1/ingredients\nbootstrap wires domain ⬆︎ application ⬆︎ adapter (pycraftcore DI)"
+    },
+    {
+      "id": "domain",
+      "type": "text",
+      "x": -380,
+      "y": -120,
+      "width": 250,
+      "height": 150,
+      "text": "### domain/\nRecipe · RecipeVersion (immutable) · IngredientLine · Unit\n[[Kitchen Atelier structure]]"
+    },
+    {
+      "id": "uc",
+      "type": "text",
+      "x": -100,
+      "y": -120,
+      "width": 250,
+      "height": 150,
+      "text": "### application/\nSaveRecipeVersion (409 if stale) · SearchIngredients · RefreshIngredientCatalog"
+    },
+    {
+      "id": "adapters",
+      "type": "text",
+      "x": 180,
+      "y": -120,
+      "width": 180,
+      "height": 150,
+      "text": "### adapter/\nmongo · sql · ciqual"
+    },
+    {
+      "id": "mongo",
+      "type": "text",
+      "x": -380,
+      "y": 70,
+      "width": 250,
+      "height": 110,
+      "text": "### MongoDB `kitchen`\none doc per recipe, one per version\n[[Homelab data]]"
+    },
+    {
+      "id": "pg",
+      "type": "text",
+      "x": -100,
+      "y": 70,
+      "width": 250,
+      "height": 110,
+      "text": "### PostgreSQL `homelab`.`kitchen`\nrole `kitchen_atelier` owns it\n[[Kitchen Atelier ingredients]]"
+    },
+    {
+      "id": "ciqual",
+      "type": "text",
+      "x": 180,
+      "y": 70,
+      "width": 180,
+      "height": 110,
+      "text": "### ANSES CIQUAL\nbulk CSV, weekly CronJob,\ndiff not rewrite"
+    },
+    {
+      "id": "agent",
+      "type": "text",
+      "x": 940,
+      "y": -160,
+      "width": 340,
+      "height": 170,
+      "text": "### Agent toolbox scope_kitchen\ncurated read-only mongodb_*/postgres_* tools, not the wildcard\n[[Kitchen Atelier decisions]]",
+      "color": "1"
+    },
+    {
+      "id": "kagent",
+      "type": "text",
+      "x": 940,
+      "y": 40,
+      "width": 340,
+      "height": 110,
+      "text": "### kitchen agent (agent-runtime)\nalready existed — now has real data to read\n[[Agent runtime agents]]"
+    }
+  ],
+  "edges": [
+    { "id": "e0", "fromNode": "ui", "toNode": "g", "label": "/api/kitchen", "fromSide": "right", "toSide": "left" },
+    { "id": "e1", "fromNode": "api", "toNode": "domain" },
+    { "id": "e2", "fromNode": "api", "toNode": "uc" },
+    { "id": "e3", "fromNode": "uc", "toNode": "adapters" },
+    { "id": "e4", "fromNode": "adapters", "toNode": "mongo" },
+    { "id": "e5", "fromNode": "adapters", "toNode": "pg" },
+    { "id": "e6", "fromNode": "adapters", "toNode": "ciqual" },
+    { "id": "e7", "fromNode": "agent", "toNode": "mongo", "label": "read-only", "fromSide": "left", "toSide": "top" },
+    { "id": "e8", "fromNode": "agent", "toNode": "pg", "label": "read-only", "fromSide": "left", "toSide": "right" },
+    { "id": "e9", "fromNode": "kagent", "toNode": "agent", "label": "tool_scope: kitchen", "fromSide": "top", "toSide": "bottom" }
+  ]
+}

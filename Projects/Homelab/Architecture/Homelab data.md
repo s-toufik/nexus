@@ -3,7 +3,7 @@ type: architecture
 project: "[[Homelab]]"
 order: 4
 tags: [homelab, architecture, data]
-updated: 2026-11-15
+updated: 2026-11-18
 ---
 
 # Homelab data
@@ -32,6 +32,7 @@ Roles declared in `repository/postgres/values.yaml.gotmpl` ([[PostgreSQL roles a
 | `postgrest` | yes | `NOINHERIT`, member of `tasker_web` | PostgREST connects as it, then switches |
 | `mcp` | yes | `pg_read_all_data` (+ `pg_write_all_data` if write is on) | postgres-mcp, the agent's SQL tools |
 | `agent_runtime` | yes | owner of database `agent_runtime` | the agents' A2A tasks, one table each, `tasks_<name>` (the a2a-sdk creates it) |
+| `kitchen_atelier` | yes | owner of schema `kitchen` inside `homelab` (`AUTHORIZATION kitchen_atelier`) | [[Kitchen Atelier]]'s ingredient catalog |
 
 **Passwords:** the operator reads each role's password from a Secret of type `basic-auth`; the Secret's label `cnpg.io/reload: "true"` makes it re-apply the password when you rotate it — no restart.
 
@@ -56,9 +57,12 @@ The `tasker` schema is built by numbered SQL files in `repository/db-migrate/mig
 - New change → `make migration-new NAME=…`, write it, `make migrate` (also reloads PostgREST's schema cache).
 - Never edit an applied migration: write a new one.
 
+## Kitchen: a schema inside `homelab`, not a database of its own
+[[Kitchen Atelier]]'s ingredient catalog is a `kitchen` schema inside `homelab`, owned outright by the `kitchen_atelier` role (`CREATE SCHEMA kitchen AUTHORIZATION kitchen_atelier`, migration `006_create_kitchen_schema_and_ingredients.sql`) — not RLS-gated like Tasker's, since kitchen-atelier is a backend service with its own login, not a browser talking through PostgREST. It rides the same nightly `pg_dump --dbname=homelab` backup, and is reachable by `postgres-mcp` (and so the kitchen agent, through `scope_kitchen`) without touching the shared MCP pod ([[Kitchen Atelier decisions]]).
+
 ## MongoDB
-A single [[MongoDB]] [[Deployment and StatefulSet|StatefulSet]] (one pod, its own volume) holds the agents' conversations, one database each (`agent_<name>`), so no agent reads another's.
-- Root account from Secret `mongodb`; the `mcp` user (read, or read-write) is created by a Job running `mcp-user.js`.
+A single [[MongoDB]] [[Deployment and StatefulSet|StatefulSet]] (one pod, its own volume) holds the agents' conversations, one database each (`agent_<name>`), so no agent reads another's — plus app databases that aren't an agent's memory, named for the app instead: `kitchen` ([[Kitchen Atelier]]'s recipes and versions, not to be confused with `agent_kitchen`, the kitchen *agent's* own conversation checkpoints).
+- Root account from Secret `mongodb`; the `mcp` user (read, or read-write) is created by a Job running `mcp-user.js`. kitchen-atelier itself also connects with the root account (Secret `mongodb`) rather than a scoped account of its own — there's no per-app least-privilege Mongo account mechanism yet, a gap shared by every app-level consumer of this instance.
 - Published on the Tailscale address `:27017` (its own password, not the sign-in) so Compass can connect.
 - **Pinned to 7.0.x**: MongoDB 8 refuses to start on Linux kernels 6.19–7.0.13, and the server runs 7.0.0. A typical edge case: a version is not only "newer", it has requirements.
 

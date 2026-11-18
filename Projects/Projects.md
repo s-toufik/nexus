@@ -12,7 +12,8 @@ What we build, and why. One folder per project: its note (start there), a canvas
 | Project | What it is | Guides |
 |---|---|---|
 | [[Homelab]] | The home server on Kubernetes: gateway and sign-in, data, observability, local LLMs, all deployed as one release train | [[Homelab guides]] |
-| [[Homelab UI]] | The front door: every tool as a page, the agent beside every page, Tasker | [[Homelab UI guides]] |
+| [[Homelab UI]] | The front door: every tool as a page, the agent beside every page, Tasker, Kitchen | [[Homelab UI guides]] |
+| [[Kitchen Atelier]] | The recipe/nutrition API behind homelab-ui's Kitchen page: versioned recipes in MongoDB, a CIQUAL-backed ingredient catalog in PostgreSQL | [[Kitchen Atelier guides]] |
 
 ## The agent
 | Project | What it is | Guides |
@@ -36,9 +37,12 @@ What we build, and why. One folder per project: its note (start there), a canvas
 ## How they fit
 ```text
             Homelab UI ──► Agent runtime ──MCP──► Agent toolbox ──► grafana/mongodb/postgres MCP
+                │               │                      │                    ▲
+                │               └── kitchen agent ──────────────scope_kitchen┘
+                └── Kitchen page ──► Kitchen Atelier ──► MongoDB `kitchen`, PostgreSQL `homelab`.`kitchen`
                 │               │                      │
                 └───────────────┴──── all run on ──► Homelab (k3s, helmfile, kube-charts)
-  pycraftcore ◄── used by Agent runtime, Agent toolbox, Web framework benchmark
+  pycraftcore ◄── used by Agent runtime, Agent toolbox, Kitchen Atelier, Web framework benchmark
   Archetype   ──► the layout they grew from; generated Pricelab's cores
   GitHub showcase ◄── reads the homelab's helmfile and this vault every day
 ```

@@ -2,12 +2,17 @@
 type: decisions
 project: "[[Agent toolbox]]"
 tags: [agent-toolbox, decisions]
-updated: 2026-11-15
+updated: 2026-11-18
 ---
 
 # Agent toolbox decisions
 
 Newest first.
+
+## 2026-11-18 — `scope_kitchen` gains read-only Mongo/Postgres tools
+- **Decision:** `scope_kitchen` (`config/debug/operation/scope.yml`), previously just `[python_executor]`, now also lists `mongodb_find`, `mongodb_aggregate`, `mongodb_collection_schema`, `mongodb_collection_indexes`, `mongodb_list_collections`, `postgres_list_schemas`, `postgres_list_objects`, `postgres_get_object_details`, `postgres_execute_sql` — a curated read-only subset, not the `mongodb_*`/`postgres_*` wildcard `scope_analysis` uses.
+- **Why:** the kitchen agent now has real data to read ([[Kitchen Atelier]]'s recipes and ingredient catalog) and should see only that, not every collection and schema the shared MongoDB/PostgreSQL instances also hold.
+- **Consequences:** see the full story, including the Mongo/Postgres side, in [[Kitchen Atelier decisions]].
 
 ## 2026-11-15 — Tools served by scope, one endpoint each
 - **Decision:** a scope is an `mcp` operation on the `self` connector (`config/debug/operation/scope.yml`): a name and shell-style patterns of tool names. Each scope gets its own MCP server at `/mcp/<scope>` (`all` stays at `/mcp`), its own publisher filtering catalog changes by scope, and, when its patterns name it, its own `python_executor` built over the scope's view, so its description and its sandbox bridge cover only that scope's tools. `python_executor` is opt-in: a scope that runs no code (observation, security) doesn't list it.

@@ -2,9 +2,9 @@
 type: project
 status: active
 started: 2026-10-30
-repos: [homelab-infra, kube-charts, homelab-ui, agent-runtime, agent-toolbox]
+repos: [homelab-infra, kube-charts, homelab-ui, agent-runtime, agent-toolbox, kitchen-atelier]
 tags: [project, homelab, kubernetes]
-updated: 2026-11-15
+updated: 2026-11-18
 ---
 
 # Homelab
@@ -32,6 +32,7 @@ updated: 2026-11-15
 | The charts | [[kube-charts]] | The generic `app` [[Helm]] chart every service runs on, and `pg-cluster` for PostgreSQL |
 | The front door | [[Homelab UI]] | Angular control center: status, every tool as a page, the agent beside every page, Tasker |
 | The agent | [[Agent runtime]], [[Agent toolbox]] | The AI agent and its tools ([[Model Context Protocol|MCP]]), fenced off by [[NetworkPolicy]] |
+| Kitchen | [[Kitchen Atelier]] | Recipes and a French ingredient catalog, behind homelab-ui's Kitchen page and the kitchen agent's own scoped tools |
 
 The platform runs on [[k3s]], a small [[Kubernetes]]. Every service is a Helm release; [[helmfile]] deploys them together, in order — the *release train*.
 
