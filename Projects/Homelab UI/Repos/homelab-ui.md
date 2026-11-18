@@ -5,7 +5,7 @@ repo: https://github.com/s-toufik/homelab-ui
 language: TypeScript (Angular 21)
 status: active
 tags: [repository, homelab, homelab-ui]
-updated: 2026-11-08
+updated: 2026-11-18
 ---
 
 # homelab-ui
@@ -47,6 +47,8 @@ src/app/
 │   ├── status/                  -- /status: every homelab-infra container, its state, links, connection
 │   ├── agent/                   -- /agent chat (reference example for a page) + components/assistant (the drawer)
 │   ├── tasker/                  -- block canvas, split panes, groups; workflows and favorites via PostgREST
+│   ├── kitchen/                 -- /kitchen, /kitchen/recipes, /kitchen/ingredients: recipes and the CIQUAL catalog, via Kitchen Atelier
+│   ├── issues/                  -- /issues: report a bug (anyone), triage the list (admins), via PostgREST
 │   ├── grafana/                 -- /dashboards/:id: Grafana's dashboards as panel lists (domain/dashboards.ts)
 │   ├── prometheus/              -- /metrics: PromQL, targets, rules
 │   ├── loki/                    -- /logs: LogQL, labels, live
@@ -101,7 +103,7 @@ Every address is built from `shared/infrastructure/homelab-server.json` and the 
 
 In production the server address is the page's own host (`HOMELAB_SERVER_URL` follows `location`), unless a host is saved in Settings → Connectors; `homelab-server.json` is only used by `npm start`.
 
-`GatewaySession` reads the signed-in account from `/oauth2/userinfo` at start-up, shows it in the left sidebar with a Sign out link, checks again every minute and when the tab comes back, and sends the browser to the sign-in page when the session has ended. Tasker keeps unsaved canvases per account (`homelab-ui.tasker.workspace.<account>`).
+`GatewaySession` reads the signed-in account from `/oauth2/userinfo` at start-up, shows it in the left sidebar with a Sign out link, checks again every minute and when the tab comes back, and sends the browser to the sign-in page on a 401 — but only once per 10s, so an admin-gated route hit without the role fails as a visible error instead of an infinite reload loop ([[Homelab UI decisions]], 2026-11-18). Tasker keeps unsaved canvases per account (`homelab-ui.tasker.workspace.<account>`).
 
 Tasker's HTTP blocks run in the browser: from the HTTPS page they can only call `https://` addresses.
 

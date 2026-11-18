@@ -9,6 +9,24 @@ updated: 2026-11-18
 
 Newest first.
 
+## 2026-11-18 — A 401 means "sign in again," not "you're signed out" — so the redirect is guarded
+- **Context:** an admin-gated API route (Issues' `GET /reports`) returns 401 from oauth2-proxy's `allowed_groups` forward_auth check both when the session is genuinely gone *and* when it's valid but lacks the role. `GatewayApi` couldn't tell those apart and bounced to `/oauth2/sign_in` either way; when it was really the role case, oauth2-proxy's own session was still fine, so it bounced straight back to the same page, which hit the same 401, which redirected again — an infinite reload loop, reported from a real phone.
+- **Decision:** `GatewaySession.signIn()` records when it redirects (`sessionStorage`) and refuses to redirect again within 10s of its own last attempt, returning `false` instead; `GatewayApi` only shows "Signing in again…" when a redirect actually happened, otherwise a message that says to try reloading. The marker clears on the next successful `/oauth2/userinfo` load.
+- **Why:** the two causes are indistinguishable from the HTTP status alone, so the fix is to stop the *loop*, not to try to guess which one it was.
+- **Alternatives:** telling 401 apart by response body (oauth2-proxy's forward_auth response isn't under this app's control to annotate); never auto-redirecting on 401 (breaks the common, legitimate "cookie actually expired" case).
+- **Consequences:** any future admin-gated route hit by a non-admin fails the same safe way — one bounce, then a visible error — instead of wedging the tab in a reload loop.
+
+## 2026-11-18 — `overflow: visible` on mobile was clipping nothing and un-clipping everything
+- **Context:** on a real phone, the whole app rendered zoomed out and undersized, with content running past the screen edge — reported as "the page zooms out" when tapping things that caused a reflow (e.g. the Kitchen version stepper).
+- **Decision:** `shell/layout/layout.scss`'s mobile rule (`@media max-width:767px`) changes `.layout` from `overflow: hidden` to `overflow-x: hidden; overflow-y: visible` instead of a blanket `overflow: visible`.
+- **Why:** the assistant drawer sits off-canvas via `position: absolute; right:0; transform: translateX(100%)` — on desktop `.layout`'s `overflow: hidden` clips it clean off-screen, but the mobile override (added so the page's *height* isn't clipped, letting the document itself scroll) accidentally un-clipped the *horizontal* overflow too, so the hidden drawer's full width counted toward the page's scrollable area. Mobile Safari/Chrome then render the whole layout viewport at that inflated width, shrunk to fit the real screen — which is what "zoomed out" actually was. `overflow-x`/`overflow-y` split keeps the vertical intent without the horizontal side effect.
+- **Consequences:** any future off-canvas panel (absolute/fixed + translated out of view) is safe under `.layout` on mobile without needing its own clipping; a global phone-width check (`document.documentElement.scrollWidth === window.innerWidth`) is a fast way to catch a regression of this kind on any page.
+
+## 2026-11-18 — Every `<input>`/`<select>`/`<textarea>` is floored at 16px on touch devices
+- **Decision:** `styles.scss` adds, under `@media (pointer: coarse)`: `input, select, textarea { font-size: max(16px, 1em) !important; }`.
+- **Why:** the body's base font is 14px, and several feature-local styles sized inputs even smaller in `rem` (e.g. the kitchen ingredient row's name field computed to ~12px) — iOS Safari auto-zooms the whole page on focusing any input under 16px, which is indistinguishable from "the page jumps when I tap a field" until you check computed styles on a real device. `max(16px, 1em)` floors it without shrinking anything intentionally set larger.
+- **Alternatives:** hunting down and raising every feature's own input font-size (same fix repeated per component, easy to miss one); `!important` was chosen deliberately here — normal cascade order would have component-scoped class selectors win over this global type-selector rule, so without it the floor wouldn't apply where it's actually needed.
+
 ## 2026-11-18 — The global toolbar is gone; the assistant toggle floats
 - **Context:** the sticky top bar on every page had shrunk to three things: the ⌘K search field, the "ask about this page" assistant toggle, and (on the one page that uses it) a page-settings gear — a whole reserved row for at most two small icons.
 - **Decision:** the bar itself is gone. Search moved into the sidebar as a `Search` nav item, right above Center (opens the same command palette). The assistant toggle is now a small floating button, fixed bottom-right on every page, hidden under 768px like the bar was. The page-settings gear — used only by the Assistant/Chat page — moved into that page's own local header, next to its agent picker, reusing the same `LayoutStore.togglePanel()`/`hoverPanel()` it always called.

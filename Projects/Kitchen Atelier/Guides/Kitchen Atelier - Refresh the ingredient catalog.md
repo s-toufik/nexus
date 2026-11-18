@@ -26,8 +26,9 @@ updated: 2026-11-18
 3. `make apply R=kitchen-atelier` — raw: see [[Homelab change cookbook]].
 
 ## If it goes wrong
-- `CIQUAL_DATASET_URL` is still the placeholder (`REPLACE-WITH-REAL-RESOURCE-ID`): fill in the real data.gouv.fr resource id — nothing downloads until it's set.
-- A run writes far more rows than expected: ANSES changed the CSV's column layout; check `ciqual_parser.py` against the new header row before trusting the diff.
+- `CIQUAL_DATASET_URL` is set to data.gouv.fr's stable resource link for *"Table Ciqual 2020 en Français au format Excel"* (`bcdb7fec-875c-42aa-ba6e-460adf97aad3`), which redirects to the file on `ciqual.anses.fr` itself — if ANSES's own site is in maintenance (it was, as of 2026-11-18), the redirect resolves fine but the download 503s. Retry later; the weekly schedule will too.
+- ANSES has since moved the *current* edition (2025, more foods) to `entrepot.recherche.data.gouv.fr` (DOI `10.57745/RDMHWY`) — not switched to because that domain wasn't reachable to check its direct-download URL shape when this was last touched, and the freely-downloadable mirror on Zenodo (`zenodo.org/records/4770202`) is English-only, whose header names don't match [[Kitchen Atelier ingredients|`CiqualRowMapper`'s]] French column markers (`alim_nom_fr`, …).
+- A run writes far more rows than expected: ANSES changed the file's column layout; check `CiqualRowMapper`'s marker tuples against the new header row before trusting the diff.
 
 ## Why it works
 - [[Kitchen Atelier ingredients]] — why this is a weekly bulk diff, not a live per-ingredient lookup.
