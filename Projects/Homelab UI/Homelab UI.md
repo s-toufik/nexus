@@ -4,7 +4,7 @@ status: active
 started: 2026-09
 repos: [homelab-ui]
 tags: [project, homelab-ui, frontend]
-updated: 2026-11-16
+updated: 2026-11-18
 ---
 
 # Homelab UI

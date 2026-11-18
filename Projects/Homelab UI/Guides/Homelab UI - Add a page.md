@@ -2,7 +2,7 @@
 type: guide
 project: "[[Homelab UI]]"
 tags: [guide, homelab-ui]
-updated: 2026-11-08
+updated: 2026-11-18
 ---
 
 # Homelab UI - Add a page
@@ -78,7 +78,7 @@ export function provideMetricsFeature(): Provider {
     id: 'metrics',
     label: 'Metrics',
     description: 'Host and container metrics.',
-    category: 'Observability',
+    category: 'Observability', // or Platform / AI / Automation / Streaming / Life
     icon: ['M4 20V10M10 20V4M16 20v-7M22 20H2'],
     entry: { kind: 'page', path: '/metrics' },
   }));
@@ -110,11 +110,19 @@ import { PagePanelContentDirective } from '@shell/directives/page-panel-content.
 export class MetricsPage {}
 ```
 
-That's the entire contract: register the template, and the shell shows/hides the right sidebar and its mobile toggle automatically. Skip this step and the page simply has no right sidebar — that's how `status` and the tool pages work.
+Registering the template is enough for the mobile phone-bar's toggle, which shows itself automatically whenever `PageChromeStore.rightPanel()` is set. On desktop, since the shell no longer renders a global toolbar ([[Homelab UI decisions]], 2026-11-18), the page must add its own open button in its own header:
+
+```html
+<button type="button" (click)="layout.togglePanel()"
+        (mouseenter)="layout.hoverPanel(true)" (mouseleave)="layout.hoverPanel(false)">
+  <!-- a settings icon -->
+</button>
+```
+(`protected readonly layout = inject(LayoutStore);` in the component.) See the Assistant page's own header for a worked example. Skip this step and the page simply has no right sidebar — that's how `status` and the tool pages work.
 
 ## 6. Verify
 
-`make run`, open `http://localhost:4200`: the new page appears in the left nav and in the control center's apps, `/metrics` routes to it, the assistant button shows at the top right, and (if step 5 was done) its settings show in the right sidebar.
+`make run`, open `http://localhost:4200`: the new page appears in the left nav and in the control center's apps, `/metrics` routes to it, the assistant button floats at the bottom right, and (if step 5 was done) its settings show in the right sidebar through a button you add to the page's own header — the shell no longer renders a global one ([[Homelab UI decisions]], 2026-11-18).
 
 ## If it goes wrong
 - The page calls a backend: [[Homelab UI - Extend a page#Call a new API]].

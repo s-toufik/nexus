@@ -2,12 +2,31 @@
 type: decisions
 project: "[[Homelab UI]]"
 tags: [homelab-ui, decisions]
-updated: 2026-11-15
+updated: 2026-11-18
 ---
 
 # Homelab UI decisions
 
 Newest first.
+
+## 2026-11-18 — The global toolbar is gone; the assistant toggle floats
+- **Context:** the sticky top bar on every page had shrunk to three things: the ⌘K search field, the "ask about this page" assistant toggle, and (on the one page that uses it) a page-settings gear — a whole reserved row for at most two small icons.
+- **Decision:** the bar itself is gone. Search moved into the sidebar as a `Search` nav item, right above Center (opens the same command palette). The assistant toggle is now a small floating button, fixed bottom-right on every page, hidden under 768px like the bar was. The page-settings gear — used only by the Assistant/Chat page — moved into that page's own local header, next to its agent picker, reusing the same `LayoutStore.togglePanel()`/`hoverPanel()` it always called.
+- **Why:** a dedicated top row for one or two icons wastes vertical space on every page; neither icon was actually page-specific chrome (search is global, the assistant toggle already worked the same everywhere) except the gear, which only one page ever used.
+- **Alternatives:** keeping the bar just for the assistant icon (the row survives for one icon); making every page own a local "page actions" slot (over-engineered for something only one page needs).
+- **Consequences:** the `Toolbar` component is deleted; `PageChromeStore.rightPanel()` still exists but nothing renders its toggle globally anymore — a future page that wants a right panel must put its own open button in its own header, the way the Assistant page now does.
+
+## 2026-11-18 — A `Life` feature category and nav section
+- **Decision:** `FEATURE_CATEGORIES` gets a `Life` entry alongside Platform/AI/Automation/Observability/Streaming, and `NAV_SECTIONS` a matching `Life` section (`navSection()` routes it there instead of falling through to `Operate`). Kitchen is its first member.
+- **Why:** `Operate` was already Platform + AI + Streaming + anything else lumped together (Status, Kubernetes, Models, Tools, Kafka…) — infrastructure you operate. A recipe app isn't that; giving it nowhere to go but `Operate` would have buried it among unrelated tools.
+- **Alternatives:** putting Kitchen under `Operate` anyway (what actually happened at first, until it was pointed out); a fifth generic "Other" section (says nothing about what's in it).
+- **Consequences:** `NAV_SECTIONS` now has four entries instead of three; a future non-infrastructure, non-AI, non-automation page has a section that fits it.
+
+## 2026-11-18 — Kitchen's theme derives from the app's own CSS variables, not a hardcoded palette
+- **Decision:** the Kitchen page was built to match a provided design pixel-for-pixel (parchment background, saffron/terracotta/sage accents, Inter/JetBrains Mono) — but every `--k-*` token in `kitchen-theme.scss` is defined as `var(--surface)`, `var(--text)`, `var(--hue-amber)`, `var(--hue-orange)`, `var(--hue-green)`… from the app's own theme system, never a literal hex value.
+- **Why:** so it follows whichever of the app's nine themes (and light/dark) the person picked, the same as every other page, instead of always rendering light regardless of appearance settings — verified against the `navy` (dark) and `forest` themes.
+- **Alternatives:** the literal hex palette from the design as given (pixel-exact in light mode, but always light — illegible or jarring in dark theme); a Kitchen-specific dark-mode override block (double the palette to maintain, and still wrong for the other seven themes).
+- **Consequences:** Kitchen's colours shift with every theme, including non-light/dark ones like `wizarding` or `dragon`; a future page that wants the same "distinct but on-theme" look should alias its own tokens onto `--surface`/`--text`/`--hue-*` the same way rather than hardcoding.
 
 ## 2026-11-16 — Draft 5 · Briefing replaces the Draft 2 build
 - **Decision:** a calm desktop app that adapts down: a receding sidebar (Today, Assistant, Map, pages in Observe / Operate / Automate), a tab bar on the phone, one ⌘K field to find or ask, Today written as a briefing, conversations each tied to an agent, plans as a card in the conversation, People as list and detail, and an interactive Map of the cluster. Navy, Light and Contrast themes (Geist, Geist Mono for addresses), density by pointer.
