@@ -16,9 +16,10 @@ updated: 2026-11-19
 2. Check the log: rows written; a second run right after should write 0.
 
 ## 2. On the homelab, out of schedule
-1. Find the CronJob's last run: `kubectl get jobs -l app=kitchen-atelier`
-2. Trigger one now: `kubectl create job --from=cronjob/kitchen-atelier-refresh-ingredients kitchen-refresh-manual`
+1. Find the CronJob's last run: `kubectl get jobs -l app.kubernetes.io/instance=kitchen-atelier`
+2. Trigger one now — Homelab UI (Kubernetes → CronJobs → `kitchen-atelier-refresh-ingredients` → Run now), or raw: `kubectl create job --from=cronjob/kitchen-atelier-refresh-ingredients kitchen-refresh-manual`
 3. Check: `kubectl logs job/kitchen-refresh-manual`
+4. Fastest, no new pod: `make sh R=kitchen-atelier`, then at the shell `kitchen-atelier-refresh-ingredients` — runs in the already-live pod, prints the result straight to your terminal.
 
 ## 3. Change the schedule or the dataset URL
 1. Edit `kitchen-atelier`'s `devops/helm/values.yml`: `cronJobs.refresh-ingredients.schedule`, `CIQUAL_DATASET_URL`, or `CIQUAL_FALLBACK_DATASET_URL`.
@@ -30,6 +31,7 @@ updated: 2026-11-19
 - Don't point either URL at the *English* Ciqual export (e.g. Zenodo record `4770202`) — its headers (`alim_nom_eng`, …) don't match [[Kitchen Atelier ingredients|`CiqualRowMapper`'s]] French column markers (`alim_nom_fr`, …), so nothing would map.
 - ANSES has since moved the *current* edition (2025, more foods) to `entrepot.recherche.data.gouv.fr` (DOI `10.57745/RDMHWY`) — not switched to yet since that domain wasn't reachable to check its direct-download URL shape when this was last touched.
 - A run writes far more rows than expected, or the mapper raises `CiqualFormatError`: ANSES changed the file's column layout; check `CiqualRowMapper`'s `_NUTRIENT_FIELDS`/`_TEXT_FIELDS` tables against the new header row before trusting the diff.
+- `ModuleNotFoundError: No module named 'src'` from the job or from `kitchen-atelier-refresh-ingredients` run by hand, while the main app keeps serving fine (2026-11-19, fixed in 0.3.1): the Dockerfile's `PYTHONPATH` only had `/app/src`, not `/app`. `kitchen_container.py`'s `from src import (...)` resolved for the main app only by accident, because granian injects its own cwd into `sys.path`; any plain console-script entrypoint — the refresh job included — never got that and broke. Fix is `PYTHONPATH="/app:/app/src"`; if this resurfaces, that's where to look first.
 
 ## Why it works
 - [[Kitchen Atelier ingredients]] — why this is a weekly bulk diff, not a live per-ingredient lookup.
