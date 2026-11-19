@@ -2,12 +2,18 @@
 type: decisions
 project: "[[Homelab]]"
 tags: [homelab, decisions]
-updated: 2026-11-15
+updated: 2026-11-19
 ---
 
 # Homelab decisions
 
 Why the homelab is built this way, and what was turned down. Newest first. Read one, then ask yourself whether you'd choose the same today.
+
+## 2026-11-19 — A PostgREST role's membership belongs in the chart, not a migration
+- **Context:** the Issues feature's `GET /api/issues/reports` failed every request with Postgres `42501` ("permission denied to set role \"issues_web\""), surfaced through PostgREST as a `401` and by homelab-ui as a generic "you don't have access" message. A migration (`007_create_issues_schema.sql`) granted `issues_web` to `postgrest` on creation; re-running an equivalent `GRANT` in a later migration (`010`) didn't fix it either — `pg_has_role('postgrest', 'issues_web', 'member')` kept coming back `false`.
+- **Decision:** `postgrest` is a CloudNativePG-managed role (`repository/postgres/values.yaml.gotmpl`, so CNPG can inject its password from a Secret), declared with `inRoles: [tasker_web]` — and CloudNativePG's managed-roles reconciler treats that list as the role's *complete* desired membership, revoking anything granted outside it on every reconcile. A migration's `GRANT issues_web TO postgrest` took effect for one reconcile cycle and was then silently reverted, over and over. The fix is declarative, not another grant: add `issues_web` (`login: false`, mirroring `tasker_web`) to the chart's `roles:` list and to `postgrest`'s `inRoles`, so CloudNativePG itself keeps granting it instead of fighting it.
+- **Why:** whichever system is declarative and reconciling wins against whichever is imperative and one-shot. The migration's grant was correct SQL that simply couldn't survive contact with a controller converging to a different declared state every few minutes.
+- **Consequences:** homelab-infra's `Q&A.md` — "How do I add another PostgREST role like tasker_web?" — now spells out both required edits (the migration *and* `postgrest`'s `inRoles`) so the next schema added behind PostgREST doesn't lose a day to the same silent revert. `make apply R=postgres` applies it.
 
 ## 2026-11-15 — The gateway checks the page, not only the sign-in
 - **Decision:** every `/api/<tool>/` route also asks oauth2-proxy for the page's role (`(page_access)`, `allowed_groups=role:admin,role:<page>`), and `/api/people/` reaches Keycloak's admin API with the admin's own token; the `admin` role carries realm-management's `view-users`, `query-users`, `manage-users`. Page roles are listed once in `gateway/keycloak/pages.txt`.
