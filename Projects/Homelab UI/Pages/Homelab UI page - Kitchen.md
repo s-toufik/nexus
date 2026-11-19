@@ -2,7 +2,7 @@
 type: architecture
 project: "[[Homelab UI]]"
 tags: [homelab-ui, ui-page]
-updated: 2026-11-18
+updated: 2026-11-19
 ---
 
 # Homelab UI page - Kitchen
@@ -22,7 +22,7 @@ updated: 2026-11-18
 | 5 | Portions, with Auto-Scale | The scale icon toggles whether changing portions rescales every ingredient's quantity. |
 | 6 | Prep / Cook time | `−5`/`+5` minute steppers, independent of portions. |
 | 7 | Ingredients & Weights | The pantry strip quick-adds a staple from the CIQUAL catalog (falls back to a blank row with a toast if the name isn't found); the dashed button always adds a blank row. |
-| 8 | An ingredient row | Name (autocomplete against the catalog), quantity/unit steppers, and a kcal badge that opens the per-100g macro modal. A green check appears once the row is linked to the catalog — either an existing match, or, after you save macros for a name the catalog doesn't have, a new entry created there on the spot (get-or-create; the request to create it is only sent from **Save macros**, never from typing a name, so an abandoned name never litters the shared catalog). |
+| 8 | An ingredient row | Name (autocomplete against the catalog), quantity/unit steppers, and a kcal badge that opens the per-100g macro modal. A green check appears once the row is linked to the catalog — either an existing match, or, after you save macros for a name the catalog doesn't have, a new entry created there on the spot (get-or-create; the request to create it is only sent from **Save macros**, never from typing a name, so an abandoned name never litters the shared catalog). The green check is also a button: click it to open the **full ingredient card** — every CIQUAL nutrient on file (energy, macros, sugars, fatty acids, minerals, vitamins), grouped, read-only, fetched fresh from the catalog by `ciqual_code`. |
 | 9 | Nutritional & Yield Telemetry | Per-portion or full-batch macro tiles, computed live from every ingredient line; switches to a saved version's own numbers when you're viewing one. |
 | 10 | Method & Execution | Numbered steps; the `+` here and the dashed button at the bottom both add one. |
 | 11 | Add execution step (icon) | Same action as the dashed button below, placed where a quick add is faster to reach. |

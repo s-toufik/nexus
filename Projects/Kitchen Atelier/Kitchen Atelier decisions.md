@@ -2,12 +2,19 @@
 type: decisions
 project: "[[Kitchen Atelier]]"
 tags: [kitchen-atelier, decisions]
-updated: 2026-11-18
+updated: 2026-11-19
 ---
 
 # Kitchen Atelier decisions
 
 Newest first.
+
+## 2026-11-19 — The ingredient catalog is a full CIQUAL nutrition model, not four macros
+- **Context:** the catalog started with just kcal/protein/carb/fat per 100g — enough for a recipe card, but CIQUAL itself publishes 74 constituents per food (sugars breakdown, 13 named fatty acids, 12 minerals, 14 vitamins, food classification), and the person wanted all of it stored and a way to see it.
+- **Decision:** `domain/ingredient/` is one file per concept (`Food`, `FoodIdentity`, `FoodClassification`, `NutritionalComposition` and its six nested dataclasses), every nutrient typed `Decimal | None` (never a bare `float`, never a `0` default). Postgres keeps the frequently-sorted fields as real columns and the rest in one `nutrition jsonb` column shaped exactly like the domain type, Decimals round-tripped through it as strings. `GET /v1/ingredients/{ciqual_code}` exposes the whole thing; the four headline macros stay as their own top-level JSON fields too, unchanged, so nothing that already read them had to change.
+- **Why:** `None` is not `0` — CIQUAL marking a value "not measured" (e.g. no B12 in a potato) is a different fact than "measured as zero," and the original design erased that distinction by defaulting everything to 0. `Decimal` instead of `float` because these are precise lab-measured values, not computed ones — nothing here should pick up binary-float rounding error.
+- **Alternatives:** a flat `details: dict[str, float | str]` bag (what this actually started as, mid-session) — works, but gives every value an untyped, undocumented key instead of a named field a reader (or `ty`) can check; one `numeric` column per nutrient (~70 columns for data nothing ever filters or sorts on — the kind of thing JSONB exists for).
+- **Consequences:** a future nutrient CIQUAL adds is one line in `CiqualRowMapper`'s `_NUTRIENT_FIELDS` table and one dataclass field, not a migration for most cases (a wholly new *section* still needs one, for its own JSON key); `GetOrCreateIngredient`'s custom-ingredient path only ever fills the four headline macros, leaving classification empty and every other nutrient `None` — correct, since a person typing in a name has no CIQUAL data to offer.
 
 ## 2026-11-18 — A schema inside `homelab`, not a database of its own
 - **Context:** `postgres-mcp`'s `DATABASE_URI` is hard-wired to the single `homelab` database ([[Homelab data]]); a new database would be invisible to it.
