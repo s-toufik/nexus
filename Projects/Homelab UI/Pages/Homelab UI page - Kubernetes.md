@@ -2,7 +2,7 @@
 type: architecture
 project: "[[Homelab UI]]"
 tags: [homelab-ui, ui-page]
-updated: 2026-11-11
+updated: 2026-11-19
 ---
 
 # Homelab UI page - Kubernetes
@@ -36,9 +36,18 @@ updated: 2026-11-11
 | 8 | Pods list | Every pod of the namespace, with status, ready containers, restarts, node, CPU and memory used, age. Filter by name. |
 | 9 | Namespace | Switch namespace. |
 
+## A CronJob opened, and running it now
+**Run now** POSTs a one-off `Job` cloned from the CronJob's own `jobTemplate`, correctly owner-referenced back to it — the same thing `kubectl create job --from=cronjob` does. Hitting it jumps you straight to that new Job (view switches to *Jobs*, the Job opens), so there's no hunting for it in the list.
+
+A **Job** now gets *Logs* and *Shell* tabs too, once its pod exists: the store resolves the pod by the `job-name` label (`batch.kubernetes.io/job-name` as a fallback on older-labelled pods) and points the same log/shell viewer at it — no need to separately find the pod in the *Pods* list. The Overview tab's **Pod** row shows which one, or *"not created yet — hit Refresh"* for the brief window before the Job controller creates it.
+
+> [!info] The `UnexpectedJob` warning event is harmless
+> Right after **Run now**, the CronJob logs `Warning UnexpectedJob: Saw a job that the controller did not create or forgot: <name> (×N)`. The Job *is* correctly owned (`ownerReferences` with the right UID) — the warning fires because the CronJob controller only tracks jobs it scheduled itself in its own `status.active[]`, and a client-created Job was never added there. It's a one-time-per-reconcile sanity log while the job runs, not a failure; it clears on its own once the job finishes, same as a plain `kubectl create job --from=cronjob` would produce.
+
 ## Use it to
 - **Investigate a restart:** Warnings → the pod → *Events* (why: OOMKilled, probe failed, BackOff) → *Logs* (what it said before).
 - **Restart one pod** (Delete) or a workload (scale / restart on the Deployment), like `make restart R=<release>`.
+- **Run a CronJob out of schedule** (Run now) and read its result straight from the Job's *Logs* tab.
 - **Look inside a container** with *Shell*, like `kubectl exec -it`.
 
 Not for changes that should last: an edit here is overwritten by the next `make apply`. Change homelab-infra instead ([[Homelab change cookbook]]).
