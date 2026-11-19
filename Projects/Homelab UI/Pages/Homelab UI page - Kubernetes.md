@@ -41,6 +41,8 @@ updated: 2026-11-19
 
 A **Job** now gets *Logs* and *Shell* tabs too, once its pod exists: the store resolves the pod by the `job-name` label (`batch.kubernetes.io/job-name` as a fallback on older-labelled pods) and points the same log/shell viewer at it — no need to separately find the pod in the *Pods* list. The Overview tab's **Pod** row shows which one, or *"not created yet — hit Refresh"* for the brief window before the Job controller creates it.
 
+*Logs* works on a finished container the same as a running one — it's just `kubectl logs`. *Shell* (`exec`) only works on a container that's still running; for a one-shot Job (like `kitchen-atelier-refresh-ingredients`) that's usually already over by the time you click it, so Shell shows *"This container isn't running — it already exited"* instead of trying and failing. Same rule for a Pod whose container has already terminated.
+
 > [!info] The `UnexpectedJob` warning event is harmless
 > Right after **Run now**, the CronJob logs `Warning UnexpectedJob: Saw a job that the controller did not create or forgot: <name> (×N)`. The Job *is* correctly owned (`ownerReferences` with the right UID) — the warning fires because the CronJob controller only tracks jobs it scheduled itself in its own `status.active[]`, and a client-created Job was never added there. It's a one-time-per-reconcile sanity log while the job runs, not a failure; it clears on its own once the job finishes, same as a plain `kubectl create job --from=cronjob` would produce.
 
