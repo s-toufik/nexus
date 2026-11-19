@@ -19,6 +19,7 @@ Each path lists what to know **before** it and what to take **then** — take th
 
 ## Tours — know your projects first (start here)
 One per project: what it is and why, how it's built, how it connects to the others, how to run and change it, and a map of the principles inside it with the path that teaches each. Take all five first (~25 h): every topic path then deepens something you've already seen in your own code.
+
 | Done | Path | Time | You'll be able to |
 |:-:|---|---|---|
 | ☐ | [[Path - Tour of the homelab]] | 6 h | Give a 10-minute tour of the homelab: what runs, why, how it changes, how it's protected |
@@ -28,15 +29,15 @@ One per project: what it is and why, how it's built, how it connects to the othe
 | ☐ | [[Path - Tour of pycraftcore]] | 4 h | Say which module any line of our services' setup comes from, and why |
 
 ## Platform — the homelab and how it runs
-| Done | Path | Time | You'll be able to |
-|:-:|---|---|---|
-| ☐ | [[Path - Linux, Git and the server]] | 5 h | Say who runs what on the server, how it heals itself, how a change travels through git |
-| ☐ | [[Path - Networks you can reason about]] | 6 h | Trace a request from your browser to the server: name, address, HTTP, TLS, firewall |
-| ☐ | [[Path - Containers and Kubernetes]] | 8 h | Read any pod's state and know the next command |
-| ☐ | [[Path - Shipping changes]] | 7 h | Change, release and roll back anything on the homelab |
-| ☐ | [[Path - The front door]] | 7 h | Explain single sign-on, sessions and the web attacks the gateway stops |
-| ☐ | [[Path - Data]] | 8 h | Say where every byte lives, who may read it, and restore it |
-| ☐ | [[Path - Seeing inside]] | 7 h | Find the slow step of a request with metrics, logs and traces |
+| Done | Path                                     | Time | You'll be able to                                                                      |
+| :--: | ---------------------------------------- | ---- | -------------------------------------------------------------------------------------- |
+|  ☐   | [[Path - Linux, Git and the server]]     | 5 h  | Say who runs what on the server, how it heals itself, how a change travels through git |
+|  ☐   | [[Path - Networks you can reason about]] | 6 h  | Trace a request from your browser to the server: name, address, HTTP, TLS, firewall    |
+|  ☐   | [[Path - Containers and Kubernetes]]     | 8 h  | Read any pod's state and know the next command                                         |
+|  ☐   | [[Path - Shipping changes]]              | 7 h  | Change, release and roll back anything on the homelab                                  |
+|  ☐   | [[Path - The front door]]                | 7 h  | Explain single sign-on, sessions and the web attacks the gateway stops                 |
+|  ☐   | [[Path - Data]]                          | 8 h  | Say where every byte lives, who may read it, and restore it                            |
+|  ☐   | [[Path - Seeing inside]]                 | 7 h  | Find the slow step of a request with metrics, logs and traces                          |
 
 ## Applications — how our services are written
 | Done | Path | Time | You'll be able to |
