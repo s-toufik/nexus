@@ -8,7 +8,7 @@ updated: 2026-11-19
 # Homelab UI page - Kitchen
 
 > **Route** `/kitchen`, `/kitchen/recipes`, `/kitchen/ingredients` · **for** everyone, access `app:kitchen` · **saves to** [[Kitchen Atelier]] (`/api/kitchen/…`) · **code** `src/app/features/kitchen/`
-> A recipe and nutrition card: ingredients with live macros, method steps, tasting notes, versioned saves — pixel-matched to a provided design, themed to follow whichever appearance you've picked. Two sibling pages, reached from icons in the header: **Recipes** (every saved recipe, grouped by course — click one to open its latest version here) and **Ingredients** (the shared catalog, paginated).
+> A recipe and nutrition card: ingredients with live macros, method steps, tasting notes, versioned saves — pixel-matched to a provided design, themed to follow whichever appearance you've picked. Two sibling pages, reached from icons in the header: **Recipes** (every saved recipe, grouped by course, with its own search-by-title box — click one to open its latest version here) and **Ingredients** (the shared catalog, paginated, with a search box that hits the catalog directly above 2 characters instead of just filtering the current page; below 767px the table becomes a stacked card list, since its 6 columns don't fit a phone width without their own horizontal scroll fighting the page's vertical one).
 
 ![[Homelab UI - Kitchen.webp]]
 
