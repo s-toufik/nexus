@@ -3,7 +3,7 @@ type: architecture
 project: "[[Kitchen Atelier]]"
 order: 1
 tags: [kitchen-atelier, architecture, python]
-updated: 2026-11-18
+updated: 2026-11-19
 ---
 
 # Kitchen Atelier structure
@@ -46,6 +46,7 @@ European only, in `domain/recipe/unit.py`: `g, kg, ml, cl, L, càs` (tablespoon,
 | `GET /v1/recipes/{id}/versions` | every saved version, newest last |
 | `POST /v1/recipes/{id}/versions` | save the next version (409 if stale) |
 | `GET /v1/recipes/{id}/versions/{n}` | one version, read-only |
+| `DELETE /v1/recipes/{id}` | remove the recipe and every version (404 if already gone) |
 | `GET /v1/ingredients?q=…` | catalog autocomplete |
 
 [[Homelab UI page - Kitchen]]'s `RecipeEditorStore` maps these snake_case JSON shapes to camelCase domain types through dedicated mapper functions, and switches its displayed data between "the live draft" and "a historical version" depending what's selected.

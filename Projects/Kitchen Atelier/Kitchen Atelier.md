@@ -22,6 +22,7 @@ updated: 2026-11-19
 ## What it does
 - `POST /v1/recipes`, `GET /v1/recipes` — create and list recipes.
 - `GET /v1/recipes/{id}/versions`, `POST /v1/recipes/{id}/versions`, `GET /v1/recipes/{id}/versions/{n}` — every save appends an immutable version; nothing is edited in place.
+- `DELETE /v1/recipes/{id}` — removes the recipe and every one of its versions; no soft-delete, no undo ([[Kitchen Atelier decisions]]).
 - `GET /v1/ingredients?q=…` — autocomplete against the CIQUAL-backed catalog, with per-100g macros.
 - A weekly CronJob re-downloads ANSES's CIQUAL bulk export and diffs it into the catalog; an unchanged week is a no-op.
 
@@ -47,5 +48,6 @@ Then [[Kitchen Atelier decisions]] and [[Kitchen Atelier guides]].
 ## Where it stands (2026-11-19)
 - **Deployed and refreshing for real:** 0.3.1 fixed a `PYTHONPATH` bug that crashed the refresh job's console-script entrypoint (`ModuleNotFoundError: No module named 'src'` — the ASGI app was never affected, only the CronJob); the catalog has since refreshed successfully against the live CIQUAL fallback dataset (3186 ingredients).
 - **0.3.2, released:** `GET /v1/ingredients` fixed to actually honour `?q=…` ([[Kitchen Atelier decisions]]) — it silently ignored it before, always returning the unfiltered default page. homelab-ui's Ingredients and Recipes pages (`v2.5.1`) gained real search on top of this fix, and Ingredients gained a mobile card layout.
+- **0.3.3, built, not yet deployed:** `DELETE /v1/recipes/{id}` (cascades to every version), a 422 handler so a validation failure reads as a real sentence instead of `[object Object]`, and homelab-ui (`v2.5.2`) gained a Recipes **Delete** button, an Ingredients **Details** button reusing the editor's full-nutrient-card modal, and a fixed ingredient-row control layout ([[Kitchen Atelier decisions]]).
 - **`CIQUAL_DATASET_URL`'s primary host has been unreliable** (503s) in practice; the fallback (`CIQUAL_FALLBACK_DATASET_URL`, a Zenodo mirror) is what's actually served the real homelab so far.
 - **Next:** see the [[Log]].
