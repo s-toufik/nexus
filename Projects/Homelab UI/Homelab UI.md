@@ -54,8 +54,7 @@ Then [[Homelab UI decisions]] and the guides: [[Homelab UI guides]].
 ## Where it stands (2026-11-19)
 > [!note]- This section's older history is stale
 > The "Released: v1.1.3" line below is from 2026-11-08 and predates the Draft 5 shell rework and the whole Kitchen feature ([[Homelab UI pages]] has the same caveat about its screenshot gallery). Treat it as "last confirmed," not a full changelog.
-- **Released:** v1.1.3 (Tool UIs page, block names in Tasker, Kubernetes pod logs fix) — last version confirmed released at the time that line was written; `v2.5.0` is the latest tag `git fetch --tags` shows as of 2026-11-19.
-- **Built, not yet released:** `environments/versions.yaml` is pinned to `2.5.1`, bundling a Kubernetes "Shell tab disconnected" fix (checking `containerStatuses` before offering Shell, instead of after a failed connection) with this round's Kitchen fixes below.
+- **Released:** v1.1.3 (Tool UIs page, block names in Tasker, Kubernetes pod logs fix) — last version confirmed released at the time that line was written; `v2.5.1` is the latest tag as of 2026-11-19, bundling a Kubernetes "Shell tab disconnected" fix (checking `containerStatuses` before offering Shell, instead of after a failed connection) with this round's Kitchen fixes below.
 - **Kitchen page, new this week:** a recipe/nutrition studio talking to [[Kitchen Atelier]] — see [[Homelab UI page - Kitchen]]. Its Ingredients and Recipes sub-pages just gained real search (2026-11-19): the ingredient search was silently broken server-side (fixed in [[Kitchen Atelier decisions]]), and Ingredients also gained a mobile card layout to fix a "stuck, can't scroll" report.
 - **Kubernetes page:** a CronJob's **Run now** now jumps straight to the new Job and its Logs/Shell work there too, resolved by the `job-name` label ([[Homelab UI page - Kubernetes]]).
 - **Next:** see the [[Log]].

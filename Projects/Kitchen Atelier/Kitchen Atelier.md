@@ -46,6 +46,6 @@ Then [[Kitchen Atelier decisions]] and [[Kitchen Atelier guides]].
 
 ## Where it stands (2026-11-19)
 - **Deployed and refreshing for real:** 0.3.1 fixed a `PYTHONPATH` bug that crashed the refresh job's console-script entrypoint (`ModuleNotFoundError: No module named 'src'` — the ASGI app was never affected, only the CronJob); the catalog has since refreshed successfully against the live CIQUAL fallback dataset (3186 ingredients).
-- **0.3.2, built but not yet deployed:** `GET /v1/ingredients` fixed to actually honour `?q=…` ([[Kitchen Atelier decisions]]) — it silently ignored it before, always returning the unfiltered default page. homelab-ui's Ingredients and Recipes pages gained real search on top of this fix, and Ingredients gained a mobile card layout.
+- **0.3.2, released:** `GET /v1/ingredients` fixed to actually honour `?q=…` ([[Kitchen Atelier decisions]]) — it silently ignored it before, always returning the unfiltered default page. homelab-ui's Ingredients and Recipes pages (`v2.5.1`) gained real search on top of this fix, and Ingredients gained a mobile card layout.
 - **`CIQUAL_DATASET_URL`'s primary host has been unreliable** (503s) in practice; the fallback (`CIQUAL_FALLBACK_DATASET_URL`, a Zenodo mirror) is what's actually served the real homelab so far.
 - **Next:** see the [[Log]].
