@@ -50,9 +50,9 @@ updated: 2026-11-08
 | `make migrate` | `helmfile -l name=db-migrate sync`, then `NOTIFY pgrst, 'reload schema'` in psql |
 | `make migrate-status` | `./scripts/dbmate.sh status` |
 | `make migrate-rollback` | `./scripts/dbmate.sh rollback` |
-| `make topics` · `topic-create` · `topic-describe` · `consume` · `groups` | see [[Homelab - Use Kafka|Use Kafka]] |
+| `make topics` · `topic-create` · `topic-describe` · `consume` · `groups` | see [[Homelab - Use Kafka\|Use Kafka]] |
 | `make targets` | `kubectl -n homelab exec deploy/caddy -c caddy -- wget -q -O - http://prometheus:9090/api/v1/targets` |
-| `make llm-status` · `llm-running` · `llm-ask` · `llm-models` · `llm-download` · `llm-down` · `llm-up` | see [[Homelab - Run the LLM and agent|Run the LLM and agent]] |
+| `make llm-status` · `llm-running` · `llm-ask` · `llm-models` · `llm-download` · `llm-down` · `llm-up` | see [[Homelab - Run the LLM and agent\|Run the LLM and agent]] |
 | `make backup` | `./scripts/backups.sh now` |
 | `make backups` | `./scripts/backups.sh list` |
 | `make restore-postgres FILE=…` | `./scripts/backups.sh restore-postgres <file>` |

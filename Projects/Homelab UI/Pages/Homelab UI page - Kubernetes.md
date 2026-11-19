@@ -16,7 +16,7 @@ updated: 2026-11-19
 | # | What | What it tells you, what it does |
 |:-:|---|---|
 | 1 | Namespace | Which namespace ([[Kubernetes]]) the lists show (`homelab` holds our releases; `kube-system` holds k3s' own). |
-| 2 | Kinds | Every object type, grouped: Workloads ([[Pod]]s, [[Deployment and StatefulSet|Deployment]]s, [[Deployment and StatefulSet|StatefulSet]]s, DaemonSets, CronJobs, Jobs), Network ([[Service]]s, [[NetworkPolicy\|Network policies]]), Config and storage (ConfigMaps, [[ConfigMap and Secret|Secret]]s, volume claims), Cluster (events, nodes, namespaces, volumes). |
+| 2 | Kinds | Every object type, grouped: Workloads ([[Pod]]s, [[Deployment and StatefulSet\|Deployment]]s, [[Deployment and StatefulSet\|StatefulSet]]s, DaemonSets, CronJobs, Jobs), Network ([[Service]]s, [[NetworkPolicy\|Network policies]]), Config and storage (ConfigMaps, [[ConfigMap and Secret\|Secret]]s, volume claims), Cluster (events, nodes, namespaces, volumes). |
 | 3 | Node | The one node — `<server>` — its CPU and memory now, Kubernetes version (`v1.36.5+k3s1`), 16 CPUs, ~31 GiB of memory. |
 | 4 | Pods | Running and ready, in every namespace (41/41). |
 | 5 | Warnings in the last hour | Warning events: the first place to look when something restarts. |
@@ -39,9 +39,13 @@ updated: 2026-11-19
 ## A CronJob opened, and running it now
 **Run now** POSTs a one-off `Job` cloned from the CronJob's own `jobTemplate`, correctly owner-referenced back to it — the same thing `kubectl create job --from=cronjob` does. Hitting it jumps you straight to that new Job (view switches to *Jobs*, the Job opens), so there's no hunting for it in the list.
 
-A **Job** now gets *Logs* and *Shell* tabs too, once its pod exists: the store resolves the pod by the `job-name` label (`batch.kubernetes.io/job-name` as a fallback on older-labelled pods) and points the same log/shell viewer at it — no need to separately find the pod in the *Pods* list. The Overview tab's **Pod** row shows which one, or *"not created yet — hit Refresh"* for the brief window before the Job controller creates it.
+A **Job** now gets *Logs* and *Shell* tabs too, once its pod exists: the store resolves the pod by the `job-name` label (`batch.kubernetes.io/job-name` as a fallback on older-labelled pods) and points the same log/shell viewer at it — no need to separately find the pod in the *Pods* list. The Overview tab's **Pod** row shows which one, or *"not created yet — hit Refresh"* for the brief window before the Job controller creates it (sample data):
 
-*Logs* works on a finished container the same as a running one — it's just `kubectl logs`. *Shell* (`exec`) only works on a container that's still running; for a one-shot Job (like `kitchen-atelier-refresh-ingredients`) that's usually already over by the time you click it, so Shell shows *"This container isn't running — it already exited"* instead of trying and failing. Same rule for a Pod whose container has already terminated.
+![[Homelab UI - kubernetes job sample.webp]]
+
+*Logs* works on a finished container the same as a running one — it's just `kubectl logs`. *Shell* (`exec`) only works on a container that's still running; for a one-shot Job (like `kitchen-atelier-refresh-ingredients`) that's usually already over by the time you click it, so Shell shows *"This container isn't running — it already exited"* instead of trying and failing. Same rule for a Pod whose container has already terminated. This is where **Run now**'s logs actually are — the Job's own *Logs* tab, not a separate service (sample data):
+
+![[Homelab UI - kubernetes job logs sample.webp]]
 
 > [!info] The `UnexpectedJob` warning event is harmless
 > Right after **Run now**, the CronJob logs `Warning UnexpectedJob: Saw a job that the controller did not create or forgot: <name> (×N)`. The Job *is* correctly owned (`ownerReferences` with the right UID) — the warning fires because the CronJob controller only tracks jobs it scheduled itself in its own `status.active[]`, and a client-created Job was never added there. It's a one-time-per-reconcile sanity log while the job runs, not a failure; it clears on its own once the job finishes, same as a plain `kubectl create job --from=cronjob` would produce.

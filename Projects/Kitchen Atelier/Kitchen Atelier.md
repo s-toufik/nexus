@@ -4,7 +4,7 @@ status: active
 started: 2026-11-18
 repos: [kitchen-atelier]
 tags: [project, kitchen-atelier, python, homelab]
-updated: 2026-11-18
+updated: 2026-11-19
 ---
 
 # Kitchen Atelier
@@ -44,7 +44,8 @@ Then [[Kitchen Atelier decisions]] and [[Kitchen Atelier guides]].
 ## Knowledge it uses
 [[Hexagonal architecture]] · [[Dependency injection]] · [[MongoDB]] · [[Row-level security|PostgreSQL roles and schemas]] · [[ASGI]] · [[asyncio]] · [[Data validation with pydantic and msgspec]] · [[Model Context Protocol]] · [[pycraftcore]]
 
-## Where it stands (2026-11-18)
-- **Built, not yet deployed:** the API, the homelab-ui page, the `scope_kitchen` tools and the homelab-infra wiring (Postgres role + migration, Mongo database, Caddy route, Keycloak role) are written and locally verified, but nothing is committed to any of the four repos yet — the next step is the user's own review and deploy, per [[Homelab - Add an app]].
-- **`CIQUAL_DATASET_URL` is still a placeholder** in `devops/helm/values.yml`: the real data.gouv.fr resource URL needs filling in before the refresh job can run for real.
+## Where it stands (2026-11-19)
+- **Deployed and refreshing for real:** 0.3.1 fixed a `PYTHONPATH` bug that crashed the refresh job's console-script entrypoint (`ModuleNotFoundError: No module named 'src'` — the ASGI app was never affected, only the CronJob); the catalog has since refreshed successfully against the live CIQUAL fallback dataset (3186 ingredients).
+- **0.3.2, built but not yet deployed:** `GET /v1/ingredients` fixed to actually honour `?q=…` ([[Kitchen Atelier decisions]]) — it silently ignored it before, always returning the unfiltered default page. homelab-ui's Ingredients and Recipes pages gained real search on top of this fix, and Ingredients gained a mobile card layout.
+- **`CIQUAL_DATASET_URL`'s primary host has been unreliable** (503s) in practice; the fallback (`CIQUAL_FALLBACK_DATASET_URL`, a Zenodo mirror) is what's actually served the real homelab so far.
 - **Next:** see the [[Log]].

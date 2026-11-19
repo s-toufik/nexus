@@ -19,7 +19,7 @@ Start order is a promise you can't keep. A first install can be ordered, but a s
 | Deploy order | helmfile `needs:`, Helm hooks, Argo CD sync waves | The first `apply` only |
 | Start | an initContainer `wait-for`, or crashing until the dependency answers (CrashLoopBackOff) | The first start only, and slowly (the back-off grows to 5 min) |
 | **Run** | **a reconcile loop in the app**: retry with back-off while missing, re-check slowly once there | Every case: first start, reboot, restart of either side, a dependency that changes |
-| Report | health that *lists* dependencies; [[Probes|readiness]] about the app itself | Seeing it, without cascading failures |
+| Report | health that *lists* dependencies; [[Probes\|readiness]] about the app itself | Seeing it, without cascading failures |
 
 - **Back-off**: retry soon (5 s), then double (10, 20, 40), up to a ceiling (60 s): fast recovery without hammering a server that's down ([[Retry and backoff]]).
 - **One loop per dependency**: each one keeps its own count of failures and its own pace, so a server that is down never makes the others be re-read every 5 s.

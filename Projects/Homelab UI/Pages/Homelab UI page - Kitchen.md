@@ -28,8 +28,24 @@ updated: 2026-11-19
 | 11 | Add execution step (icon) | Same action as the dashed button below, placed where a quick add is faster to reach. |
 | 12 | Tasting & Pass Notes | Seasoning/Acidity/Texture each have their own three options (not a shared scale), plus free-text adjustments. |
 
+## Ingredients and Recipes
+Two sibling pages, reached from the atelier's pantry/recipe-book icons: **Ingredients** (`/kitchen/ingredients`) is the shared catalog, paginated 50 at a time; **Recipes** (`/kitchen/recipes`) is every saved recipe, grouped by course.
+
+Ingredients searches the catalog itself, not just the page in front of you: type 2 characters and it calls [[Kitchen Atelier]]'s `GET /v1/ingredients?q=…` (debounced 250 ms), capped at 200 results, with the pager hidden while a search is active. Recipes searches client-side instead — every recipe is already loaded with no pagination, so filtering by title needs no round trip (sample data):
+
+![[Homelab UI - kitchen ingredients sample.webp]]
+
+![[Homelab UI - kitchen recipes sample.webp]]
+
+Below 767px, Ingredients' 6-column table gives way to a stacked card list: the table's own `overflow-x: auto` scroller, nested inside the page's vertical scroll, is a well-known mobile trap where a drag can get captured by the horizontal scroller instead of the page — this is what "stuck, can't scroll past it" on a phone looked like (sample data):
+
+![[Homelab UI - kitchen ingredients mobile sample.webp]]
+
+> [!bug]- `query` vs `q` — the search did nothing for weeks
+> The backend's route read `query: str | None = Query(default=None)`, but every caller — this page, the ingredient-row autocomplete — sends `?q=…`. FastAPI binds a query parameter to the Python argument's own name unless told otherwise, so `query` stayed `None` on every request and `list_or_search` silently always took its unfiltered `else` branch: a real, plausible page of ingredients, just never the right one. No test called the endpoint, so nothing caught it. Fixed with `Query(default=None, alias="q")` ([[Kitchen Atelier decisions]], 2026-11-19).
+
 ## Use it to
-Draft a recipe, scale it when the guest count changes (Auto-Scale on), and save a version before you change the sauce — the old version stays exactly as it was, read-only, a click away on the version stepper that appears next to the course pills once you've saved at least once.
+Draft a recipe, scale it when the guest count changes (Auto-Scale on), and save a version before you change the sauce — the old version stays exactly as it was, read-only, a click away on the version stepper that appears next to the course pills once you've saved at least once. Browse or search the catalog from **Ingredients**, or jump back into a past recipe from **Recipes**.
 
 ## How it works
 Saving never edits a version in place: [[Kitchen Atelier]]'s `SaveRecipeVersion` always appends the next one as a full snapshot, and refuses a save whose `based_on_version` isn't the current latest (409, surfaced here as a toast) rather than silently overwriting a concurrent edit ([[Kitchen Atelier decisions]]). An ingredient line's macros are copied in at save time, so a later catalog refresh never changes a recipe you already saved.

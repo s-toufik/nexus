@@ -5,7 +5,7 @@ repo: kitchen-atelier
 language: Python
 status: active
 tags: [repository, kitchen-atelier, python]
-updated: 2026-11-18
+updated: 2026-11-19
 ---
 
 # kitchen-atelier
@@ -28,7 +28,7 @@ updated: 2026-11-18
 `make run` (`uv run granian …`) serves the FastAPI app on `:8002`. Config follows [[pycraftcore]]'s `root.yml` + `connector`/`operation` profile pattern, same as agent-runtime and agent-toolbox.
 
 ## How it's released
-Not yet released: tag on `main` → image (amd64 + arm64) + kube-charts `app` chart → bump `apps.kitchenAtelier` in homelab-infra's `versions.yaml` → `make apply R=kitchen-atelier` ([[Homelab deployment]], [[Kitchen Atelier - Run it locally]]).
+Tag on `main` → image (amd64 + arm64) + kube-charts `app` chart → bump `apps.kitchenAtelier` in homelab-infra's `versions.yaml` → `make apply R=kitchen-atelier` ([[Homelab deployment]], [[Kitchen Atelier - Run it locally]]). First released as `0.3.1` (2026-11-19), fixing a `PYTHONPATH` bug in the refresh job's entrypoint.
 
 ## Knowledge it uses
 [[Hexagonal architecture]] · [[Dependency injection]] · [[ASGI]] · [[Data validation with pydantic and msgspec]] · [[pycraftcore]]

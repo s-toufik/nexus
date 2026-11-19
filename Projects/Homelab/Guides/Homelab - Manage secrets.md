@@ -65,7 +65,7 @@ kubectl -n homelab get secret mongodb -o json | jq -r '.data | map_values(@base6
 | Password | Stored | Can I read it? |
 |---|---|---|
 | Sign-in accounts (yours, other people's) | Keycloak, in PostgreSQL's `keycloak` database, as Argon2id hashes | No, only replace it: `make user-password ACCOUNT=<name>` — raw: `./scripts/users.sh password <name>` |
-| Services' passwords and keys (database roles, Keycloak and Grafana admins, MongoDB root, gateway keys, the agent's LLM key) | Kubernetes Secrets in namespace `homelab` ([[Homelab - Manage secrets#Where the Secrets are stored|where the Secrets are stored]]) | Yes, with kubectl |
+| Services' passwords and keys (database roles, Keycloak and Grafana admins, MongoDB root, gateway keys, the agent's LLM key) | Kubernetes Secrets in namespace `homelab` ([[Homelab - Manage secrets#Where the Secrets are stored\|where the Secrets are stored]]) | Yes, with kubectl |
 | PostgreSQL's `postgres` superuser and the `homelab` database owner | Secrets `postgres-superuser` and `postgres-app`, created by the PostgreSQL operator | Yes, with kubectl |
 
 Nothing is in git: not the passwords, not `environments/local.yaml` (only the server's name and address).

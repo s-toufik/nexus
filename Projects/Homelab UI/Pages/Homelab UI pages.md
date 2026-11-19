@@ -2,7 +2,7 @@
 type: index
 project: "[[Homelab UI]]"
 tags: [homelab-ui, ui-page, index]
-updated: 2026-11-18
+updated: 2026-11-19
 ---
 
 # Homelab UI pages
@@ -48,6 +48,7 @@ The [[Homelab UI page - Control center|control center]] is `/`, and the [[Homela
 | My password, my sessions | [[Homelab UI page - Account\|Account]] | |
 | The tool's own full interface | [[Homelab UI page - Tool UIs\|Tool UIs]] | |
 | What's for dinner? Scale a recipe, check its macros? | [[Homelab UI page - Kitchen\|Kitchen]] | [[Kitchen Atelier]] |
+| Find an ingredient, or an old recipe by name? | [[Homelab UI page - Kitchen\|Kitchen]] → Ingredients or Recipes | |
 
 ## How every page works
 Every page is a lazy-loaded *feature* (`src/app/features/<feature>/`) that calls one backend through the gateway: `/api/<tool>/…` on the same HTTPS origin, behind the same sign-in, on an allow-list of paths ([[Homelab UI structure]], [[Homelab gateway and sign-in]]). Changes carry the `X-Homelab-Request: 1` header, and admin-only changes need `role:admin` at Caddy.
