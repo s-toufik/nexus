@@ -2,12 +2,18 @@
 type: decisions
 project: "[[Homelab UI]]"
 tags: [homelab-ui, decisions]
-updated: 2026-11-18
+updated: 2026-11-20
 ---
 
 # Homelab UI decisions
 
 Newest first.
+
+## 2026-11-20 — A fixed-position backdrop doesn't stop a phone from scrolling the page behind it
+- **Context:** on a real phone, a touch-drag over an open modal (Kitchen's ingredient macro editor, the full ingredient card), the search palette, Settings, the assistant's mobile assistant-picker sheet, or the Map's mobile service-detail sheet all kept scrolling the *page underneath* — reported as "not ergonomic." Every one of these is a `position: fixed; inset: 0` backdrop, which blocks clicks but does **not** reliably stop touch-scroll from reaching the real scrolling element behind it on mobile Safari/Chrome — especially here, where mobile relies on the *document itself* scrolling (`layout.scss`'s `overflow-y: visible` on `max-width: 767px`, [[Homelab UI decisions]] 2026-11-18) rather than a contained `overflow: auto` region, which is exactly the shape of container that normally traps touch-scroll on its own (the 2026-11-18 entry below explains why mobile scrolls the document itself).
+- **Decision:** `shared/ui/scroll-lock/` — a small refcounted `ScrollLockService` (`lock()`/`unlock()`) plus a `ScrollLockDirective` (`appScrollLock`, locks in `ngOnInit`, unlocks in `ngOnDestroy`) that pins `document.body` with `position: fixed; top: -<scrollY>px` (not just `overflow: hidden`, which doesn't fully stop iOS rubber-banding on its own) and restores the exact scroll position on release. Added to every `@if`-gated backdrop's own element, so its lifecycle **is** the lock's lifecycle — no explicit open/close wiring needed per modal. The one exception is the Map's mobile service-detail sheet, which has no separate backdrop element (a CSS class toggles `position: fixed` on the panel itself); `map-page.ts` locks directly in an `effect()` keyed to `store.selected()`, gated on `window.innerWidth`, so desktop (where the same panel is just a calm inline sidebar) is never touched.
+- **Why:** refcounted rather than a single boolean, since nothing stops two of these from being open at once today (e.g. opening Settings while the search palette is open) — the second lock must not have the first's unlock release the page early.
+- **Consequences:** any new modal just needs `appScrollLock` on its backdrop element; a non-backdrop overlay (toggled by a class, not `@if`) needs the manual `effect()` pattern instead, as `map-page.ts` shows.
 
 ## 2026-11-18 — A 401 means "sign in again," not "you're signed out" — so the redirect is guarded
 - **Context:** an admin-gated API route (Issues' `GET /reports`) returns 401 from oauth2-proxy's `allowed_groups` forward_auth check both when the session is genuinely gone *and* when it's valid but lacks the role. `GatewayApi` couldn't tell those apart and bounced to `/oauth2/sign_in` either way; when it was really the role case, oauth2-proxy's own session was still fine, so it bounced straight back to the same page, which hit the same 401, which redirected again — an infinite reload loop, reported from a real phone.
