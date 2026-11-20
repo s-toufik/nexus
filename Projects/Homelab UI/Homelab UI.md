@@ -4,7 +4,7 @@ status: active
 started: 2026-09
 repos: [homelab-ui]
 tags: [project, homelab-ui, frontend]
-updated: 2026-11-19
+updated: 2026-11-20
 ---
 
 # Homelab UI
@@ -51,10 +51,11 @@ Then [[Homelab UI decisions]] and the guides: [[Homelab UI guides]].
 ## Knowledge it uses
 [[Angular]] · [[Signals]] · [[Single-page application]] · [[Dependency injection]] · [[Feature-first architecture]] · [[Server-sent events]] · [[Unit tests and test doubles]] · [[Container image]] · [[Reverse proxy]] · [[CSRF]] · [[Cookies and sessions]] · [[Prometheus and PromQL]] · [[Loki and LogQL]] · [[Model Context Protocol]]
 
-## Where it stands (2026-11-19)
+## Where it stands (2026-11-20)
 > [!note]- This section's older history is stale
 > The "Released: v1.1.3" line below is from 2026-11-08 and predates the Draft 5 shell rework and the whole Kitchen feature ([[Homelab UI pages]] has the same caveat about its screenshot gallery). Treat it as "last confirmed," not a full changelog.
-- **Released:** v1.1.3 (Tool UIs page, block names in Tasker, Kubernetes pod logs fix) — last version confirmed released at the time that line was written; `v2.5.1` is the latest tag as of 2026-11-19, bundling a Kubernetes "Shell tab disconnected" fix (checking `containerStatuses` before offering Shell, instead of after a failed connection) with this round's Kitchen fixes below.
-- **Kitchen page, new this week:** a recipe/nutrition studio talking to [[Kitchen Atelier]] — see [[Homelab UI page - Kitchen]]. Its Ingredients and Recipes sub-pages just gained real search (2026-11-19): the ingredient search was silently broken server-side (fixed in [[Kitchen Atelier decisions]]), and Ingredients also gained a mobile card layout to fix a "stuck, can't scroll" report.
+- **Released:** v1.1.3 (Tool UIs page, block names in Tasker, Kubernetes pod logs fix) — last version confirmed released at the time that line was written; `v2.5.1` is the latest tag; `v2.5.2` is built, not yet released, bundling several rounds of Kitchen work below plus a cross-cutting fix.
+- **Kitchen page is done for now** (2026-11-20, see [[Homelab UI page - Kitchen]] for the full detail): a recipe/nutrition studio talking to [[Kitchen Atelier]], its Ingredients/Recipes sub-pages gained real search, delete, a mobile card layout, a shared full-ingredient-detail modal, and a decluttered phone header.
+- **New shared primitive:** `shared/ui/scroll-lock/` — every modal backdrop across the app (not just Kitchen's) now traps background scroll on mobile instead of letting a touch-drag scroll the page underneath ([[Homelab UI decisions]], 2026-11-20).
 - **Kubernetes page:** a CronJob's **Run now** now jumps straight to the new Job and its Logs/Shell work there too, resolved by the `job-name` label ([[Homelab UI page - Kubernetes]]).
 - **Next:** see the [[Log]].

@@ -2,7 +2,7 @@
 type: architecture
 project: "[[Homelab UI]]"
 tags: [homelab-ui, ui-page]
-updated: 2026-11-19
+updated: 2026-11-20
 ---
 
 # Homelab UI page - Kitchen
@@ -20,7 +20,7 @@ updated: 2026-11-19
 | 3 | Course | Trial / Starter / Main / Sauce·Jus / Pastry — a tag on the recipe, not a route. |
 | 4 | Title & subtitle | Free text; the title also appears on the version picker once saved. |
 | 5 | Portions, with Auto-Scale | The scale icon toggles whether changing portions rescales every ingredient's quantity. |
-| 6 | Prep / Cook time | `−5`/`+5` minute steppers, independent of portions. |
+| 6 | Prep / Cook time | `−`/`+` steppers (5 minutes a tap), independent of portions — same plain style as the Portions stepper, not a labelled `−5`/`+5`. |
 | 7 | Ingredients & Weights | The pantry strip quick-adds a staple from the CIQUAL catalog (falls back to a blank row with a toast if the name isn't found); the dashed button always adds a blank row. |
 | 8 | An ingredient row | Name (autocomplete against the catalog), quantity/unit steppers, and a kcal badge that opens the per-100g macro modal. A green check appears once the row is linked to the catalog — either an existing match, or, after you save macros for a name the catalog doesn't have, a new entry created there on the spot (get-or-create; the request to create it is only sent from **Save macros**, never from typing a name, so an abandoned name never litters the shared catalog). The green check is also a button: click it to open the **full ingredient card** — every CIQUAL nutrient on file (energy, macros, sugars, fatty acids, minerals, vitamins), grouped, read-only, fetched fresh from the catalog by `ciqual_code`. |
 | 9 | Nutritional & Yield Telemetry | Per-portion or full-batch macro tiles, computed live from every ingredient line; switches to a saved version's own numbers when you're viewing one. |
@@ -48,6 +48,9 @@ Below 767px, Ingredients' 6-column table gives way to a stacked card list: the t
 
 > [!bug]- Saving with no ingredient or no step showed `[object Object]`
 > `RecipeDraftSchema` requires at least one ingredient and one method step; a save missing either fails FastAPI's own request validation (422) before the handler runs, and FastAPI's default error body is an *array* of `{loc, msg, type}` objects, not the `{"detail": "<string>"}` string shape every other error here uses. The frontend handed that array straight to `new Error(...)`, which JavaScript stringifies as `"[object Object]"`. Fixed on both ends — kitchen-atelier now turns a validation error into one readable string, and the frontend only trusts `detail` when it's actually a string either way ([[Kitchen Atelier decisions]], 2026-11-19).
+
+## Mobile, as of 2026-11-20
+Below 767px, the header's action row drops **Open recipe…** (the RecipePicker) and **Copy recipe sheet** — redundant with Recipes' own page and a minor convenience respectively — so **Save**, **Recipes**, **Ingredients** and **New** fit one row instead of wrapping a lone button onto its own line. The sticky bottom nutrition bar now pads for the phone's home-indicator safe area (`var(--safe-bottom)`, the same token `layout.scss`'s floating tool and the Map page already use) instead of sitting flush against it, which was clipping its own left-corner text. Every modal here (the macro editor, the full ingredient card) now locks background scroll while open — a cross-cutting fix, not Kitchen-only; see [[Homelab UI decisions]], 2026-11-20.
 
 ## Use it to
 Draft a recipe, scale it when the guest count changes (Auto-Scale on), and save a version before you change the sauce — the old version stays exactly as it was, read-only, a click away on the version stepper that appears next to the course pills once you've saved at least once. Browse or search the catalog from **Ingredients**, or jump back into a past recipe from **Recipes** — **Delete** there is permanent.
